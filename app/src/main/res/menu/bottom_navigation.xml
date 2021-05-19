@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_cupping"
+        android:icon="@android:drawable/btn_star"
+        android:title="Cupping" />
+    <item
+        android:id="@+id/nav_beans"
+        android:icon="@android:drawable/ic_dialog_email"
+        android:title="Beans" />
+    <item
+        android:id="@+id/nav_history"
+        android:icon="@android:drawable/presence_audio_online"
+        android:title="History" />
+    <item
+        android:id="@+id/nav_profile"
+        android:icon="@android:drawable/presence_audio_online"
+        android:title="Profile" />
+</menu>

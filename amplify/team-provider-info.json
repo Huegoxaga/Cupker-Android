@@ -1,0 +1,28 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-cupker-dev-01905-authRole",
+      "UnauthRoleArn": "arn:aws:iam::499219142949:role/amplify-cupker-dev-01905-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::499219142949:role/amplify-cupker-dev-01905-authRole",
+      "Region": "ca-central-1",
+      "DeploymentBucketName": "amplify-cupker-dev-01905-deployment",
+      "UnauthRoleName": "amplify-cupker-dev-01905-unauthRole",
+      "StackName": "amplify-cupker-dev-01905",
+      "StackId": "arn:aws:cloudformation:ca-central-1:499219142949:stack/amplify-cupker-dev-01905/b3345e00-abc6-11eb-b351-06f71a4e1a50",
+      "AmplifyAppId": "d38u25oq43aw51"
+    },
+    "categories": {
+      "function": {
+        "cupkerc56c4a95PostConfirmation": {
+          "GROUP": "regular",
+          "deploymentBucketName": "amplify-cupker-dev-01905-deployment",
+          "s3Key": "amplify-builds/cupkerc56c4a95PostConfirmation-50334a627a7374615976-build.zip"
+        }
+      },
+      "auth": {
+        "cupkere7fa295a": {},
+        "userPoolGroups": {}
+      }
+    }
+  }
+}

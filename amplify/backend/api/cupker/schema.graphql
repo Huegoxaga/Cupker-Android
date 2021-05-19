@@ -1,0 +1,66 @@
+type Session @model {
+  id: ID!
+  user: User! @connection
+  roaster: Roaster! @connection
+  roast_time: AWSDateTime!
+}
+
+type User @model {
+  id: ID!
+  username: String!
+  email: String!
+  first_name: String
+  last_name: String
+}
+
+type Bean @model {
+  id: ID!
+  flavor: [Flavor]
+  name: String
+  process: String
+  origin: String
+  region: String
+  altitude_low: String
+  altitude_high: String
+  moisture: String
+  variaty: String
+  density: String
+  grade: String
+  image_url: String
+}
+
+type Sample @model {
+  id: ID!
+  bean: Bean!
+  aroma: Float
+  flavor: Float
+  acidity: Float
+  body: Float
+  balance: Float
+  uniformity: Float
+  clean_cup: Float
+  after_taste: Float
+  sweetness: Float
+  defects: Float
+  defect_type: String
+  defect_count: Float
+  notes: String
+}
+
+type Roaster @model {
+  id: ID!
+  name: String
+  email: AWSEmail
+}
+
+type Flavor @model {
+  id: ID!
+  name: String
+  type: String
+}
+
+type Dealer @model {
+  id: ID!
+  name: String!
+  email: AWSEmail!
+}
