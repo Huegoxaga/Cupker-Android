@@ -38,7 +38,8 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-        //I added this if statement to keep the selected fragment when rotating the device
+
+        //Keep the selected fragment when rotating the device
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new CuppingFragment()).commit();
