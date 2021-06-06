@@ -2,4 +2,12 @@
     <string name="app_name">Cupker</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="cupping_start_button">Start Cupping</string>
+    <string name="cupping_roast_date_button">Calendar</string>
+    <string name="cupping_roast_date_input">YYYY/MM/DD</string>
+    <string name="cupping_roaster_button">Add New Roaster</string>
+    <string name="cupping_session_input">African Natural Processed Group I</string>
+    <string name="cupping_sample_label">5</string>
+    <string name="cuppint_sample_add_button">Add a Sample</string>
+    <string name="cupping_sample_minus_button">Remove a Sample</string>
 </resources>
