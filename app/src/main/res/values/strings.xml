@@ -7,7 +7,8 @@
     <string name="cupping_roast_date_input">YYYY/MM/DD</string>
     <string name="cupping_roaster_button">Add New Roaster</string>
     <string name="cupping_session_input">African Natural Processed Group I</string>
-    <string name="cupping_sample_label">5</string>
     <string name="cuppint_sample_add_button">Add a Sample</string>
     <string name="cupping_sample_minus_button">Remove a Sample</string>
+    <string name="add_button">Add</string>
+    <string name="cancel_button">Cancel</string>
 </resources>

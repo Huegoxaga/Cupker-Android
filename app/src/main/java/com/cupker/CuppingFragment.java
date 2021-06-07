@@ -42,7 +42,7 @@ public class CuppingFragment extends Fragment {
     private String[] roasters = { "Roaster A", "Roaster B", "Roaster C", "Roaster D"};
     private EditText roastInput;
     private View cuppingFragView;
-    private int sampleNum;
+    private int sampleNum = 6;
     private TextView sampleLabel;
     private EditText sessionInput;
     private Spinner roasterSpinner;
@@ -108,17 +108,16 @@ public class CuppingFragment extends Fragment {
         roasterSpinner.setAdapter(rosterArray);
 
         sampleLabel = cuppingFragView.findViewById(R.id.cupping_sample_label);
-        sampleNum = Integer.parseInt(sampleLabel.getText().toString());
+//        sampleNum = Integer.parseInt(sampleLabel.getText().toString());
+        sampleLabel.setText(String.valueOf(sampleNum));
         Log.d(TAG, String.format("Sample Number: %d in onCreateView", sampleNum));
 
         roastInput = cuppingFragView.findViewById(R.id.cupping_roast_date_input);
-        cuppingFragView.findViewById(R.id.cupping_roast_date_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDatePickerDialog(cuppingFragView);
-            }
+        cuppingFragView.findViewById(R.id.cupping_roast_date_button).setOnClickListener(v -> showDatePickerDialog(cuppingFragView));
+        cuppingFragView.findViewById(R.id.cupping_roaster_button).setOnClickListener(v -> {
+            NewRoasterFragment newRoasterFrag = new NewRoasterFragment();
+            newRoasterFrag.show(this.getChildFragmentManager(), null);
         });
-
         cuppingFragView.findViewById(R.id.cupping_sample_add_button).setOnClickListener(this::updateSampleNum);
         cuppingFragView.findViewById(R.id.cupping_sample_minus_button).setOnClickListener(this::updateSampleNum);
 
