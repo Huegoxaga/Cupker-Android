@@ -2,6 +2,7 @@ package com.cupker;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -88,9 +90,7 @@ public class CuppingFragment extends Fragment {
 
         roasterSpinner = (Spinner) cuppingFragView.findViewById(R.id.cupping_roaster_spinner);
         roasterSpinner.setSelection(0, false);
-
         sessionInput = cuppingFragView.findViewById(R.id.cupping_session_input);
-
         roasterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
@@ -101,7 +101,7 @@ public class CuppingFragment extends Fragment {
             }
         });
 
-        //Creating the ArrayAdapter instance having the rosater list
+        //Creating the ArrayAdapter instance having the roaster list
         ArrayAdapter rosterArray = new ArrayAdapter(cuppingFragView.getContext(), android.R.layout.simple_spinner_item, roasters);
         rosterArray.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
@@ -120,6 +120,15 @@ public class CuppingFragment extends Fragment {
         });
         cuppingFragView.findViewById(R.id.cupping_sample_add_button).setOnClickListener(this::updateSampleNum);
         cuppingFragView.findViewById(R.id.cupping_sample_minus_button).setOnClickListener(this::updateSampleNum);
+        cuppingFragView.findViewById(R.id.cupping_start_button).setOnClickListener(v -> {
+            Intent startCuppingIntent = new Intent(getActivity(), CuppingActivity.class);
+            startCuppingIntent.putExtra(ROAST_DATE, roastInput.getText().toString());
+            startCuppingIntent.putExtra(SESSION_NAME, sessionInput.getText().toString());
+            startCuppingIntent.putExtra(SAMPLE_NUMBER, Integer.parseInt(sampleLabel.getText().toString()));
+            startCuppingIntent.putExtra(ROASTER_CHOICE, roasterSpinner.getSelectedItemPosition());
+            startActivity(startCuppingIntent);
+        });
+
 
         return cuppingFragView;
     }

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+android:background="#000033">
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Name of the Animal"
+        android:id="@+id/title"
+        android:layout_alignParentTop="true"
+        android:textSize="30dp"
+        android:textColor="#fff" />
+
+    <com.cupker.CuppingGridView
+        android:id="@+id/cupping_grid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:background="#FFFFFF"
+        android:columnWidth="80dp"
+        android:gravity="center"
+        android:horizontalSpacing="15dp"
+        android:numColumns="auto_fit"
+        android:verticalSpacing="15dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Power"
+        android:id="@+id/content"
+        android:layout_below="@+id/cupping_grid"
+        android:textSize="25dp"
+        android:textColor="#FF0000"
+        android:paddingLeft="5dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Speed"
+        android:id="@+id/foot"
+        android:layout_below="@+id/content"
+        android:textSize="25dp"
+        android:textColor="#FF0000"
+        android:paddingLeft="5dp" />
+</RelativeLayout>
+</LinearLayout>

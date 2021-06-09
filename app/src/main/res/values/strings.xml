@@ -11,4 +11,7 @@
     <string name="cupping_sample_minus_button">Remove a Sample</string>
     <string name="add_button">Add</string>
     <string name="cancel_button">Cancel</string>
+    <string name="title_activity_cupping">FullscreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>
