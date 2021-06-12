@@ -3,16 +3,21 @@ package com.cupker;
 import android.annotation.SuppressLint;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -54,6 +59,9 @@ public class CuppingActivity extends AppCompatActivity {
     private int roasterChoice;
     private ListView cuppingListView;
     private FrameLayout mainFrame;
+    private View cuppingListViewFooter;
+    private View cuppingListViewHeader;
+
 
 
     @Override
@@ -93,6 +101,15 @@ public class CuppingActivity extends AppCompatActivity {
         // get the number of elements
 //        Log.d(TAG, "adapter getCount() = " + adapter.getCount());
         // associate an adapter with the list
+
+
+
+
+        LayoutInflater layoutInflater = getLayoutInflater();
+        cuppingListViewHeader = layoutInflater.inflate(R.layout.activity_cupping_list_header, cuppingListView, false);
+        cuppingListViewFooter = layoutInflater.inflate(R.layout.activity_cupping_list_footer, cuppingListView, false);
+        cuppingListView.addHeaderView(cuppingListViewHeader);
+        cuppingListView.addFooterView(cuppingListViewFooter);
 
         cuppingListView.setAdapter(cuppingListAdapter);
 

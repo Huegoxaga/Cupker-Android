@@ -88,7 +88,7 @@ public class CuppingFragment extends Fragment {
         // Inflate the layout for this fragment
         cuppingFragView = inflater.inflate(R.layout.fragment_cupping, container, false);
 
-        roasterSpinner = (Spinner) cuppingFragView.findViewById(R.id.cupping_roaster_spinner);
+        roasterSpinner = cuppingFragView.findViewById(R.id.cupping_roaster_spinner);
         roasterSpinner.setSelection(0, false);
         sessionInput = cuppingFragView.findViewById(R.id.cupping_session_input);
         roasterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
