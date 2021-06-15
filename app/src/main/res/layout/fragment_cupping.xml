@@ -92,6 +92,7 @@
         android:layout_marginTop="14dp"
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
+        android:text="@string/cupping_sample_label"
         app:layout_constraintEnd_toStartOf="@+id/cupping_sample_add_button"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/cupping_sample_minus_button"

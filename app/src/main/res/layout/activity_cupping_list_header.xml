@@ -5,10 +5,11 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/cupping_activity_title_label"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:padding="16sp" />
+        android:gravity="center"
+        android:padding="16sp"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 </LinearLayout>

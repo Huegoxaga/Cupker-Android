@@ -18,4 +18,21 @@
     <string name="cupping_list_title_label">Sample %d</string>
     <string name="cupping_list_note_input">notes</string>
     <string name="cupping_activity_save_button">Save</string>
+    <string name="cupping_sample_label">6</string>
+    <string name="grading_dialog_score_6_0">6.00</string>
+    <string name="grading_dialog_score_6_25">6.25</string>
+    <string name="grading_dialog_score_6_5">6.50</string>
+    <string name="grading_dialog_score_6_75">6.75</string>
+    <string name="grading_dialog_score_7_0">7.00</string>
+    <string name="grading_dialog_score_7_25">7.25</string>
+    <string name="grading_dialog_score_7_5">7.50</string>
+    <string name="grading_dialog_score_7_75">7.75</string>
+    <string name="grading_dialog_score_8_0">8.00</string>
+    <string name="grading_dialog_score_8_25">8.25</string>
+    <string name="grading_dialog_score_8_5">8.50</string>
+    <string name="grading_dialog_score_8_75">8.75</string>
+    <string name="grading_dialog_score_9_0">9.00</string>
+    <string name="grading_dialog_score_9_25">9.25</string>
+    <string name="grading_dialog_score_9_5">9.50</string>
+    <string name="grading_dialog_score_9_75">9.75</string>
 </resources>

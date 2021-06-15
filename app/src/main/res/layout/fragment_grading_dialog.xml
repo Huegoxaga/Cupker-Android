@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/grading_dialog_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".GradingDialogFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/grading_dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <GridLayout
+        android:id="@+id/grading_dialog_score_grid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:columnCount="4"
+        android:orientation="horizontal"
+        android:rowCount="4">
+
+        <TextView
+            android:id="@+id/grading_dialog_score_6_0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/grading_dialog_score_6_0" />
+
+        <TextView
+            android:id="@+id/grading_dialog_score_6_25"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/grading_dialog_score_6_25" />
+
+        <TextView
+            android:id="@+id/grading_dialog_score_6_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/grading_dialog_score_6_5" />
+
+        <TextView
+            android:id="@+id/grading_dialog_score_6_75"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/grading_dialog_score_6_75" />
+
+        <TextView
+            android:id="@+id/grading_dialog_score_7_0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/grading_dialog_score_7_0" />
+
+        <TextView
+            android:id="@+id/grading_dialog_score_7_25"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/grading_dialog_score_7_25" />
+
+        <TextView
+            android:id="@+id/grading_dialog_score_7_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/grading_dialog_score_7_5" />
+
+        <TextView
+            android:id="@+id/grading_dialog_score_7_75"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/grading_dialog_score_7_75" />
+
+        <TextView
+            android:id="@+id/grading_dialog_score_8_0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/grading_dialog_score_8_0" />
+
+        <TextView
+            android:id="@+id/grading_dialog_score_8_25"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/grading_dialog_score_8_25" />
+
+        <TextView
+            android:id="@+id/grading_dialog_score_8_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/grading_dialog_score_8_5" />
+
+        <TextView
+            android:id="@+id/grading_dialog_score_8_75"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/grading_dialog_score_8_75" />
+
+        <TextView
+            android:id="@+id/grading_dialog_score_9_0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/grading_dialog_score_9_0" />
+
+        <TextView
+            android:id="@+id/grading_dialog_score_9_25"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/grading_dialog_score_9_25" />
+
+        <TextView
+            android:id="@+id/grading_dialog_score_9_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/grading_dialog_score_9_5" />
+
+        <TextView
+            android:id="@+id/grading_dialog_score_9_75"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/grading_dialog_score_9_75" />
+    </GridLayout>
+
+</LinearLayout>

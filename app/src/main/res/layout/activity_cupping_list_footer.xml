@@ -4,12 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="fill_parent"
+    <Button
+        android:id="@+id/cupping_activity_save_button"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Footer: End of the ListView!"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:padding="16sp" />
+        android:text="@string/cupping_activity_save_button" />
 
 </LinearLayout>

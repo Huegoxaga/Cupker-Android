@@ -15,18 +15,11 @@ import android.widget.Toast;
 
 public class CuppingListAdapter extends BaseAdapter {
 
-    Context context;
-    LayoutInflater layoutInflater;
-    private static final String TAG = "CUPPING LIST ADAPTER";
+    private Context context;
+    private LayoutInflater layoutInflater;
+    private static final String TAG = "===CUPP LIST ADAPTER===";
+    private int sampleNum;
 
-
-    //    int[] animalImages = { R.drawable.bear, R.drawable.bird, R.drawable.cat,
-//            R.drawable.cow, R.drawable.dolphin, R.drawable.fish, R.drawable.fox,
-//            R.drawable.horse, R.drawable.lion, R.drawable.tiger };
-    String[] animalNames = { "Bear", "Bird", "Cat", "Cow", "Dolphin",
-            "Fish", "Fox", "Horse", "Lion", "Tiger" };
-    int[] animalsPower = { 200, 20, 50, 150, 50, 10, 70, 400, 250, 220 };
-    int[] animalsSpeed = { 50, 80, 60, 10, 50, 40, 80, 350, 200, 100 };
     private String[] bean = { "Bean A", "Bean B", "Bean C", "Bean D"};
     private String[] roastLevel = { "Roast Level A", "Roast Level B", "Roast Level C", "Roast Level D"};
     private Spinner beanSpinner;
@@ -34,21 +27,22 @@ public class CuppingListAdapter extends BaseAdapter {
 
 
 
-    public CuppingListAdapter(Context context) {
+    public CuppingListAdapter(Context context, int sampleNum) {
 
         this.context = context;
+        this.sampleNum = sampleNum;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
     }
 
     @Override
     public int getCount() {
-        return 10 ;
+        return sampleNum ;
     }
 
     @Override
     public Object getItem(int position) {
-        return animalNames[position];
+        return position;
     }
 
     @Override
@@ -105,7 +99,7 @@ public class CuppingListAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
 
-                Toast.makeText(context, "The name of the Sample is" + sampleName.getText(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "The name of the Sample is " + sampleName.getText(), Toast.LENGTH_SHORT).show();
 
             }
         });

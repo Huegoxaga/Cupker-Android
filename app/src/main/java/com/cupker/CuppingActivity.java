@@ -14,10 +14,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,14 +55,17 @@ public class CuppingActivity extends AppCompatActivity {
     private static final String SESSION_NAME = "SESSION NAME";
     private static final String ROAST_DATE = "ROAST DATE";
     private static final String ROASTER_CHOICE = "ROASTER CHOICE";
-    private String sessionNane;
+    private String sessionName;
     private String roastDate;
-    private int samepleNumber;
+    private int sampleNumber;
     private int roasterChoice;
     private ListView cuppingListView;
     private FrameLayout mainFrame;
     private View cuppingListViewFooter;
     private View cuppingListViewHeader;
+    private LayoutInflater layoutInflater;
+    private Button saveButton;
+    private TextView titleText;
 
 
 
@@ -90,13 +95,25 @@ public class CuppingActivity extends AppCompatActivity {
 //            }
 //        });
 
+        Intent intent = getIntent();
+        if (intent!=null && intent.hasExtra(SESSION_NAME) && intent.hasExtra(ROAST_DATE) && intent.hasExtra(ROASTER_CHOICE) && intent.hasExtra(SAMPLE_NUMBER)) {
+            sessionName = intent.getStringExtra(SESSION_NAME);
+            roastDate = intent.getStringExtra(ROAST_DATE);
+            sampleNumber = intent.getIntExtra(SAMPLE_NUMBER, 0);
+            roasterChoice = intent.getIntExtra(ROASTER_CHOICE, 0);
+        }
+        Log.d(TAG, String.format("Sample Number: %d in onCreate", sampleNumber));
+        Log.d(TAG, String.format("Session Name: %s in onCreate", sessionName));
+        Log.d(TAG, String.format("Roaster Choice: %d in onCreate", roasterChoice));
+        Log.d(TAG, String.format("Roast Date: %s in onCreate", roastDate));
+
 
 //        String[] my_planets = new String[] {"Mercury", "Venus", "Earth", "Mars",
 //                "Jupiter", "Saturn", "Uranus", "Neptune"};
 
 //        ArrayList<String> myPlanetList = new ArrayList<>();
 //        myPlanetList.addAll( Arrays.asList(my_planets) );
-        CuppingListAdapter cuppingListAdapter = new CuppingListAdapter(this);
+        CuppingListAdapter cuppingListAdapter = new CuppingListAdapter(this, sampleNumber);
 //        ArrayAdapter<String> cuppingAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, myPlanetList);
         // get the number of elements
 //        Log.d(TAG, "adapter getCount() = " + adapter.getCount());
@@ -105,7 +122,7 @@ public class CuppingActivity extends AppCompatActivity {
 
 
 
-        LayoutInflater layoutInflater = getLayoutInflater();
+        layoutInflater = getLayoutInflater();
         cuppingListViewHeader = layoutInflater.inflate(R.layout.activity_cupping_list_header, cuppingListView, false);
         cuppingListViewFooter = layoutInflater.inflate(R.layout.activity_cupping_list_footer, cuppingListView, false);
         cuppingListView.addHeaderView(cuppingListViewHeader);
@@ -113,17 +130,16 @@ public class CuppingActivity extends AppCompatActivity {
 
         cuppingListView.setAdapter(cuppingListAdapter);
 
-        Intent intent = getIntent();
-        if (intent!=null && intent.hasExtra(SESSION_NAME) && intent.hasExtra(ROAST_DATE) && intent.hasExtra(ROASTER_CHOICE) && intent.hasExtra(SAMPLE_NUMBER)) {
-            sessionNane = intent.getStringExtra(SESSION_NAME);
-            roastDate = intent.getStringExtra(ROAST_DATE);
-            samepleNumber = intent.getIntExtra(SAMPLE_NUMBER, 0);
-            roasterChoice = intent.getIntExtra(ROASTER_CHOICE, 0);
-        }
-        Log.d(TAG, String.format("Sample Number: %d in onCreate", samepleNumber));
-        Log.d(TAG, String.format("Session Name: %s in onCreate", sessionNane));
-        Log.d(TAG, String.format("Roaster Choice: %d in onCreate", roasterChoice));
-        Log.d(TAG, String.format("Roast Date: %s in onCreate", roastDate));
+
+        titleText = findViewById(R.id.cupping_activity_title_label);
+        titleText.setText(sessionName);
+
+        findViewById(R.id.cupping_activity_save_button).setOnClickListener(v -> {
+            setResult(RESULT_OK);
+            finish();
+        });
+
+
 
 
         // Upon interacting with UI controls, delay any scheduled hide()
@@ -245,4 +261,10 @@ public class CuppingActivity extends AppCompatActivity {
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
+
+    public void setScore(double v) {
+        Log.d(TAG, "Saved");
+        // Dismiss will close the dialog
+    }
+
 }

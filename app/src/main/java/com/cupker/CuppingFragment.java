@@ -34,7 +34,7 @@ public class CuppingFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private static final String TAG = "CUPPING FRAGMENT";
+    private static final String TAG = "===CUPPING FRAGMENT===";
     private static final String PREFERENCE = "CUPPING FRAGMENT PREFERENCE";
     private static final String SAMPLE_NUMBER = "SAMPLE NUMBER";
     private static final String SESSION_NAME = "SESSION NAME";
@@ -44,7 +44,7 @@ public class CuppingFragment extends Fragment {
     private String[] roasters = { "Roaster A", "Roaster B", "Roaster C", "Roaster D"};
     private EditText roastInput;
     private View cuppingFragView;
-    private int sampleNum = 6;
+    private int sampleNum;
     private TextView sampleLabel;
     private EditText sessionInput;
     private Spinner roasterSpinner;
@@ -76,6 +76,7 @@ public class CuppingFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
 //            mParam1 = getArguments().getString(ARG_PARAM1);
 //            mParam2 = getArguments().getString(ARG_PARAM2);
@@ -87,6 +88,7 @@ public class CuppingFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         cuppingFragView = inflater.inflate(R.layout.fragment_cupping, container, false);
+        sharedPreferences = cuppingFragView.getContext().getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
 
         roasterSpinner = cuppingFragView.findViewById(R.id.cupping_roaster_spinner);
         roasterSpinner.setSelection(0, false);
@@ -108,7 +110,7 @@ public class CuppingFragment extends Fragment {
         roasterSpinner.setAdapter(rosterArray);
 
         sampleLabel = cuppingFragView.findViewById(R.id.cupping_sample_label);
-//        sampleNum = Integer.parseInt(sampleLabel.getText().toString());
+        sampleNum = Integer.parseInt(sampleLabel.getText().toString());
         sampleLabel.setText(String.valueOf(sampleNum));
         Log.d(TAG, String.format("Sample Number: %d in onCreateView", sampleNum));
 
@@ -126,7 +128,8 @@ public class CuppingFragment extends Fragment {
             startCuppingIntent.putExtra(SESSION_NAME, sessionInput.getText().toString());
             startCuppingIntent.putExtra(SAMPLE_NUMBER, Integer.parseInt(sampleLabel.getText().toString()));
             startCuppingIntent.putExtra(ROASTER_CHOICE, roasterSpinner.getSelectedItemPosition());
-            startActivity(startCuppingIntent);
+//            startActivity(startCuppingIntent);
+            startActivityForResult(startCuppingIntent, 1);
         });
 
 
@@ -171,10 +174,10 @@ public class CuppingFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        sharedPreferences = cuppingFragView.getContext().getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
         roastInput.setText(sharedPreferences.getString(ROAST_DATE, ""));
         sessionInput.setText(sharedPreferences.getString(SESSION_NAME, ""));
-        sampleLabel.setText(String.valueOf(sharedPreferences.getInt(SAMPLE_NUMBER, 0)));
+        sampleNum = sharedPreferences.getInt(SAMPLE_NUMBER, 0);
+        sampleLabel.setText(String.valueOf(sampleNum));
         roasterSpinner.setSelection(sharedPreferences.getInt(ROASTER_CHOICE, 0));
     }
     @Override
@@ -188,6 +191,14 @@ public class CuppingFragment extends Fragment {
         editor.apply();
     }
 
-
-
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(ROAST_DATE, "");
+        editor.putString(SESSION_NAME, "");
+        editor.putInt(SAMPLE_NUMBER, 6);
+        editor.putInt(ROASTER_CHOICE, 0);
+        editor.apply();
+    }
 }
