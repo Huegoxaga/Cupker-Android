@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.cupker"
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -40,7 +40,8 @@ dependencies {
     implementation 'androidx.gridlayout:gridlayout:1.0.0'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    implementation 'com.amplifyframework:aws-api:1.17.4'
+    implementation 'com.amplifyframework:aws-api:1.18.0'
+    implementation 'com.amplifyframework:aws-datastore:1.18.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     // Amplify core dependency
     implementation 'com.amplifyframework:core:1.17.4'
