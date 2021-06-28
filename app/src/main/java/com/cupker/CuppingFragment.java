@@ -21,6 +21,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amplifyframework.core.Amplify;
+import com.amplifyframework.datastore.generated.model.Roaster;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -41,7 +45,8 @@ public class CuppingFragment extends Fragment {
     private static final String ROAST_DATE = "ROAST DATE";
     private static final String ROASTER_CHOICE = "ROASTER CHOICE";
 
-    private String[] roasters = { "Roaster A", "Roaster B", "Roaster C", "Roaster D"};
+    private ArrayList<String> roastersString = new ArrayList<String>();
+    private ArrayList<Roaster> roastersObj = new ArrayList<Roaster>();
     private EditText roastInput;
     private View cuppingFragView;
     private int sampleNum;
@@ -81,6 +86,17 @@ public class CuppingFragment extends Fragment {
 //            mParam1 = getArguments().getString(ARG_PARAM1);
 //            mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        Amplify.DataStore.query(Roaster.class,
+                queryRoaster -> {
+                    while (queryRoaster.hasNext()) {
+                        Roaster roaster = queryRoaster.next();
+                        roastersObj.add(roaster);
+                        roastersString.add(roaster.getName());
+                        Log.i(TAG, "Get Roaster Name: " + roaster.getName());
+                    }
+                },
+                error -> Log.e(TAG,  "Error retrieving roasters", error)
+        );
     }
 
     @Override
@@ -96,7 +112,8 @@ public class CuppingFragment extends Fragment {
         roasterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
-                Log.d(TAG, roasters[position] + " Selected in onItemSelected");
+                Log.d(TAG, roastersString.get(position) + " Selected in onItemSelected");
+
             }
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
@@ -104,7 +121,7 @@ public class CuppingFragment extends Fragment {
         });
 
         //Creating the ArrayAdapter instance having the roaster list
-        ArrayAdapter rosterArray = new ArrayAdapter(cuppingFragView.getContext(), android.R.layout.simple_spinner_item, roasters);
+        ArrayAdapter rosterArray = new ArrayAdapter(cuppingFragView.getContext(), android.R.layout.simple_spinner_item, roastersString);
         rosterArray.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //Setting the ArrayAdapter data on the Spinner
         roasterSpinner.setAdapter(rosterArray);
@@ -127,13 +144,20 @@ public class CuppingFragment extends Fragment {
             startCuppingIntent.putExtra(ROAST_DATE, roastInput.getText().toString());
             startCuppingIntent.putExtra(SESSION_NAME, sessionInput.getText().toString());
             startCuppingIntent.putExtra(SAMPLE_NUMBER, Integer.parseInt(sampleLabel.getText().toString()));
-            startCuppingIntent.putExtra(ROASTER_CHOICE, roasterSpinner.getSelectedItemPosition());
+            startCuppingIntent.putExtra(ROASTER_CHOICE, roastersObj.get(roasterSpinner.getSelectedItemPosition()).getId());
+            Log.d(TAG, roasterSpinner.getSelectedItemPosition() + "");
+
 //            startActivity(startCuppingIntent);
             startActivityForResult(startCuppingIntent, 1);
         });
 
-
         return cuppingFragView;
+    }
+
+    public void updateRoaster(String roasterName, Roaster newRoasterObj){
+        roastersString.add(roasterName);
+        roastersObj.add(newRoasterObj);
+        roasterSpinner.setSelection(roastersString.size() - 1, false);
     }
 
     public void showDatePickerDialog(View view){
