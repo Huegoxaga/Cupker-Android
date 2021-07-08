@@ -1,5 +1,7 @@
 package com.amplifyframework.datastore.generated.model;
 
+import com.amplifyframework.core.model.annotations.BelongsTo;
+import com.amplifyframework.core.model.temporal.Temporal;
 
 import java.util.List;
 import java.util.UUID;
@@ -7,7 +9,10 @@ import java.util.Objects;
 
 import androidx.core.util.ObjectsCompat;
 
+import com.amplifyframework.core.model.AuthStrategy;
 import com.amplifyframework.core.model.Model;
+import com.amplifyframework.core.model.ModelOperation;
+import com.amplifyframework.core.model.annotations.AuthRule;
 import com.amplifyframework.core.model.annotations.Index;
 import com.amplifyframework.core.model.annotations.ModelConfig;
 import com.amplifyframework.core.model.annotations.ModelField;
@@ -17,9 +22,14 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 
 /** This is an auto generated class representing the Sample type in your schema. */
 @SuppressWarnings("all")
-@ModelConfig(pluralName = "Samples")
+@ModelConfig(pluralName = "Samples", authRules = {
+  @AuthRule(allow = AuthStrategy.OWNER, ownerField = "owner", identityClaim = "cognito:username", provider = "userPools", operations = { ModelOperation.CREATE, ModelOperation.UPDATE, ModelOperation.DELETE, ModelOperation.READ })
+})
+@Index(name = "bySession", fields = {"sessionID"})
 public final class Sample implements Model {
   public static final QueryField ID = field("Sample", "id");
+  public static final QueryField SESSION_ID = field("Sample", "sessionID");
+  public static final QueryField BEAN = field("Sample", "sampleBeanId");
   public static final QueryField AROMA = field("Sample", "aroma");
   public static final QueryField FLAVOR = field("Sample", "flavor");
   public static final QueryField ACIDITY = field("Sample", "acidity");
@@ -34,6 +44,8 @@ public final class Sample implements Model {
   public static final QueryField DEFECT_COUNT = field("Sample", "defect_count");
   public static final QueryField NOTES = field("Sample", "notes");
   private final @ModelField(targetType="ID", isRequired = true) String id;
+  private final @ModelField(targetType="ID", isRequired = true) String sessionID;
+  private final @ModelField(targetType="Bean", isRequired = true) @BelongsTo(targetName = "sampleBeanId", type = Bean.class) Bean bean;
   private final @ModelField(targetType="Float") Double aroma;
   private final @ModelField(targetType="Float") Double flavor;
   private final @ModelField(targetType="Float") Double acidity;
@@ -47,8 +59,18 @@ public final class Sample implements Model {
   private final @ModelField(targetType="String") String defect_type;
   private final @ModelField(targetType="Float") Double defect_count;
   private final @ModelField(targetType="String") String notes;
+  private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
+  private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;
   public String getId() {
       return id;
+  }
+  
+  public String getSessionId() {
+      return sessionID;
+  }
+  
+  public Bean getBean() {
+      return bean;
   }
   
   public Double getAroma() {
@@ -103,8 +125,18 @@ public final class Sample implements Model {
       return notes;
   }
   
-  private Sample(String id, Double aroma, Double flavor, Double acidity, Double body, Double balance, Double uniformity, Double clean_cup, Double after_taste, Double sweetness, Double defects, String defect_type, Double defect_count, String notes) {
+  public Temporal.DateTime getCreatedAt() {
+      return createdAt;
+  }
+  
+  public Temporal.DateTime getUpdatedAt() {
+      return updatedAt;
+  }
+  
+  private Sample(String id, String sessionID, Bean bean, Double aroma, Double flavor, Double acidity, Double body, Double balance, Double uniformity, Double clean_cup, Double after_taste, Double sweetness, Double defects, String defect_type, Double defect_count, String notes) {
     this.id = id;
+    this.sessionID = sessionID;
+    this.bean = bean;
     this.aroma = aroma;
     this.flavor = flavor;
     this.acidity = acidity;
@@ -129,6 +161,8 @@ public final class Sample implements Model {
       } else {
       Sample sample = (Sample) obj;
       return ObjectsCompat.equals(getId(), sample.getId()) &&
+              ObjectsCompat.equals(getSessionId(), sample.getSessionId()) &&
+              ObjectsCompat.equals(getBean(), sample.getBean()) &&
               ObjectsCompat.equals(getAroma(), sample.getAroma()) &&
               ObjectsCompat.equals(getFlavor(), sample.getFlavor()) &&
               ObjectsCompat.equals(getAcidity(), sample.getAcidity()) &&
@@ -141,7 +175,9 @@ public final class Sample implements Model {
               ObjectsCompat.equals(getDefects(), sample.getDefects()) &&
               ObjectsCompat.equals(getDefectType(), sample.getDefectType()) &&
               ObjectsCompat.equals(getDefectCount(), sample.getDefectCount()) &&
-              ObjectsCompat.equals(getNotes(), sample.getNotes());
+              ObjectsCompat.equals(getNotes(), sample.getNotes()) &&
+              ObjectsCompat.equals(getCreatedAt(), sample.getCreatedAt()) &&
+              ObjectsCompat.equals(getUpdatedAt(), sample.getUpdatedAt());
       }
   }
   
@@ -149,6 +185,8 @@ public final class Sample implements Model {
    public int hashCode() {
     return new StringBuilder()
       .append(getId())
+      .append(getSessionId())
+      .append(getBean())
       .append(getAroma())
       .append(getFlavor())
       .append(getAcidity())
@@ -162,6 +200,8 @@ public final class Sample implements Model {
       .append(getDefectType())
       .append(getDefectCount())
       .append(getNotes())
+      .append(getCreatedAt())
+      .append(getUpdatedAt())
       .toString()
       .hashCode();
   }
@@ -171,6 +211,8 @@ public final class Sample implements Model {
     return new StringBuilder()
       .append("Sample {")
       .append("id=" + String.valueOf(getId()) + ", ")
+      .append("sessionID=" + String.valueOf(getSessionId()) + ", ")
+      .append("bean=" + String.valueOf(getBean()) + ", ")
       .append("aroma=" + String.valueOf(getAroma()) + ", ")
       .append("flavor=" + String.valueOf(getFlavor()) + ", ")
       .append("acidity=" + String.valueOf(getAcidity()) + ", ")
@@ -183,12 +225,14 @@ public final class Sample implements Model {
       .append("defects=" + String.valueOf(getDefects()) + ", ")
       .append("defect_type=" + String.valueOf(getDefectType()) + ", ")
       .append("defect_count=" + String.valueOf(getDefectCount()) + ", ")
-      .append("notes=" + String.valueOf(getNotes()))
+      .append("notes=" + String.valueOf(getNotes()) + ", ")
+      .append("createdAt=" + String.valueOf(getCreatedAt()) + ", ")
+      .append("updatedAt=" + String.valueOf(getUpdatedAt()))
       .append("}")
       .toString();
   }
   
-  public static BuildStep builder() {
+  public static SessionIdStep builder() {
       return new Builder();
   }
   
@@ -225,12 +269,16 @@ public final class Sample implements Model {
       null,
       null,
       null,
+      null,
+      null,
       null
     );
   }
   
   public CopyOfBuilder copyOfBuilder() {
     return new CopyOfBuilder(id,
+      sessionID,
+      bean,
       aroma,
       flavor,
       acidity,
@@ -245,6 +293,16 @@ public final class Sample implements Model {
       defect_count,
       notes);
   }
+  public interface SessionIdStep {
+    BeanStep sessionId(String sessionId);
+  }
+  
+
+  public interface BeanStep {
+    BuildStep bean(Bean bean);
+  }
+  
+
   public interface BuildStep {
     Sample build();
     BuildStep id(String id) throws IllegalArgumentException;
@@ -264,8 +322,10 @@ public final class Sample implements Model {
   }
   
 
-  public static class Builder implements BuildStep {
+  public static class Builder implements SessionIdStep, BeanStep, BuildStep {
     private String id;
+    private String sessionID;
+    private Bean bean;
     private Double aroma;
     private Double flavor;
     private Double acidity;
@@ -285,6 +345,8 @@ public final class Sample implements Model {
         
         return new Sample(
           id,
+          sessionID,
+          bean,
           aroma,
           flavor,
           acidity,
@@ -298,6 +360,20 @@ public final class Sample implements Model {
           defect_type,
           defect_count,
           notes);
+    }
+    
+    @Override
+     public BeanStep sessionId(String sessionId) {
+        Objects.requireNonNull(sessionId);
+        this.sessionID = sessionId;
+        return this;
+    }
+    
+    @Override
+     public BuildStep bean(Bean bean) {
+        Objects.requireNonNull(bean);
+        this.bean = bean;
+        return this;
     }
     
     @Override
@@ -401,9 +477,11 @@ public final class Sample implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, Double aroma, Double flavor, Double acidity, Double body, Double balance, Double uniformity, Double cleanCup, Double afterTaste, Double sweetness, Double defects, String defectType, Double defectCount, String notes) {
+    private CopyOfBuilder(String id, String sessionId, Bean bean, Double aroma, Double flavor, Double acidity, Double body, Double balance, Double uniformity, Double cleanCup, Double afterTaste, Double sweetness, Double defects, String defectType, Double defectCount, String notes) {
       super.id(id);
-      super.aroma(aroma)
+      super.sessionId(sessionId)
+        .bean(bean)
+        .aroma(aroma)
         .flavor(flavor)
         .acidity(acidity)
         .body(body)
@@ -416,6 +494,16 @@ public final class Sample implements Model {
         .defectType(defectType)
         .defectCount(defectCount)
         .notes(notes);
+    }
+    
+    @Override
+     public CopyOfBuilder sessionId(String sessionId) {
+      return (CopyOfBuilder) super.sessionId(sessionId);
+    }
+    
+    @Override
+     public CopyOfBuilder bean(Bean bean) {
+      return (CopyOfBuilder) super.bean(bean);
     }
     
     @Override

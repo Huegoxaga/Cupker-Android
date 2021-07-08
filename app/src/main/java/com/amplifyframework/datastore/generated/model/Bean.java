@@ -1,5 +1,8 @@
 package com.amplifyframework.datastore.generated.model;
 
+import com.amplifyframework.core.model.annotations.HasMany;
+import com.amplifyframework.core.model.annotations.BelongsTo;
+import com.amplifyframework.core.model.temporal.Temporal;
 
 import java.util.List;
 import java.util.UUID;
@@ -7,7 +10,10 @@ import java.util.Objects;
 
 import androidx.core.util.ObjectsCompat;
 
+import com.amplifyframework.core.model.AuthStrategy;
 import com.amplifyframework.core.model.Model;
+import com.amplifyframework.core.model.ModelOperation;
+import com.amplifyframework.core.model.annotations.AuthRule;
 import com.amplifyframework.core.model.annotations.Index;
 import com.amplifyframework.core.model.annotations.ModelConfig;
 import com.amplifyframework.core.model.annotations.ModelField;
@@ -17,7 +23,9 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 
 /** This is an auto generated class representing the Bean type in your schema. */
 @SuppressWarnings("all")
-@ModelConfig(pluralName = "Beans")
+@ModelConfig(pluralName = "Beans", authRules = {
+  @AuthRule(allow = AuthStrategy.OWNER, ownerField = "owner", identityClaim = "cognito:username", provider = "userPools", operations = { ModelOperation.CREATE, ModelOperation.UPDATE, ModelOperation.DELETE, ModelOperation.READ })
+})
 public final class Bean implements Model {
   public static final QueryField ID = field("Bean", "id");
   public static final QueryField NAME = field("Bean", "name");
@@ -27,11 +35,12 @@ public final class Bean implements Model {
   public static final QueryField ALTITUDE_LOW = field("Bean", "altitude_low");
   public static final QueryField ALTITUDE_HIGH = field("Bean", "altitude_high");
   public static final QueryField MOISTURE = field("Bean", "moisture");
-  public static final QueryField VARIATY = field("Bean", "variaty");
+  public static final QueryField VARIETY = field("Bean", "variety");
   public static final QueryField DENSITY = field("Bean", "density");
   public static final QueryField GRADE = field("Bean", "grade");
-  public static final QueryField IMAGE_URL = field("Bean", "image_url");
+  public static final QueryField DEALER = field("Bean", "beanDealerId");
   private final @ModelField(targetType="ID", isRequired = true) String id;
+  private final @ModelField(targetType="Flavor") @HasMany(associatedWith = "beanID", type = Flavor.class) List<Flavor> flavors = null;
   private final @ModelField(targetType="String") String name;
   private final @ModelField(targetType="String") String process;
   private final @ModelField(targetType="String") String origin;
@@ -39,12 +48,18 @@ public final class Bean implements Model {
   private final @ModelField(targetType="String") String altitude_low;
   private final @ModelField(targetType="String") String altitude_high;
   private final @ModelField(targetType="String") String moisture;
-  private final @ModelField(targetType="String") String variaty;
+  private final @ModelField(targetType="String") String variety;
   private final @ModelField(targetType="String") String density;
   private final @ModelField(targetType="String") String grade;
-  private final @ModelField(targetType="String") String image_url;
+  private final @ModelField(targetType="Dealer") @BelongsTo(targetName = "beanDealerId", type = Dealer.class) Dealer dealer;
+  private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
+  private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;
   public String getId() {
       return id;
+  }
+  
+  public List<Flavor> getFlavors() {
+      return flavors;
   }
   
   public String getName() {
@@ -75,8 +90,8 @@ public final class Bean implements Model {
       return moisture;
   }
   
-  public String getVariaty() {
-      return variaty;
+  public String getVariety() {
+      return variety;
   }
   
   public String getDensity() {
@@ -87,11 +102,19 @@ public final class Bean implements Model {
       return grade;
   }
   
-  public String getImageUrl() {
-      return image_url;
+  public Dealer getDealer() {
+      return dealer;
   }
   
-  private Bean(String id, String name, String process, String origin, String region, String altitude_low, String altitude_high, String moisture, String variaty, String density, String grade, String image_url) {
+  public Temporal.DateTime getCreatedAt() {
+      return createdAt;
+  }
+  
+  public Temporal.DateTime getUpdatedAt() {
+      return updatedAt;
+  }
+  
+  private Bean(String id, String name, String process, String origin, String region, String altitude_low, String altitude_high, String moisture, String variety, String density, String grade, Dealer dealer) {
     this.id = id;
     this.name = name;
     this.process = process;
@@ -100,10 +123,10 @@ public final class Bean implements Model {
     this.altitude_low = altitude_low;
     this.altitude_high = altitude_high;
     this.moisture = moisture;
-    this.variaty = variaty;
+    this.variety = variety;
     this.density = density;
     this.grade = grade;
-    this.image_url = image_url;
+    this.dealer = dealer;
   }
   
   @Override
@@ -122,10 +145,12 @@ public final class Bean implements Model {
               ObjectsCompat.equals(getAltitudeLow(), bean.getAltitudeLow()) &&
               ObjectsCompat.equals(getAltitudeHigh(), bean.getAltitudeHigh()) &&
               ObjectsCompat.equals(getMoisture(), bean.getMoisture()) &&
-              ObjectsCompat.equals(getVariaty(), bean.getVariaty()) &&
+              ObjectsCompat.equals(getVariety(), bean.getVariety()) &&
               ObjectsCompat.equals(getDensity(), bean.getDensity()) &&
               ObjectsCompat.equals(getGrade(), bean.getGrade()) &&
-              ObjectsCompat.equals(getImageUrl(), bean.getImageUrl());
+              ObjectsCompat.equals(getDealer(), bean.getDealer()) &&
+              ObjectsCompat.equals(getCreatedAt(), bean.getCreatedAt()) &&
+              ObjectsCompat.equals(getUpdatedAt(), bean.getUpdatedAt());
       }
   }
   
@@ -140,10 +165,12 @@ public final class Bean implements Model {
       .append(getAltitudeLow())
       .append(getAltitudeHigh())
       .append(getMoisture())
-      .append(getVariaty())
+      .append(getVariety())
       .append(getDensity())
       .append(getGrade())
-      .append(getImageUrl())
+      .append(getDealer())
+      .append(getCreatedAt())
+      .append(getUpdatedAt())
       .toString()
       .hashCode();
   }
@@ -160,10 +187,12 @@ public final class Bean implements Model {
       .append("altitude_low=" + String.valueOf(getAltitudeLow()) + ", ")
       .append("altitude_high=" + String.valueOf(getAltitudeHigh()) + ", ")
       .append("moisture=" + String.valueOf(getMoisture()) + ", ")
-      .append("variaty=" + String.valueOf(getVariaty()) + ", ")
+      .append("variety=" + String.valueOf(getVariety()) + ", ")
       .append("density=" + String.valueOf(getDensity()) + ", ")
       .append("grade=" + String.valueOf(getGrade()) + ", ")
-      .append("image_url=" + String.valueOf(getImageUrl()))
+      .append("dealer=" + String.valueOf(getDealer()) + ", ")
+      .append("createdAt=" + String.valueOf(getCreatedAt()) + ", ")
+      .append("updatedAt=" + String.valueOf(getUpdatedAt()))
       .append("}")
       .toString();
   }
@@ -216,10 +245,10 @@ public final class Bean implements Model {
       altitude_low,
       altitude_high,
       moisture,
-      variaty,
+      variety,
       density,
       grade,
-      image_url);
+      dealer);
   }
   public interface BuildStep {
     Bean build();
@@ -231,10 +260,10 @@ public final class Bean implements Model {
     BuildStep altitudeLow(String altitudeLow);
     BuildStep altitudeHigh(String altitudeHigh);
     BuildStep moisture(String moisture);
-    BuildStep variaty(String variaty);
+    BuildStep variety(String variety);
     BuildStep density(String density);
     BuildStep grade(String grade);
-    BuildStep imageUrl(String imageUrl);
+    BuildStep dealer(Dealer dealer);
   }
   
 
@@ -247,10 +276,10 @@ public final class Bean implements Model {
     private String altitude_low;
     private String altitude_high;
     private String moisture;
-    private String variaty;
+    private String variety;
     private String density;
     private String grade;
-    private String image_url;
+    private Dealer dealer;
     @Override
      public Bean build() {
         String id = this.id != null ? this.id : UUID.randomUUID().toString();
@@ -264,10 +293,10 @@ public final class Bean implements Model {
           altitude_low,
           altitude_high,
           moisture,
-          variaty,
+          variety,
           density,
           grade,
-          image_url);
+          dealer);
     }
     
     @Override
@@ -313,8 +342,8 @@ public final class Bean implements Model {
     }
     
     @Override
-     public BuildStep variaty(String variaty) {
-        this.variaty = variaty;
+     public BuildStep variety(String variety) {
+        this.variety = variety;
         return this;
     }
     
@@ -331,8 +360,8 @@ public final class Bean implements Model {
     }
     
     @Override
-     public BuildStep imageUrl(String imageUrl) {
-        this.image_url = imageUrl;
+     public BuildStep dealer(Dealer dealer) {
+        this.dealer = dealer;
         return this;
     }
     
@@ -359,7 +388,7 @@ public final class Bean implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String name, String process, String origin, String region, String altitudeLow, String altitudeHigh, String moisture, String variaty, String density, String grade, String imageUrl) {
+    private CopyOfBuilder(String id, String name, String process, String origin, String region, String altitudeLow, String altitudeHigh, String moisture, String variety, String density, String grade, Dealer dealer) {
       super.id(id);
       super.name(name)
         .process(process)
@@ -368,10 +397,10 @@ public final class Bean implements Model {
         .altitudeLow(altitudeLow)
         .altitudeHigh(altitudeHigh)
         .moisture(moisture)
-        .variaty(variaty)
+        .variety(variety)
         .density(density)
         .grade(grade)
-        .imageUrl(imageUrl);
+        .dealer(dealer);
     }
     
     @Override
@@ -410,8 +439,8 @@ public final class Bean implements Model {
     }
     
     @Override
-     public CopyOfBuilder variaty(String variaty) {
-      return (CopyOfBuilder) super.variaty(variaty);
+     public CopyOfBuilder variety(String variety) {
+      return (CopyOfBuilder) super.variety(variety);
     }
     
     @Override
@@ -425,8 +454,8 @@ public final class Bean implements Model {
     }
     
     @Override
-     public CopyOfBuilder imageUrl(String imageUrl) {
-      return (CopyOfBuilder) super.imageUrl(imageUrl);
+     public CopyOfBuilder dealer(Dealer dealer) {
+      return (CopyOfBuilder) super.dealer(dealer);
     }
   }
   

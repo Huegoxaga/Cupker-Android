@@ -48,25 +48,22 @@
 
     <Spinner
         android:id="@+id/cupping_roaster_spinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
+        android:layout_width="174dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="100dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="44dp"
         app:layout_constraintBottom_toTopOf="@+id/cupping_roast_date_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.323"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/cupping_roaster_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginBottom="32dp"
         android:contentDescription="@string/cupping_roaster_button"
         android:src="@android:drawable/ic_input_add"
         app:layout_constraintBottom_toTopOf="@+id/cupping_roast_date_input"
@@ -76,12 +73,13 @@
         android:id="@+id/cupping_session_input"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="119dp"
+        android:layout_marginTop="56dp"
         android:autofillHints=""
         android:ems="10"
         android:hint="@string/cupping_session_input"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.53"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -114,10 +112,11 @@
         android:id="@+id/cupping_sample_minus_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="4dp"
         android:contentDescription="@string/cupping_sample_minus_button"
         android:src="@android:drawable/ic_delete"
         app:layout_constraintEnd_toStartOf="@+id/cupping_roaster_spinner"
+        app:layout_constraintHorizontal_bias="0.446"
         app:layout_constraintStart_toStartOf="@+id/cupping_roaster_spinner"
         app:layout_constraintTop_toBottomOf="@+id/cupping_session_input" />
 

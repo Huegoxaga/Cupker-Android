@@ -1,21 +1,13 @@
-type Session @model {
+type Session @model @auth(rules: [{ allow: owner }]) {
   id: ID!
-  user: User! @connection
   roaster: Roaster! @connection
   roast_time: AWSDateTime!
+  samples: [Sample] @connection(keyName: "bySession", fields: ["id"])
 }
 
-type User @model {
+type Bean @model @auth(rules: [{ allow: owner }]) {
   id: ID!
-  username: String!
-  email: String!
-  first_name: String
-  last_name: String
-}
-
-type Bean @model {
-  id: ID!
-  flavor: [Flavor]
+  flavors: [Flavor] @connection(keyName: "byBean", fields: ["id"])
   name: String
   process: String
   origin: String
@@ -23,15 +15,17 @@ type Bean @model {
   altitude_low: String
   altitude_high: String
   moisture: String
-  variaty: String
+  variety: String
   density: String
   grade: String
-  image_url: String
+  dealer: Dealer @connection
 }
 
-type Sample @model {
+type Sample @model @auth(rules: [{ allow: owner }])
+  @key(name: "bySession", fields: ["sessionID"]) {
   id: ID!
-  bean: Bean!
+  sessionID: ID!
+  bean: Bean! @connection
   aroma: Float
   flavor: Float
   acidity: Float
@@ -47,19 +41,21 @@ type Sample @model {
   notes: String
 }
 
-type Roaster @model {
+type Roaster @model @auth(rules: [{ allow: owner }]) {
   id: ID!
   name: String
   email: AWSEmail
 }
 
-type Flavor @model {
+type Flavor @model @auth(rules: [{ allow: owner }])
+  @key(name: "byBean", fields: ["beanID"]) {
   id: ID!
+  beanID: ID!
   name: String
   type: String
 }
 
-type Dealer @model {
+type Dealer @model @auth(rules: [{ allow: owner }]) {
   id: ID!
   name: String!
   email: AWSEmail!

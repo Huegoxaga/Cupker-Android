@@ -1,5 +1,6 @@
 package com.amplifyframework.datastore.generated.model;
 
+import com.amplifyframework.core.model.temporal.Temporal;
 
 import java.util.List;
 import java.util.UUID;
@@ -7,7 +8,10 @@ import java.util.Objects;
 
 import androidx.core.util.ObjectsCompat;
 
+import com.amplifyframework.core.model.AuthStrategy;
 import com.amplifyframework.core.model.Model;
+import com.amplifyframework.core.model.ModelOperation;
+import com.amplifyframework.core.model.annotations.AuthRule;
 import com.amplifyframework.core.model.annotations.Index;
 import com.amplifyframework.core.model.annotations.ModelConfig;
 import com.amplifyframework.core.model.annotations.ModelField;
@@ -17,16 +21,27 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 
 /** This is an auto generated class representing the Flavor type in your schema. */
 @SuppressWarnings("all")
-@ModelConfig(pluralName = "Flavors")
+@ModelConfig(pluralName = "Flavors", authRules = {
+  @AuthRule(allow = AuthStrategy.OWNER, ownerField = "owner", identityClaim = "cognito:username", provider = "userPools", operations = { ModelOperation.CREATE, ModelOperation.UPDATE, ModelOperation.DELETE, ModelOperation.READ })
+})
+@Index(name = "byBean", fields = {"beanID"})
 public final class Flavor implements Model {
   public static final QueryField ID = field("Flavor", "id");
+  public static final QueryField BEAN_ID = field("Flavor", "beanID");
   public static final QueryField NAME = field("Flavor", "name");
   public static final QueryField TYPE = field("Flavor", "type");
   private final @ModelField(targetType="ID", isRequired = true) String id;
+  private final @ModelField(targetType="ID", isRequired = true) String beanID;
   private final @ModelField(targetType="String") String name;
   private final @ModelField(targetType="String") String type;
+  private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
+  private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;
   public String getId() {
       return id;
+  }
+  
+  public String getBeanId() {
+      return beanID;
   }
   
   public String getName() {
@@ -37,8 +52,17 @@ public final class Flavor implements Model {
       return type;
   }
   
-  private Flavor(String id, String name, String type) {
+  public Temporal.DateTime getCreatedAt() {
+      return createdAt;
+  }
+  
+  public Temporal.DateTime getUpdatedAt() {
+      return updatedAt;
+  }
+  
+  private Flavor(String id, String beanID, String name, String type) {
     this.id = id;
+    this.beanID = beanID;
     this.name = name;
     this.type = type;
   }
@@ -52,8 +76,11 @@ public final class Flavor implements Model {
       } else {
       Flavor flavor = (Flavor) obj;
       return ObjectsCompat.equals(getId(), flavor.getId()) &&
+              ObjectsCompat.equals(getBeanId(), flavor.getBeanId()) &&
               ObjectsCompat.equals(getName(), flavor.getName()) &&
-              ObjectsCompat.equals(getType(), flavor.getType());
+              ObjectsCompat.equals(getType(), flavor.getType()) &&
+              ObjectsCompat.equals(getCreatedAt(), flavor.getCreatedAt()) &&
+              ObjectsCompat.equals(getUpdatedAt(), flavor.getUpdatedAt());
       }
   }
   
@@ -61,8 +88,11 @@ public final class Flavor implements Model {
    public int hashCode() {
     return new StringBuilder()
       .append(getId())
+      .append(getBeanId())
       .append(getName())
       .append(getType())
+      .append(getCreatedAt())
+      .append(getUpdatedAt())
       .toString()
       .hashCode();
   }
@@ -72,13 +102,16 @@ public final class Flavor implements Model {
     return new StringBuilder()
       .append("Flavor {")
       .append("id=" + String.valueOf(getId()) + ", ")
+      .append("beanID=" + String.valueOf(getBeanId()) + ", ")
       .append("name=" + String.valueOf(getName()) + ", ")
-      .append("type=" + String.valueOf(getType()))
+      .append("type=" + String.valueOf(getType()) + ", ")
+      .append("createdAt=" + String.valueOf(getCreatedAt()) + ", ")
+      .append("updatedAt=" + String.valueOf(getUpdatedAt()))
       .append("}")
       .toString();
   }
   
-  public static BuildStep builder() {
+  public static BeanIdStep builder() {
       return new Builder();
   }
   
@@ -104,15 +137,22 @@ public final class Flavor implements Model {
     return new Flavor(
       id,
       null,
+      null,
       null
     );
   }
   
   public CopyOfBuilder copyOfBuilder() {
     return new CopyOfBuilder(id,
+      beanID,
       name,
       type);
   }
+  public interface BeanIdStep {
+    BuildStep beanId(String beanId);
+  }
+  
+
   public interface BuildStep {
     Flavor build();
     BuildStep id(String id) throws IllegalArgumentException;
@@ -121,8 +161,9 @@ public final class Flavor implements Model {
   }
   
 
-  public static class Builder implements BuildStep {
+  public static class Builder implements BeanIdStep, BuildStep {
     private String id;
+    private String beanID;
     private String name;
     private String type;
     @Override
@@ -131,8 +172,16 @@ public final class Flavor implements Model {
         
         return new Flavor(
           id,
+          beanID,
           name,
           type);
+    }
+    
+    @Override
+     public BuildStep beanId(String beanId) {
+        Objects.requireNonNull(beanId);
+        this.beanID = beanId;
+        return this;
     }
     
     @Override
@@ -170,10 +219,16 @@ public final class Flavor implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String name, String type) {
+    private CopyOfBuilder(String id, String beanId, String name, String type) {
       super.id(id);
-      super.name(name)
+      super.beanId(beanId)
+        .name(name)
         .type(type);
+    }
+    
+    @Override
+     public CopyOfBuilder beanId(String beanId) {
+      return (CopyOfBuilder) super.beanId(beanId);
     }
     
     @Override

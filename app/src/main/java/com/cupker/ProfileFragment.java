@@ -4,9 +4,14 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.amplifyframework.auth.AuthUserAttributeKey;
+import com.amplifyframework.auth.options.AuthSignUpOptions;
+import com.amplifyframework.core.Amplify;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,6 +24,7 @@ public class ProfileFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String TAG = "===PROF FRAG===";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -58,6 +64,29 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        // Auth test
+//        AuthSignUpOptions options = AuthSignUpOptions.builder()
+//                .userAttribute(AuthUserAttributeKey.email(), "qi.ye@live.com")
+//                .build();
+//        Amplify.Auth.signUp("qi.ye@live.com", "Password123", options,
+//                result -> Log.i(TAG, "Result: " + result.toString()),
+//                error -> Log.e(TAG, "Sign up failed", error)
+//        );
+
+//        Amplify.Auth.confirmSignUp(
+//                "qi.ye@live.com",
+//                "257499",
+//                result -> Log.i(TAG, result.isSignUpComplete() ? "Confirm signUp succeeded" : "Confirm sign up not complete"),
+//                error -> Log.e(TAG, error.toString())
+//        );
+
+        Amplify.Auth.signIn(
+                "qi.ye@live.com",
+                "Password123",
+                result -> Log.i("AuthQuickstart", result.isSignInComplete() ? "Sign in succeeded" : "Sign in not complete"),
+                error -> Log.e("AuthQuickstart", error.toString())
+        );
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }

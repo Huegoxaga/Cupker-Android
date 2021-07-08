@@ -98,9 +98,7 @@ public class CuppingListAdapter extends BaseAdapter {
         cupppingListView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Toast.makeText(context, "The name of the Sample is " + sampleName.getText(), Toast.LENGTH_SHORT).show();
-
             }
         });
 

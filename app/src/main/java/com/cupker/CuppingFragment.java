@@ -107,16 +107,17 @@ public class CuppingFragment extends Fragment {
         sharedPreferences = cuppingFragView.getContext().getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
 
         roasterSpinner = cuppingFragView.findViewById(R.id.cupping_roaster_spinner);
-        roasterSpinner.setSelection(0, false);
         sessionInput = cuppingFragView.findViewById(R.id.cupping_session_input);
+        roasterSpinner.setSelection(0, false);
+
         roasterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
                 Log.d(TAG, roastersString.get(position) + " Selected in onItemSelected");
-
             }
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
+                Log.d(TAG, "No Selected in onItemSelected");
             }
         });
 

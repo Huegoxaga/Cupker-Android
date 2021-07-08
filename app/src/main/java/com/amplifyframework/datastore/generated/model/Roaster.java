@@ -1,5 +1,6 @@
 package com.amplifyframework.datastore.generated.model;
 
+import com.amplifyframework.core.model.temporal.Temporal;
 
 import java.util.List;
 import java.util.UUID;
@@ -7,7 +8,10 @@ import java.util.Objects;
 
 import androidx.core.util.ObjectsCompat;
 
+import com.amplifyframework.core.model.AuthStrategy;
 import com.amplifyframework.core.model.Model;
+import com.amplifyframework.core.model.ModelOperation;
+import com.amplifyframework.core.model.annotations.AuthRule;
 import com.amplifyframework.core.model.annotations.Index;
 import com.amplifyframework.core.model.annotations.ModelConfig;
 import com.amplifyframework.core.model.annotations.ModelField;
@@ -17,7 +21,9 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 
 /** This is an auto generated class representing the Roaster type in your schema. */
 @SuppressWarnings("all")
-@ModelConfig(pluralName = "Roasters")
+@ModelConfig(pluralName = "Roasters", authRules = {
+  @AuthRule(allow = AuthStrategy.OWNER, ownerField = "owner", identityClaim = "cognito:username", provider = "userPools", operations = { ModelOperation.CREATE, ModelOperation.UPDATE, ModelOperation.DELETE, ModelOperation.READ })
+})
 public final class Roaster implements Model {
   public static final QueryField ID = field("Roaster", "id");
   public static final QueryField NAME = field("Roaster", "name");
@@ -25,6 +31,8 @@ public final class Roaster implements Model {
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="String") String name;
   private final @ModelField(targetType="AWSEmail") String email;
+  private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
+  private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;
   public String getId() {
       return id;
   }
@@ -35,6 +43,14 @@ public final class Roaster implements Model {
   
   public String getEmail() {
       return email;
+  }
+  
+  public Temporal.DateTime getCreatedAt() {
+      return createdAt;
+  }
+  
+  public Temporal.DateTime getUpdatedAt() {
+      return updatedAt;
   }
   
   private Roaster(String id, String name, String email) {
@@ -53,7 +69,9 @@ public final class Roaster implements Model {
       Roaster roaster = (Roaster) obj;
       return ObjectsCompat.equals(getId(), roaster.getId()) &&
               ObjectsCompat.equals(getName(), roaster.getName()) &&
-              ObjectsCompat.equals(getEmail(), roaster.getEmail());
+              ObjectsCompat.equals(getEmail(), roaster.getEmail()) &&
+              ObjectsCompat.equals(getCreatedAt(), roaster.getCreatedAt()) &&
+              ObjectsCompat.equals(getUpdatedAt(), roaster.getUpdatedAt());
       }
   }
   
@@ -63,6 +81,8 @@ public final class Roaster implements Model {
       .append(getId())
       .append(getName())
       .append(getEmail())
+      .append(getCreatedAt())
+      .append(getUpdatedAt())
       .toString()
       .hashCode();
   }
@@ -73,7 +93,9 @@ public final class Roaster implements Model {
       .append("Roaster {")
       .append("id=" + String.valueOf(getId()) + ", ")
       .append("name=" + String.valueOf(getName()) + ", ")
-      .append("email=" + String.valueOf(getEmail()))
+      .append("email=" + String.valueOf(getEmail()) + ", ")
+      .append("createdAt=" + String.valueOf(getCreatedAt()) + ", ")
+      .append("updatedAt=" + String.valueOf(getUpdatedAt()))
       .append("}")
       .toString();
   }
