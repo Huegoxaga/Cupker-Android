@@ -45,7 +45,7 @@ public final class Sample implements Model {
   public static final QueryField NOTES = field("Sample", "notes");
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="ID", isRequired = true) String sessionID;
-  private final @ModelField(targetType="Bean", isRequired = true) @BelongsTo(targetName = "sampleBeanId", type = Bean.class) Bean bean;
+  private final @ModelField(targetType="Bean") @BelongsTo(targetName = "sampleBeanId", type = Bean.class) Bean bean;
   private final @ModelField(targetType="Float") Double aroma;
   private final @ModelField(targetType="Float") Double flavor;
   private final @ModelField(targetType="Float") Double acidity;
@@ -294,18 +294,14 @@ public final class Sample implements Model {
       notes);
   }
   public interface SessionIdStep {
-    BeanStep sessionId(String sessionId);
-  }
-  
-
-  public interface BeanStep {
-    BuildStep bean(Bean bean);
+    BuildStep sessionId(String sessionId);
   }
   
 
   public interface BuildStep {
     Sample build();
     BuildStep id(String id) throws IllegalArgumentException;
+    BuildStep bean(Bean bean);
     BuildStep aroma(Double aroma);
     BuildStep flavor(Double flavor);
     BuildStep acidity(Double acidity);
@@ -322,7 +318,7 @@ public final class Sample implements Model {
   }
   
 
-  public static class Builder implements SessionIdStep, BeanStep, BuildStep {
+  public static class Builder implements SessionIdStep, BuildStep {
     private String id;
     private String sessionID;
     private Bean bean;
@@ -363,7 +359,7 @@ public final class Sample implements Model {
     }
     
     @Override
-     public BeanStep sessionId(String sessionId) {
+     public BuildStep sessionId(String sessionId) {
         Objects.requireNonNull(sessionId);
         this.sessionID = sessionId;
         return this;
@@ -371,7 +367,6 @@ public final class Sample implements Model {
     
     @Override
      public BuildStep bean(Bean bean) {
-        Objects.requireNonNull(bean);
         this.bean = bean;
         return this;
     }

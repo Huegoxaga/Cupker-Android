@@ -3,7 +3,6 @@ package com.cupker;
 import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +13,6 @@ import android.widget.EditText;
 
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Roaster;
-import com.cupker.task.AddRoasterAsyncTask;
 
 /**
  * For a Dialog we must extend the DialogFragment Class

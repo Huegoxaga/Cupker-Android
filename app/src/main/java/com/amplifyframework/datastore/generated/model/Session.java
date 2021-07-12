@@ -28,9 +28,11 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 })
 public final class Session implements Model {
   public static final QueryField ID = field("Session", "id");
+  public static final QueryField NAME = field("Session", "name");
   public static final QueryField ROASTER = field("Session", "sessionRoasterId");
   public static final QueryField ROAST_TIME = field("Session", "roast_time");
   private final @ModelField(targetType="ID", isRequired = true) String id;
+  private final @ModelField(targetType="String", isRequired = true) String name;
   private final @ModelField(targetType="Roaster", isRequired = true) @BelongsTo(targetName = "sessionRoasterId", type = Roaster.class) Roaster roaster;
   private final @ModelField(targetType="AWSDateTime", isRequired = true) Temporal.DateTime roast_time;
   private final @ModelField(targetType="Sample") @HasMany(associatedWith = "sessionID", type = Sample.class) List<Sample> samples = null;
@@ -38,6 +40,10 @@ public final class Session implements Model {
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;
   public String getId() {
       return id;
+  }
+  
+  public String getName() {
+      return name;
   }
   
   public Roaster getRoaster() {
@@ -60,8 +66,9 @@ public final class Session implements Model {
       return updatedAt;
   }
   
-  private Session(String id, Roaster roaster, Temporal.DateTime roast_time) {
+  private Session(String id, String name, Roaster roaster, Temporal.DateTime roast_time) {
     this.id = id;
+    this.name = name;
     this.roaster = roaster;
     this.roast_time = roast_time;
   }
@@ -75,6 +82,7 @@ public final class Session implements Model {
       } else {
       Session session = (Session) obj;
       return ObjectsCompat.equals(getId(), session.getId()) &&
+              ObjectsCompat.equals(getName(), session.getName()) &&
               ObjectsCompat.equals(getRoaster(), session.getRoaster()) &&
               ObjectsCompat.equals(getRoastTime(), session.getRoastTime()) &&
               ObjectsCompat.equals(getCreatedAt(), session.getCreatedAt()) &&
@@ -86,6 +94,7 @@ public final class Session implements Model {
    public int hashCode() {
     return new StringBuilder()
       .append(getId())
+      .append(getName())
       .append(getRoaster())
       .append(getRoastTime())
       .append(getCreatedAt())
@@ -99,6 +108,7 @@ public final class Session implements Model {
     return new StringBuilder()
       .append("Session {")
       .append("id=" + String.valueOf(getId()) + ", ")
+      .append("name=" + String.valueOf(getName()) + ", ")
       .append("roaster=" + String.valueOf(getRoaster()) + ", ")
       .append("roast_time=" + String.valueOf(getRoastTime()) + ", ")
       .append("createdAt=" + String.valueOf(getCreatedAt()) + ", ")
@@ -107,7 +117,7 @@ public final class Session implements Model {
       .toString();
   }
   
-  public static RoasterStep builder() {
+  public static NameStep builder() {
       return new Builder();
   }
   
@@ -133,15 +143,22 @@ public final class Session implements Model {
     return new Session(
       id,
       null,
+      null,
       null
     );
   }
   
   public CopyOfBuilder copyOfBuilder() {
     return new CopyOfBuilder(id,
+      name,
       roaster,
       roast_time);
   }
+  public interface NameStep {
+    RoasterStep name(String name);
+  }
+  
+
   public interface RoasterStep {
     RoastTimeStep roaster(Roaster roaster);
   }
@@ -158,8 +175,9 @@ public final class Session implements Model {
   }
   
 
-  public static class Builder implements RoasterStep, RoastTimeStep, BuildStep {
+  public static class Builder implements NameStep, RoasterStep, RoastTimeStep, BuildStep {
     private String id;
+    private String name;
     private Roaster roaster;
     private Temporal.DateTime roast_time;
     @Override
@@ -168,8 +186,16 @@ public final class Session implements Model {
         
         return new Session(
           id,
+          name,
           roaster,
           roast_time);
+    }
+    
+    @Override
+     public RoasterStep name(String name) {
+        Objects.requireNonNull(name);
+        this.name = name;
+        return this;
     }
     
     @Override
@@ -209,10 +235,16 @@ public final class Session implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, Roaster roaster, Temporal.DateTime roastTime) {
+    private CopyOfBuilder(String id, String name, Roaster roaster, Temporal.DateTime roastTime) {
       super.id(id);
-      super.roaster(roaster)
+      super.name(name)
+        .roaster(roaster)
         .roastTime(roastTime);
+    }
+    
+    @Override
+     public CopyOfBuilder name(String name) {
+      return (CopyOfBuilder) super.name(name);
     }
     
     @Override

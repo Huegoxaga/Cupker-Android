@@ -1,5 +1,6 @@
 type Session @model @auth(rules: [{ allow: owner }]) {
   id: ID!
+  name: String!
   roaster: Roaster! @connection
   roast_time: AWSDateTime!
   samples: [Sample] @connection(keyName: "bySession", fields: ["id"])
@@ -25,7 +26,7 @@ type Sample @model @auth(rules: [{ allow: owner }])
   @key(name: "bySession", fields: ["sessionID"]) {
   id: ID!
   sessionID: ID!
-  bean: Bean! @connection
+  bean: Bean @connection
   aroma: Float
   flavor: Float
   acidity: Float

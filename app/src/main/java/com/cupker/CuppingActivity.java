@@ -21,8 +21,15 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.amplifyframework.core.model.temporal.Temporal;
+import com.amplifyframework.datastore.generated.model.Sample;
+import com.amplifyframework.datastore.generated.model.Session;
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -52,13 +59,9 @@ public class CuppingActivity extends AppCompatActivity {
     private boolean mVisible;
     private static final String TAG = "===CUPPING ACTIVITY===";
     private static final String SAMPLE_NUMBER = "SAMPLE NUMBER";
-    private static final String SESSION_NAME = "SESSION NAME";
-    private static final String ROAST_DATE = "ROAST DATE";
-    private static final String ROASTER_CHOICE = "ROASTER CHOICE";
+    private static final String SESSION_OBJ = "SESSION NAME";
     private String sessionName;
-    private String roastDate;
-    private int sampleNumber;
-    private int roasterChoice;
+    private Temporal.DateTime roastDate;
     private ListView cuppingListView;
     private FrameLayout mainFrame;
     private View cuppingListViewFooter;
@@ -66,6 +69,8 @@ public class CuppingActivity extends AppCompatActivity {
     private LayoutInflater layoutInflater;
     private Button saveButton;
     private TextView titleText;
+    private int sampleNum;
+    private List<Sample> samples;
 
 
 
@@ -96,16 +101,35 @@ public class CuppingActivity extends AppCompatActivity {
 //        });
 
         Intent intent = getIntent();
-        if (intent!=null && intent.hasExtra(SESSION_NAME) && intent.hasExtra(ROAST_DATE) && intent.hasExtra(ROASTER_CHOICE) && intent.hasExtra(SAMPLE_NUMBER)) {
-            sessionName = intent.getStringExtra(SESSION_NAME);
-            roastDate = intent.getStringExtra(ROAST_DATE);
-            sampleNumber = intent.getIntExtra(SAMPLE_NUMBER, 0);
-            roasterChoice = intent.getIntExtra(ROASTER_CHOICE, 0);
+        if (intent!=null && intent.hasExtra(SAMPLE_NUMBER) && intent.hasExtra(SESSION_OBJ)) {
+            Gson gson = new Gson();
+            String newSessionStr = intent.getStringExtra(SESSION_OBJ);
+            Session newSession = gson.fromJson(newSessionStr, Session.class);
+            sessionName = newSession.getName();
+            roastDate = newSession.getRoastTime();
+            sampleNum = intent.getIntExtra(SAMPLE_NUMBER, 0);
+            Sample newSample = Sample.builder()
+                    .sessionId(newSession.getId())
+                    .aroma(6.0)
+                    .flavor(6.0)
+                    .acidity(6.0)
+                    .body(6.0)
+                    .balance(6.0)
+                    .uniformity(10.0)
+                    .cleanCup(10.0)
+                    .afterTaste(6.0)
+                    .sweetness(10.0)
+                    .defects(0.0)
+                    .defectCount(0.0)
+                    .build();
+            samples = Collections.nCopies(sampleNum, newSample);
+            Log.d(TAG, "Check List" + samples.toString());
+
         }
-        Log.d(TAG, String.format("Sample Number: %d in onCreate", sampleNumber));
+
+
+        Log.d(TAG, String.format("Sample Number: %d in onCreate", samples.size()));
         Log.d(TAG, String.format("Session Name: %s in onCreate", sessionName));
-        Log.d(TAG, String.format("Roaster Choice: %d in onCreate", roasterChoice));
-        Log.d(TAG, String.format("Roast Date: %s in onCreate", roastDate));
 
 
 //        String[] my_planets = new String[] {"Mercury", "Venus", "Earth", "Mars",
@@ -113,7 +137,7 @@ public class CuppingActivity extends AppCompatActivity {
 
 //        ArrayList<String> myPlanetList = new ArrayList<>();
 //        myPlanetList.addAll( Arrays.asList(my_planets) );
-        CuppingListAdapter cuppingListAdapter = new CuppingListAdapter(this, sampleNumber);
+        CuppingListAdapter cuppingListAdapter = new CuppingListAdapter(this, samples.size());
 //        ArrayAdapter<String> cuppingAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, myPlanetList);
         // get the number of elements
 //        Log.d(TAG, "adapter getCount() = " + adapter.getCount());

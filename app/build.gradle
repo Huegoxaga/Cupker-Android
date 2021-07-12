@@ -43,6 +43,7 @@ dependencies {
     implementation 'com.amplifyframework:aws-api:1.18.0'
     implementation 'com.amplifyframework:aws-datastore:1.18.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation 'com.google.code.gson:gson:2.8.6'
     // Amplify core dependency
     implementation 'com.amplifyframework:core:1.17.4'
     // Support for Java 8 features
