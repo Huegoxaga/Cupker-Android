@@ -30,6 +30,7 @@ type Sample @model @auth(rules: [{ allow: owner }])
   aroma: Float
   flavor: Float
   acidity: Float
+  overall: Float
   body: Float
   balance: Float
   uniformity: Float

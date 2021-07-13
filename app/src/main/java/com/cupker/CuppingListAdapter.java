@@ -13,6 +13,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amplifyframework.datastore.generated.model.Sample;
+
+import java.util.List;
+
 public class CuppingListAdapter extends BaseAdapter {
 
     private Context context;
@@ -24,15 +28,16 @@ public class CuppingListAdapter extends BaseAdapter {
     private String[] roastLevel = { "Roast Level A", "Roast Level B", "Roast Level C", "Roast Level D"};
     private Spinner beanSpinner;
     private Spinner roastLevelSpinner;
+    private List<Sample> samples;
 
 
 
-    public CuppingListAdapter(Context context, int sampleNum) {
+    public CuppingListAdapter(Context context, List<Sample> samples) {
 
         this.context = context;
-        this.sampleNum = sampleNum;
+        this.sampleNum = samples.size();
+        this.samples = samples;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
     }
 
     @Override
@@ -90,7 +95,7 @@ public class CuppingListAdapter extends BaseAdapter {
 
         CuppingGridView cuppingGridView = cupppingListView.findViewById(R.id.cupping_grid);
 
-        CuppingGridAdapter cuppingGridAdapter = new CuppingGridAdapter(cupppingListView.getContext());
+        CuppingGridAdapter cuppingGridAdapter = new CuppingGridAdapter(cupppingListView.getContext(), samples.get(position), position);
         cuppingGridView.setAdapter(cuppingGridAdapter);
 
         sampleName.setText(context.getResources().getString(R.string.cupping_list_title_label, position + 1));

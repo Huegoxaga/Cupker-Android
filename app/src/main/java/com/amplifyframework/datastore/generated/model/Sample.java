@@ -33,6 +33,7 @@ public final class Sample implements Model {
   public static final QueryField AROMA = field("Sample", "aroma");
   public static final QueryField FLAVOR = field("Sample", "flavor");
   public static final QueryField ACIDITY = field("Sample", "acidity");
+  public static final QueryField OVERALL = field("Sample", "overall");
   public static final QueryField BODY = field("Sample", "body");
   public static final QueryField BALANCE = field("Sample", "balance");
   public static final QueryField UNIFORMITY = field("Sample", "uniformity");
@@ -49,6 +50,7 @@ public final class Sample implements Model {
   private final @ModelField(targetType="Float") Double aroma;
   private final @ModelField(targetType="Float") Double flavor;
   private final @ModelField(targetType="Float") Double acidity;
+  private final @ModelField(targetType="Float") Double overall;
   private final @ModelField(targetType="Float") Double body;
   private final @ModelField(targetType="Float") Double balance;
   private final @ModelField(targetType="Float") Double uniformity;
@@ -83,6 +85,10 @@ public final class Sample implements Model {
   
   public Double getAcidity() {
       return acidity;
+  }
+  
+  public Double getOverall() {
+      return overall;
   }
   
   public Double getBody() {
@@ -133,13 +139,14 @@ public final class Sample implements Model {
       return updatedAt;
   }
   
-  private Sample(String id, String sessionID, Bean bean, Double aroma, Double flavor, Double acidity, Double body, Double balance, Double uniformity, Double clean_cup, Double after_taste, Double sweetness, Double defects, String defect_type, Double defect_count, String notes) {
+  private Sample(String id, String sessionID, Bean bean, Double aroma, Double flavor, Double acidity, Double overall, Double body, Double balance, Double uniformity, Double clean_cup, Double after_taste, Double sweetness, Double defects, String defect_type, Double defect_count, String notes) {
     this.id = id;
     this.sessionID = sessionID;
     this.bean = bean;
     this.aroma = aroma;
     this.flavor = flavor;
     this.acidity = acidity;
+    this.overall = overall;
     this.body = body;
     this.balance = balance;
     this.uniformity = uniformity;
@@ -166,6 +173,7 @@ public final class Sample implements Model {
               ObjectsCompat.equals(getAroma(), sample.getAroma()) &&
               ObjectsCompat.equals(getFlavor(), sample.getFlavor()) &&
               ObjectsCompat.equals(getAcidity(), sample.getAcidity()) &&
+              ObjectsCompat.equals(getOverall(), sample.getOverall()) &&
               ObjectsCompat.equals(getBody(), sample.getBody()) &&
               ObjectsCompat.equals(getBalance(), sample.getBalance()) &&
               ObjectsCompat.equals(getUniformity(), sample.getUniformity()) &&
@@ -190,6 +198,7 @@ public final class Sample implements Model {
       .append(getAroma())
       .append(getFlavor())
       .append(getAcidity())
+      .append(getOverall())
       .append(getBody())
       .append(getBalance())
       .append(getUniformity())
@@ -216,6 +225,7 @@ public final class Sample implements Model {
       .append("aroma=" + String.valueOf(getAroma()) + ", ")
       .append("flavor=" + String.valueOf(getFlavor()) + ", ")
       .append("acidity=" + String.valueOf(getAcidity()) + ", ")
+      .append("overall=" + String.valueOf(getOverall()) + ", ")
       .append("body=" + String.valueOf(getBody()) + ", ")
       .append("balance=" + String.valueOf(getBalance()) + ", ")
       .append("uniformity=" + String.valueOf(getUniformity()) + ", ")
@@ -271,6 +281,7 @@ public final class Sample implements Model {
       null,
       null,
       null,
+      null,
       null
     );
   }
@@ -282,6 +293,7 @@ public final class Sample implements Model {
       aroma,
       flavor,
       acidity,
+      overall,
       body,
       balance,
       uniformity,
@@ -305,6 +317,7 @@ public final class Sample implements Model {
     BuildStep aroma(Double aroma);
     BuildStep flavor(Double flavor);
     BuildStep acidity(Double acidity);
+    BuildStep overall(Double overall);
     BuildStep body(Double body);
     BuildStep balance(Double balance);
     BuildStep uniformity(Double uniformity);
@@ -325,6 +338,7 @@ public final class Sample implements Model {
     private Double aroma;
     private Double flavor;
     private Double acidity;
+    private Double overall;
     private Double body;
     private Double balance;
     private Double uniformity;
@@ -346,6 +360,7 @@ public final class Sample implements Model {
           aroma,
           flavor,
           acidity,
+          overall,
           body,
           balance,
           uniformity,
@@ -386,6 +401,12 @@ public final class Sample implements Model {
     @Override
      public BuildStep acidity(Double acidity) {
         this.acidity = acidity;
+        return this;
+    }
+    
+    @Override
+     public BuildStep overall(Double overall) {
+        this.overall = overall;
         return this;
     }
     
@@ -472,13 +493,14 @@ public final class Sample implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String sessionId, Bean bean, Double aroma, Double flavor, Double acidity, Double body, Double balance, Double uniformity, Double cleanCup, Double afterTaste, Double sweetness, Double defects, String defectType, Double defectCount, String notes) {
+    private CopyOfBuilder(String id, String sessionId, Bean bean, Double aroma, Double flavor, Double acidity, Double overall, Double body, Double balance, Double uniformity, Double cleanCup, Double afterTaste, Double sweetness, Double defects, String defectType, Double defectCount, String notes) {
       super.id(id);
       super.sessionId(sessionId)
         .bean(bean)
         .aroma(aroma)
         .flavor(flavor)
         .acidity(acidity)
+        .overall(overall)
         .body(body)
         .balance(balance)
         .uniformity(uniformity)
@@ -514,6 +536,11 @@ public final class Sample implements Model {
     @Override
      public CopyOfBuilder acidity(Double acidity) {
       return (CopyOfBuilder) super.acidity(acidity);
+    }
+    
+    @Override
+     public CopyOfBuilder overall(Double overall) {
+      return (CopyOfBuilder) super.overall(overall);
     }
     
     @Override

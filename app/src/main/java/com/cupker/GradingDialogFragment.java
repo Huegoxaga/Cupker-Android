@@ -21,7 +21,12 @@ import org.w3c.dom.Text;
  * We implement OnClickListener to handle button click events
  */
 public class GradingDialogFragment extends DialogFragment{
-    public GradingDialogFragment() {
+
+    private int listPosition;
+    private int gridPosition;
+    public GradingDialogFragment(int listPosition, int gridPosition) {
+        this.listPosition = listPosition;
+        this.gridPosition = gridPosition;
         // Required empty public constructor
     }
     @Override
@@ -53,8 +58,7 @@ public class GradingDialogFragment extends DialogFragment{
         TextView scoreTextView = (TextView) v;
         double score = Double.parseDouble(scoreTextView.getText().toString());
         CuppingActivity main = (CuppingActivity) getActivity();
-        main.setScore(score);
-        // Dismiss will close the dialog
+        main.setScore(listPosition, gridPosition, score);
         dismiss();
     }
 }

@@ -1,42 +1,31 @@
 package com.cupker;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import com.amplifyframework.datastore.generated.model.Sample;
+
+import java.util.Locale;
 
 public class CuppingGridAdapter extends BaseAdapter {
-    private static final String TAG = "===Cupp Grid Adapter===";
+//    private static final String TAG = "===Cup Grid Adapter===";
+    private final String[] gradingTitles = { "Fragrance/Aroma", "Flavor", "Aftertaste", "Acidity", "Body",
+            "Uniformity", "Clean Cup", "Overall", "Balance", "Sweetness", "Defect Cups", "Intensity" };
+    private final CuppingActivity context;
+    private final Sample sample;
+    private int listPosition;
 
-    private String[] gradingTitles = { "Fragrance/Aroma", "Flavor", "Aftertaste", "Overall", "Acidity",
-            "Body", "Balance", "Defects" };
-    private String[] gradingScores = { "6.00", "6.00", "6.00", "6.00", "6.00", "6.00", "6.00", "6.00" };
-    private CuppingActivity context;
-    private View gradingView;
-    private LayoutInflater layoutInflater;
-    private TextView gradingTitleText;
-    private TextView gradingScoreText;
-
-
-
-
-    public CuppingGridAdapter(Context context) {
+    public CuppingGridAdapter(Context context, Sample sample, int listPosition) {
         this.context =  (CuppingActivity) context;
-        layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
+        this.listPosition = listPosition;
+        this.sample = sample;
+//        layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
-
-
 
     @Override
     public int getCount() {
@@ -56,24 +45,61 @@ public class CuppingGridAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View gradingView, ViewGroup parent) {
 
+        // Init
         if (gradingView == null) {
-            final LayoutInflater layoutInflater = LayoutInflater.from(context);
+            LayoutInflater layoutInflater = LayoutInflater.from(context);
             gradingView = layoutInflater.inflate(R.layout.activity_cupping_grading_grid, null);
-            Log.d(TAG, gradingTitles[position]);
         }
+        TextView gradingTitleText = gradingView.findViewById(R.id.cupping_grid_grading_title);
+        TextView gradingScoreText = gradingView.findViewById(R.id.cupping_grid_grading_score);
 
-        gradingTitleText = gradingView.findViewById(R.id.cupping_grid_grading_title);
-        gradingScoreText = gradingView.findViewById(R.id.cupping_grid_grading_score);
+        // Setup
         gradingTitleText.setText(gradingTitles[position]);
-        gradingScoreText.setText(gradingScores[position]);
+        switch (position) {
+            case 0 :
+                gradingScoreText.setText(String.format(Locale.getDefault(),"%.2f", sample.getAroma()));
+                break;
+            case 1 :
+                gradingScoreText.setText(String.format(Locale.getDefault(),"%.2f", sample.getFlavor()));
+                break;
+            case 2 :
+                gradingScoreText.setText(String.format(Locale.getDefault(),"%.2f", sample.getAfterTaste()));
+                break;
+            case 3 :
+                gradingScoreText.setText(String.format(Locale.getDefault(),"%.2f", sample.getAcidity()));
+                break;
+            case 4 :
+                gradingScoreText.setText(String.format(Locale.getDefault(),"%.2f", sample.getBody()));
+                break;
+            case 5 :
+                gradingScoreText.setText(String.format(Locale.getDefault(),"%.0f", sample.getUniformity()));
+                break;
+            case 6 :
+                gradingScoreText.setText(String.format(Locale.getDefault(),"%.0f", sample.getCleanCup()));
+                break;
+            case 7 :
+                gradingScoreText.setText(String.format(Locale.getDefault(),"%.2f", sample.getOverall()));
+                break;
+            case 8 :
+                gradingScoreText.setText(String.format(Locale.getDefault(),"%.2f", sample.getBalance()));
+                break;
+            case 9 :
+                gradingScoreText.setText(String.format(Locale.getDefault(),"%.0f", sample.getSweetness()));
+                break;
+            case 10 :
+                gradingScoreText.setText(String.format(Locale.getDefault(),"%.2f", sample.getDefectCount()));
+                break;
+            case 11 :
+                gradingScoreText.setText(String.format(Locale.getDefault(),"%s", sample.getDefectType()));
+                break;
+        }
         gradingView.setLayoutParams(new GridView.LayoutParams(150, 150));
 
-        gradingView.setOnClickListener(this::openGrading);
+        // Listener
+        gradingView.setOnClickListener(v -> {
+            GradingDialogFragment gradingDialog = new GradingDialogFragment(listPosition , position);
+            gradingDialog.show(context.getSupportFragmentManager(), null);
+        });
         return gradingView;
-    }
-
-    public void openGrading(View v) {
-        GradingDialogFragment gradingDialog = new GradingDialogFragment();
-        gradingDialog.show(context.getSupportFragmentManager(), null);
     }
 }

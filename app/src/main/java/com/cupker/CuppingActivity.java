@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -67,10 +68,12 @@ public class CuppingActivity extends AppCompatActivity {
     private View cuppingListViewFooter;
     private View cuppingListViewHeader;
     private LayoutInflater layoutInflater;
-    private Button saveButton;
+    private Intent intent;
+//    private Button saveButton;
     private TextView titleText;
     private int sampleNum;
     private List<Sample> samples;
+    private CuppingListAdapter cuppingListAdapter;
 
 
 
@@ -78,29 +81,20 @@ public class CuppingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Init
         setContentView(R.layout.activity_cupping);
-
         mVisible = true;
-//        mControlsView = findViewById(R.id.fullscreen_content_controls);
         mainFrame = findViewById(R.id.cupping_activity_main_frame);
         cuppingListView = findViewById(R.id.cupping_activity_list);
+        intent = getIntent();
+        layoutInflater = getLayoutInflater();
+        cuppingListViewHeader = layoutInflater.inflate(R.layout.activity_cupping_list_header, cuppingListView, false);
+        cuppingListViewFooter = layoutInflater.inflate(R.layout.activity_cupping_list_footer, cuppingListView, false);
+        cuppingListView.addHeaderView(cuppingListViewHeader);
+        cuppingListView.addFooterView(cuppingListViewFooter);
+        titleText = findViewById(R.id.cupping_activity_title_label);
 
-//        mControlsView.setVisibility(View.GONE);
-        mainFrame.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-        // Set up the user interaction to manually show or hide the system UI.
-//        mContentView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                toggle();
-//            }
-//        });
-
-        Intent intent = getIntent();
+        // Get incoming session input
         if (intent!=null && intent.hasExtra(SAMPLE_NUMBER) && intent.hasExtra(SESSION_OBJ)) {
             Gson gson = new Gson();
             String newSessionStr = intent.getStringExtra(SESSION_OBJ);
@@ -121,50 +115,39 @@ public class CuppingActivity extends AppCompatActivity {
                     .sweetness(10.0)
                     .defects(0.0)
                     .defectCount(0.0)
+                    .overall(6.0)
                     .build();
-            samples = Collections.nCopies(sampleNum, newSample);
+            samples = new ArrayList<Sample>(Collections.nCopies(sampleNum, newSample));
             Log.d(TAG, "Check List" + samples.toString());
-
+            Log.d(TAG, String.format("Sample Number: %d in onCreate", samples.size()));
+            Log.d(TAG, String.format("Session Name: %s in onCreate", sessionName));
+            cuppingListAdapter = new CuppingListAdapter(this, samples);
         }
 
-
-        Log.d(TAG, String.format("Sample Number: %d in onCreate", samples.size()));
-        Log.d(TAG, String.format("Session Name: %s in onCreate", sessionName));
-
-
-//        String[] my_planets = new String[] {"Mercury", "Venus", "Earth", "Mars",
-//                "Jupiter", "Saturn", "Uranus", "Neptune"};
-
-//        ArrayList<String> myPlanetList = new ArrayList<>();
-//        myPlanetList.addAll( Arrays.asList(my_planets) );
-        CuppingListAdapter cuppingListAdapter = new CuppingListAdapter(this, samples.size());
-//        ArrayAdapter<String> cuppingAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, myPlanetList);
-        // get the number of elements
-//        Log.d(TAG, "adapter getCount() = " + adapter.getCount());
-        // associate an adapter with the list
-
-
-
-
-        layoutInflater = getLayoutInflater();
-        cuppingListViewHeader = layoutInflater.inflate(R.layout.activity_cupping_list_header, cuppingListView, false);
-        cuppingListViewFooter = layoutInflater.inflate(R.layout.activity_cupping_list_footer, cuppingListView, false);
-        cuppingListView.addHeaderView(cuppingListViewHeader);
-        cuppingListView.addFooterView(cuppingListViewFooter);
-
+        // Setup
+        mainFrame.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        titleText.setText(sessionName);
         cuppingListView.setAdapter(cuppingListAdapter);
 
 
-        titleText = findViewById(R.id.cupping_activity_title_label);
-        titleText.setText(sessionName);
+
+        // Listener
+//        mContentView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                toggle();
+//            }
+//        });
 
         findViewById(R.id.cupping_activity_save_button).setOnClickListener(v -> {
             setResult(RESULT_OK);
             finish();
         });
-
-
-
 
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
@@ -286,9 +269,76 @@ public class CuppingActivity extends AppCompatActivity {
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
 
-    public void setScore(double v) {
-        Log.d(TAG, "Saved");
-        // Dismiss will close the dialog
+    public void setScore(int listPosition, int gridPosition, double newScore) {
+        Sample sample = samples.get(listPosition);
+        Sample editedSample;
+
+        switch (gridPosition) {
+            case 0 :
+                editedSample = sample.copyOfBuilder()
+                        .aroma(newScore)
+                        .build();
+                break;
+            case 1 :
+                editedSample = sample.copyOfBuilder()
+                        .flavor(newScore)
+                        .build();
+                break;
+            case 2 :
+                editedSample = sample.copyOfBuilder()
+                        .afterTaste(newScore)
+                        .build();
+                break;
+            case 3 :
+                editedSample = sample.copyOfBuilder()
+                        .acidity(newScore)
+                        .build();
+                break;
+            case 4 :
+                editedSample = sample.copyOfBuilder()
+                        .body(newScore)
+                        .build();
+                break;
+            case 5 :
+                editedSample = sample.copyOfBuilder()
+                        .uniformity(newScore)
+                        .build();
+                break;
+            case 6 :
+                editedSample = sample.copyOfBuilder()
+                        .cleanCup(newScore)
+                        .build();
+                break;
+            case 7 :
+                editedSample = sample.copyOfBuilder()
+                        .overall(newScore)
+                        .build();
+                break;
+            case 8 :
+                editedSample = sample.copyOfBuilder()
+                        .balance(newScore)
+                        .build();
+                break;
+            case 9 :
+                editedSample = sample.copyOfBuilder()
+                        .sweetness(newScore)
+                        .build();
+                break;
+            case 10 :
+                editedSample = sample.copyOfBuilder()
+                        .defectCount(newScore)
+                        .build();
+                break;
+            case 11 :
+                editedSample = sample.copyOfBuilder()
+                        .defectType("")
+                        .build();
+                break;
+            default:
+                editedSample = sample.copyOfBuilder().build();
+        }
+        samples.set(listPosition, editedSample);
+        cuppingListView.setAdapter(cuppingListAdapter);
     }
 
 }
