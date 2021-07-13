@@ -30,6 +30,7 @@ public final class Sample implements Model {
   public static final QueryField ID = field("Sample", "id");
   public static final QueryField SESSION_ID = field("Sample", "sessionID");
   public static final QueryField BEAN = field("Sample", "sampleBeanId");
+  public static final QueryField ROAST_LEVEL = field("Sample", "roast_level");
   public static final QueryField AROMA = field("Sample", "aroma");
   public static final QueryField FLAVOR = field("Sample", "flavor");
   public static final QueryField ACIDITY = field("Sample", "acidity");
@@ -40,13 +41,13 @@ public final class Sample implements Model {
   public static final QueryField CLEAN_CUP = field("Sample", "clean_cup");
   public static final QueryField AFTER_TASTE = field("Sample", "after_taste");
   public static final QueryField SWEETNESS = field("Sample", "sweetness");
-  public static final QueryField DEFECTS = field("Sample", "defects");
   public static final QueryField DEFECT_TYPE = field("Sample", "defect_type");
   public static final QueryField DEFECT_COUNT = field("Sample", "defect_count");
   public static final QueryField NOTES = field("Sample", "notes");
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="ID", isRequired = true) String sessionID;
   private final @ModelField(targetType="Bean") @BelongsTo(targetName = "sampleBeanId", type = Bean.class) Bean bean;
+  private final @ModelField(targetType="Float") Double roast_level;
   private final @ModelField(targetType="Float") Double aroma;
   private final @ModelField(targetType="Float") Double flavor;
   private final @ModelField(targetType="Float") Double acidity;
@@ -57,8 +58,7 @@ public final class Sample implements Model {
   private final @ModelField(targetType="Float") Double clean_cup;
   private final @ModelField(targetType="Float") Double after_taste;
   private final @ModelField(targetType="Float") Double sweetness;
-  private final @ModelField(targetType="Float") Double defects;
-  private final @ModelField(targetType="String") String defect_type;
+  private final @ModelField(targetType="Float") Double defect_type;
   private final @ModelField(targetType="Float") Double defect_count;
   private final @ModelField(targetType="String") String notes;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
@@ -73,6 +73,10 @@ public final class Sample implements Model {
   
   public Bean getBean() {
       return bean;
+  }
+  
+  public Double getRoastLevel() {
+      return roast_level;
   }
   
   public Double getAroma() {
@@ -115,11 +119,7 @@ public final class Sample implements Model {
       return sweetness;
   }
   
-  public Double getDefects() {
-      return defects;
-  }
-  
-  public String getDefectType() {
+  public Double getDefectType() {
       return defect_type;
   }
   
@@ -139,10 +139,11 @@ public final class Sample implements Model {
       return updatedAt;
   }
   
-  private Sample(String id, String sessionID, Bean bean, Double aroma, Double flavor, Double acidity, Double overall, Double body, Double balance, Double uniformity, Double clean_cup, Double after_taste, Double sweetness, Double defects, String defect_type, Double defect_count, String notes) {
+  private Sample(String id, String sessionID, Bean bean, Double roast_level, Double aroma, Double flavor, Double acidity, Double overall, Double body, Double balance, Double uniformity, Double clean_cup, Double after_taste, Double sweetness, Double defect_type, Double defect_count, String notes) {
     this.id = id;
     this.sessionID = sessionID;
     this.bean = bean;
+    this.roast_level = roast_level;
     this.aroma = aroma;
     this.flavor = flavor;
     this.acidity = acidity;
@@ -153,7 +154,6 @@ public final class Sample implements Model {
     this.clean_cup = clean_cup;
     this.after_taste = after_taste;
     this.sweetness = sweetness;
-    this.defects = defects;
     this.defect_type = defect_type;
     this.defect_count = defect_count;
     this.notes = notes;
@@ -170,6 +170,7 @@ public final class Sample implements Model {
       return ObjectsCompat.equals(getId(), sample.getId()) &&
               ObjectsCompat.equals(getSessionId(), sample.getSessionId()) &&
               ObjectsCompat.equals(getBean(), sample.getBean()) &&
+              ObjectsCompat.equals(getRoastLevel(), sample.getRoastLevel()) &&
               ObjectsCompat.equals(getAroma(), sample.getAroma()) &&
               ObjectsCompat.equals(getFlavor(), sample.getFlavor()) &&
               ObjectsCompat.equals(getAcidity(), sample.getAcidity()) &&
@@ -180,7 +181,6 @@ public final class Sample implements Model {
               ObjectsCompat.equals(getCleanCup(), sample.getCleanCup()) &&
               ObjectsCompat.equals(getAfterTaste(), sample.getAfterTaste()) &&
               ObjectsCompat.equals(getSweetness(), sample.getSweetness()) &&
-              ObjectsCompat.equals(getDefects(), sample.getDefects()) &&
               ObjectsCompat.equals(getDefectType(), sample.getDefectType()) &&
               ObjectsCompat.equals(getDefectCount(), sample.getDefectCount()) &&
               ObjectsCompat.equals(getNotes(), sample.getNotes()) &&
@@ -195,6 +195,7 @@ public final class Sample implements Model {
       .append(getId())
       .append(getSessionId())
       .append(getBean())
+      .append(getRoastLevel())
       .append(getAroma())
       .append(getFlavor())
       .append(getAcidity())
@@ -205,7 +206,6 @@ public final class Sample implements Model {
       .append(getCleanCup())
       .append(getAfterTaste())
       .append(getSweetness())
-      .append(getDefects())
       .append(getDefectType())
       .append(getDefectCount())
       .append(getNotes())
@@ -222,6 +222,7 @@ public final class Sample implements Model {
       .append("id=" + String.valueOf(getId()) + ", ")
       .append("sessionID=" + String.valueOf(getSessionId()) + ", ")
       .append("bean=" + String.valueOf(getBean()) + ", ")
+      .append("roast_level=" + String.valueOf(getRoastLevel()) + ", ")
       .append("aroma=" + String.valueOf(getAroma()) + ", ")
       .append("flavor=" + String.valueOf(getFlavor()) + ", ")
       .append("acidity=" + String.valueOf(getAcidity()) + ", ")
@@ -232,7 +233,6 @@ public final class Sample implements Model {
       .append("clean_cup=" + String.valueOf(getCleanCup()) + ", ")
       .append("after_taste=" + String.valueOf(getAfterTaste()) + ", ")
       .append("sweetness=" + String.valueOf(getSweetness()) + ", ")
-      .append("defects=" + String.valueOf(getDefects()) + ", ")
       .append("defect_type=" + String.valueOf(getDefectType()) + ", ")
       .append("defect_count=" + String.valueOf(getDefectCount()) + ", ")
       .append("notes=" + String.valueOf(getNotes()) + ", ")
@@ -290,6 +290,7 @@ public final class Sample implements Model {
     return new CopyOfBuilder(id,
       sessionID,
       bean,
+      roast_level,
       aroma,
       flavor,
       acidity,
@@ -300,7 +301,6 @@ public final class Sample implements Model {
       clean_cup,
       after_taste,
       sweetness,
-      defects,
       defect_type,
       defect_count,
       notes);
@@ -314,6 +314,7 @@ public final class Sample implements Model {
     Sample build();
     BuildStep id(String id) throws IllegalArgumentException;
     BuildStep bean(Bean bean);
+    BuildStep roastLevel(Double roastLevel);
     BuildStep aroma(Double aroma);
     BuildStep flavor(Double flavor);
     BuildStep acidity(Double acidity);
@@ -324,8 +325,7 @@ public final class Sample implements Model {
     BuildStep cleanCup(Double cleanCup);
     BuildStep afterTaste(Double afterTaste);
     BuildStep sweetness(Double sweetness);
-    BuildStep defects(Double defects);
-    BuildStep defectType(String defectType);
+    BuildStep defectType(Double defectType);
     BuildStep defectCount(Double defectCount);
     BuildStep notes(String notes);
   }
@@ -335,6 +335,7 @@ public final class Sample implements Model {
     private String id;
     private String sessionID;
     private Bean bean;
+    private Double roast_level;
     private Double aroma;
     private Double flavor;
     private Double acidity;
@@ -345,8 +346,7 @@ public final class Sample implements Model {
     private Double clean_cup;
     private Double after_taste;
     private Double sweetness;
-    private Double defects;
-    private String defect_type;
+    private Double defect_type;
     private Double defect_count;
     private String notes;
     @Override
@@ -357,6 +357,7 @@ public final class Sample implements Model {
           id,
           sessionID,
           bean,
+          roast_level,
           aroma,
           flavor,
           acidity,
@@ -367,7 +368,6 @@ public final class Sample implements Model {
           clean_cup,
           after_taste,
           sweetness,
-          defects,
           defect_type,
           defect_count,
           notes);
@@ -383,6 +383,12 @@ public final class Sample implements Model {
     @Override
      public BuildStep bean(Bean bean) {
         this.bean = bean;
+        return this;
+    }
+    
+    @Override
+     public BuildStep roastLevel(Double roastLevel) {
+        this.roast_level = roastLevel;
         return this;
     }
     
@@ -447,13 +453,7 @@ public final class Sample implements Model {
     }
     
     @Override
-     public BuildStep defects(Double defects) {
-        this.defects = defects;
-        return this;
-    }
-    
-    @Override
-     public BuildStep defectType(String defectType) {
+     public BuildStep defectType(Double defectType) {
         this.defect_type = defectType;
         return this;
     }
@@ -493,10 +493,11 @@ public final class Sample implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String sessionId, Bean bean, Double aroma, Double flavor, Double acidity, Double overall, Double body, Double balance, Double uniformity, Double cleanCup, Double afterTaste, Double sweetness, Double defects, String defectType, Double defectCount, String notes) {
+    private CopyOfBuilder(String id, String sessionId, Bean bean, Double roastLevel, Double aroma, Double flavor, Double acidity, Double overall, Double body, Double balance, Double uniformity, Double cleanCup, Double afterTaste, Double sweetness, Double defectType, Double defectCount, String notes) {
       super.id(id);
       super.sessionId(sessionId)
         .bean(bean)
+        .roastLevel(roastLevel)
         .aroma(aroma)
         .flavor(flavor)
         .acidity(acidity)
@@ -507,7 +508,6 @@ public final class Sample implements Model {
         .cleanCup(cleanCup)
         .afterTaste(afterTaste)
         .sweetness(sweetness)
-        .defects(defects)
         .defectType(defectType)
         .defectCount(defectCount)
         .notes(notes);
@@ -521,6 +521,11 @@ public final class Sample implements Model {
     @Override
      public CopyOfBuilder bean(Bean bean) {
       return (CopyOfBuilder) super.bean(bean);
+    }
+    
+    @Override
+     public CopyOfBuilder roastLevel(Double roastLevel) {
+      return (CopyOfBuilder) super.roastLevel(roastLevel);
     }
     
     @Override
@@ -574,12 +579,7 @@ public final class Sample implements Model {
     }
     
     @Override
-     public CopyOfBuilder defects(Double defects) {
-      return (CopyOfBuilder) super.defects(defects);
-    }
-    
-    @Override
-     public CopyOfBuilder defectType(String defectType) {
+     public CopyOfBuilder defectType(Double defectType) {
       return (CopyOfBuilder) super.defectType(defectType);
     }
     

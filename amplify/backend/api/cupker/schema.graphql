@@ -27,6 +27,7 @@ type Sample @model @auth(rules: [{ allow: owner }])
   id: ID!
   sessionID: ID!
   bean: Bean @connection
+  roast_level: Float
   aroma: Float
   flavor: Float
   acidity: Float
@@ -37,8 +38,7 @@ type Sample @model @auth(rules: [{ allow: owner }])
   clean_cup: Float
   after_taste: Float
   sweetness: Float
-  defects: Float
-  defect_type: String
+  defect_type: Float
   defect_count: Float
   notes: String
 }

@@ -105,7 +105,7 @@ public class CuppingActivity extends AppCompatActivity {
                     .cleanCup(10.0)
                     .afterTaste(6.0)
                     .sweetness(10.0)
-                    .defects(0.0)
+                    .defectType(2.0)
                     .defectCount(0.0)
                     .overall(6.0)
                     .build();
@@ -315,7 +315,7 @@ public class CuppingActivity extends AppCompatActivity {
                 break;
             case 11 :
                 editedSample = sample.copyOfBuilder()
-                        .defectType("")
+                        .defectType(newScore)
                         .build();
                 break;
             default:
@@ -332,5 +332,14 @@ public class CuppingActivity extends AppCompatActivity {
                 .build();
         samples.set(listPosition, editedSample);
         Log.d(TAG, newNote);
+    }
+
+    public void setRoastLevel(int listPosition, double newRoastLevel) {
+        Sample sample = samples.get(listPosition);
+        Sample editedSample = sample.copyOfBuilder()
+                .roastLevel(newRoastLevel)
+                .build();
+        samples.set(listPosition, editedSample);
+        Log.d(TAG, newRoastLevel + "");
     }
 }

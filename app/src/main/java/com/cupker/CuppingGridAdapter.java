@@ -86,10 +86,10 @@ public class CuppingGridAdapter extends BaseAdapter {
                 gradingScoreText.setText(String.format(Locale.getDefault(),"%.0f", sample.getSweetness()));
                 break;
             case 10 :
-                gradingScoreText.setText(String.format(Locale.getDefault(),"%.2f", sample.getDefectCount()));
+                gradingScoreText.setText(String.format(Locale.getDefault(),"%.0f", sample.getDefectCount()));
                 break;
             case 11 :
-                gradingScoreText.setText(String.format(Locale.getDefault(),"%s", sample.getDefectType()));
+                gradingScoreText.setText(String.format(Locale.getDefault(),"%.0f", sample.getDefectType()));
                 break;
         }
         gradingView.setLayoutParams(new GridView.LayoutParams(150, 150));

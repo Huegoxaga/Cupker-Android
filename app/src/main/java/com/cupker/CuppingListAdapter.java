@@ -26,7 +26,9 @@ public class CuppingListAdapter extends BaseAdapter {
     private final int sampleNum;
 
     private final String[] bean = { "Bean A", "Bean B", "Bean C", "Bean D"};
-    private final String[] roastLevel = { "Roast Level A", "Roast Level B", "Roast Level C", "Roast Level D"};
+    private final double[] roastLevel = { 95, 85, 75, 65, 55, 45, 35, 25};
+    private final String[] roastLevelStr = { "# 95", "# 85", "# 75", "# 65", "# 55", "# 45", "# 35", "# 25"};
+
     private final List<Sample> samples;
 
 
@@ -65,16 +67,17 @@ public class CuppingListAdapter extends BaseAdapter {
         Spinner roastLevelSpinner = cuppingListView.findViewById(R.id.cupping_list_roast_level_spinner);
         EditText notesInput = cuppingListView.findViewById(R.id.cupping_list_note_input);
         ArrayAdapter<String> beanArray = new ArrayAdapter<>(cuppingListView.getContext(), android.R.layout.simple_spinner_item, bean);
-        ArrayAdapter<String> rosterLevelArray = new ArrayAdapter<>(cuppingListView.getContext(), android.R.layout.simple_spinner_item, roastLevel);
+        ArrayAdapter<String> rosterLevelArray = new ArrayAdapter<>(cuppingListView.getContext(), android.R.layout.simple_spinner_item, roastLevelStr);
         CuppingGridView cuppingGridView = cuppingListView.findViewById(R.id.cupping_grid);
 
         // Setup
-        beanSpinner.setSelection(0, false);
-        roastLevelSpinner.setSelection(0, false);
         beanArray.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         beanSpinner.setAdapter(beanArray);
+        beanSpinner.setSelection(0, false);
         rosterLevelArray.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         roastLevelSpinner.setAdapter(rosterLevelArray);
+        roastLevelSpinner.setSelection(3, false);
+
         CuppingGridAdapter cuppingGridAdapter = new CuppingGridAdapter(cuppingListView.getContext(), samples.get(position), position);
         cuppingGridView.setAdapter(cuppingGridAdapter);
         sampleName.setText(context.getResources().getString(R.string.cupping_list_title_label, position + 1));
@@ -91,8 +94,11 @@ public class CuppingListAdapter extends BaseAdapter {
         });
         roastLevelSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
-                Log.d(TAG, roastLevel[position] + " Selected in getView()");
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int selectedPosition, long id) {
+                CuppingActivity main = (CuppingActivity) context;
+                Log.d(TAG, position + " Selected in list item id");
+
+                main.setRoastLevel(position, roastLevel[selectedPosition]);
             }
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
