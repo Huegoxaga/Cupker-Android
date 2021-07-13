@@ -3,7 +3,6 @@ package com.cupker;
 import android.annotation.SuppressLint;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,13 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.amplifyframework.core.model.temporal.Temporal;
@@ -27,10 +21,8 @@ import com.amplifyframework.datastore.generated.model.Session;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -117,7 +109,7 @@ public class CuppingActivity extends AppCompatActivity {
                     .defectCount(0.0)
                     .overall(6.0)
                     .build();
-            samples = new ArrayList<Sample>(Collections.nCopies(sampleNum, newSample));
+            samples = new ArrayList<>(Collections.nCopies(sampleNum, newSample));
             Log.d(TAG, "Check List" + samples.toString());
             Log.d(TAG, String.format("Sample Number: %d in onCreate", samples.size()));
             Log.d(TAG, String.format("Session Name: %s in onCreate", sessionName));
@@ -170,23 +162,20 @@ public class CuppingActivity extends AppCompatActivity {
      * system UI. This is to prevent the jarring behavior of controls going away
      * while interacting with activity UI.
      */
-    private final View.OnTouchListener mDelayHideTouchListener = new View.OnTouchListener() {
-        @Override
-        public boolean onTouch(View view, MotionEvent motionEvent) {
-            switch (motionEvent.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    if (AUTO_HIDE) {
-                        delayedHide(AUTO_HIDE_DELAY_MILLIS);
-                    }
-                    break;
-                case MotionEvent.ACTION_UP:
-                    view.performClick();
-                    break;
-                default:
-                    break;
-            }
-            return false;
+    private final View.OnTouchListener mDelayHideTouchListener = (view, motionEvent) -> {
+        switch (motionEvent.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                if (AUTO_HIDE) {
+                    delayedHide(AUTO_HIDE_DELAY_MILLIS);
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                view.performClick();
+                break;
+            default:
+                break;
         }
+        return false;
     };
 
     private void toggle() {
@@ -253,12 +242,7 @@ public class CuppingActivity extends AppCompatActivity {
     };
 
     private final Handler mHideHandler = new Handler();
-    private final Runnable mHideRunnable = new Runnable() {
-        @Override
-        public void run() {
-            hide();
-        }
-    };
+    private final Runnable mHideRunnable = this::hide;
 
     /**
      * Schedules a call to hide() in delay milliseconds, canceling any
@@ -341,4 +325,12 @@ public class CuppingActivity extends AppCompatActivity {
         cuppingListView.setAdapter(cuppingListAdapter);
     }
 
+    public void setNote(int listPosition, String newNote) {
+        Sample sample = samples.get(listPosition);
+        Sample editedSample = sample.copyOfBuilder()
+                .notes(newNote)
+                .build();
+        samples.set(listPosition, editedSample);
+        Log.d(TAG, newNote);
+    }
 }

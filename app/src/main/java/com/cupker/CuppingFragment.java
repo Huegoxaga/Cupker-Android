@@ -20,27 +20,17 @@ import android.widget.Toast;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.core.model.temporal.Temporal;
 import com.amplifyframework.datastore.generated.model.Roaster;
-import com.amplifyframework.datastore.generated.model.Sample;
 import com.amplifyframework.datastore.generated.model.Session;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 public class CuppingFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String TAG = "===CUPPING FRAGMENT===";
-//    private static final String PREFERENCE = "CUPPING FRAGMENT PREFERENCE";
-//    private static final String SAMPLE_NUMBER = "SAMPLE NUMBER";
-//    private static final String SESSION_NAME = "SESSION NAME";
-//    private static final String ROAST_DATE = "ROAST DATE";
-//    private static final String ROASTER_CHOICE = "ROASTER CHOICE";
     private static final String SAMPLE_NUMBER = "SAMPLE NUMBER";
     private static final String SESSION_OBJ = "SESSION NAME";
     private final ArrayList<String> roastersString;
@@ -52,7 +42,6 @@ public class CuppingFragment extends Fragment {
     private TextView sampleLabel;
     private EditText sessionInput;
     private Spinner roasterSpinner;
-//    private SharedPreferences sharedPreferences;
     private String dateString;
 
     public CuppingFragment() {
@@ -92,7 +81,6 @@ public class CuppingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // init
         cuppingFragView = inflater.inflate(R.layout.fragment_cupping, container, false);
-//        sharedPreferences = cuppingFragView.getContext().getSharedPreferences(PREFERENCE, Context.MODE_PRIVATE);
         roasterSpinner = cuppingFragView.findViewById(R.id.cupping_roaster_spinner);
         sessionInput = cuppingFragView.findViewById(R.id.cupping_session_input);
         ArrayAdapter<String> rosterArray = new ArrayAdapter<>(cuppingFragView.getContext(), android.R.layout.simple_spinner_item, roastersString);

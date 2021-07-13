@@ -18,13 +18,12 @@ public class CuppingGridAdapter extends BaseAdapter {
             "Uniformity", "Clean Cup", "Overall", "Balance", "Sweetness", "Defect Cups", "Intensity" };
     private final CuppingActivity context;
     private final Sample sample;
-    private int listPosition;
+    private final int listPosition;
 
     public CuppingGridAdapter(Context context, Sample sample, int listPosition) {
         this.context =  (CuppingActivity) context;
         this.listPosition = listPosition;
         this.sample = sample;
-//        layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -48,7 +47,7 @@ public class CuppingGridAdapter extends BaseAdapter {
         // Init
         if (gradingView == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(context);
-            gradingView = layoutInflater.inflate(R.layout.activity_cupping_grading_grid, null);
+            gradingView = layoutInflater.inflate(R.layout.activity_cupping_grading_grid, parent, false);
         }
         TextView gradingTitleText = gradingView.findViewById(R.id.cupping_grid_grading_title);
         TextView gradingScoreText = gradingView.findViewById(R.id.cupping_grid_grading_score);

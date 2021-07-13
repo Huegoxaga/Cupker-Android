@@ -1,6 +1,8 @@
 package com.cupker;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,17 +21,13 @@ import java.util.List;
 
 public class CuppingListAdapter extends BaseAdapter {
 
-    private Context context;
-    private LayoutInflater layoutInflater;
-    private static final String TAG = "===CUPP LIST ADAPTER===";
-    private int sampleNum;
+    private final Context context;
+    private static final String TAG = "===CUP LIST ADAPTER===";
+    private final int sampleNum;
 
-    private String[] bean = { "Bean A", "Bean B", "Bean C", "Bean D"};
-    private String[] roastLevel = { "Roast Level A", "Roast Level B", "Roast Level C", "Roast Level D"};
-    private Spinner beanSpinner;
-    private Spinner roastLevelSpinner;
-    private List<Sample> samples;
-
+    private final String[] bean = { "Bean A", "Bean B", "Bean C", "Bean D"};
+    private final String[] roastLevel = { "Roast Level A", "Roast Level B", "Roast Level C", "Roast Level D"};
+    private final List<Sample> samples;
 
 
     public CuppingListAdapter(Context context, List<Sample> samples) {
@@ -37,7 +35,6 @@ public class CuppingListAdapter extends BaseAdapter {
         this.context = context;
         this.sampleNum = samples.size();
         this.samples = samples;
-        layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -56,15 +53,33 @@ public class CuppingListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View cupppingListView, ViewGroup parent) {
+    public View getView(int position, View cuppingListView, ViewGroup parent) {
 
-        cupppingListView = layoutInflater.inflate(R.layout.activity_cupping_list, null);
+        // Init
+        if (cuppingListView == null) {
+            LayoutInflater layoutInflater = LayoutInflater.from(context);
+            cuppingListView = layoutInflater.inflate(R.layout.activity_cupping_list, parent, false);
+        }
+        TextView sampleName = cuppingListView.findViewById(R.id.cupping_list_title_label);
+        Spinner beanSpinner = cuppingListView.findViewById(R.id.cupping_list_bean_spinner);
+        Spinner roastLevelSpinner = cuppingListView.findViewById(R.id.cupping_list_roast_level_spinner);
+        EditText notesInput = cuppingListView.findViewById(R.id.cupping_list_note_input);
+        ArrayAdapter<String> beanArray = new ArrayAdapter<>(cuppingListView.getContext(), android.R.layout.simple_spinner_item, bean);
+        ArrayAdapter<String> rosterLevelArray = new ArrayAdapter<>(cuppingListView.getContext(), android.R.layout.simple_spinner_item, roastLevel);
+        CuppingGridView cuppingGridView = cuppingListView.findViewById(R.id.cupping_grid);
 
-        TextView sampleName = cupppingListView.findViewById(R.id.cupping_list_title_label);
-        beanSpinner = cupppingListView.findViewById(R.id.cupping_list_bean_spinner);
-        roastLevelSpinner = cupppingListView.findViewById(R.id.cupping_list_roast_level_spinner);
+        // Setup
         beanSpinner.setSelection(0, false);
         roastLevelSpinner.setSelection(0, false);
+        beanArray.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        beanSpinner.setAdapter(beanArray);
+        rosterLevelArray.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        roastLevelSpinner.setAdapter(rosterLevelArray);
+        CuppingGridAdapter cuppingGridAdapter = new CuppingGridAdapter(cuppingListView.getContext(), samples.get(position), position);
+        cuppingGridView.setAdapter(cuppingGridAdapter);
+        sampleName.setText(context.getResources().getString(R.string.cupping_list_title_label, position + 1));
+
+        // Listener
         beanSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
@@ -83,31 +98,18 @@ public class CuppingListAdapter extends BaseAdapter {
             public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
-        ArrayAdapter beanArray = new ArrayAdapter(cupppingListView.getContext(), android.R.layout.simple_spinner_item, bean);
-        beanArray.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //Setting the ArrayAdapter data on the Spinner
-        beanSpinner.setAdapter(beanArray);
-        ArrayAdapter rosterLevelArray = new ArrayAdapter(cupppingListView.getContext(), android.R.layout.simple_spinner_item, roastLevel);
-        rosterLevelArray.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //Setting the ArrayAdapter data on the Spinner
-        roastLevelSpinner.setAdapter(rosterLevelArray);
 
-
-        CuppingGridView cuppingGridView = cupppingListView.findViewById(R.id.cupping_grid);
-
-        CuppingGridAdapter cuppingGridAdapter = new CuppingGridAdapter(cupppingListView.getContext(), samples.get(position), position);
-        cuppingGridView.setAdapter(cuppingGridAdapter);
-
-        sampleName.setText(context.getResources().getString(R.string.cupping_list_title_label, position + 1));
-
-        cupppingListView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(context, "The name of the Sample is " + sampleName.getText(), Toast.LENGTH_SHORT).show();
+        notesInput.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+                CuppingActivity main = (CuppingActivity) context;
+                main.setNote(position, s.toString());
             }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
         });
+        cuppingListView.setOnClickListener(view -> Toast.makeText(context, "The name of the Sample is " + sampleName.getText(), Toast.LENGTH_SHORT).show());
 
-        return cupppingListView;
+        return cuppingListView;
     }
 
 }
