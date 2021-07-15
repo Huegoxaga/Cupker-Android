@@ -20,6 +20,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     private static final String TAG = "===MAIN ACTIVITY===";
+    private static final int DONE_CUPPING = 1;
+    private static final int DONE_ADD_BEAN = 2;
+
     private static final String PREFERENCE = "CUPPING FRAGMENT PREFERENCE";
     private static final String SAMPLE_NUMBER = "SAMPLE NUMBER";
     private static final String SESSION_NAME = "SESSION NAME";
@@ -72,8 +75,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //Return after saving cupping result
-        if (resultCode==RESULT_OK){
+        if (resultCode==DONE_CUPPING){
             bottomNav.setSelectedItemId(R.id.nav_history);
+        } else if (resultCode==DONE_ADD_BEAN) {
+            bottomNav.setSelectedItemId(R.id.nav_beans);
         }
     }
 }

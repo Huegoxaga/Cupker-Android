@@ -51,6 +51,7 @@ public class CuppingActivity extends AppCompatActivity {
     private View mControlsView;
     private boolean mVisible;
     private static final String TAG = "===CUPPING ACTIVITY===";
+    private static final int DONE_CUPPING = 1;
     private static final String SAMPLE_NUMBER = "SAMPLE NUMBER";
     private static final String SESSION_OBJ = "SESSION NAME";
     private String sessionName;
@@ -137,7 +138,7 @@ public class CuppingActivity extends AppCompatActivity {
 //        });
 
         findViewById(R.id.cupping_activity_save_button).setOnClickListener(v -> {
-            setResult(RESULT_OK);
+            setResult(DONE_CUPPING);
             finish();
         });
 

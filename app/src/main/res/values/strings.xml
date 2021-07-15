@@ -35,4 +35,16 @@
     <string name="grading_dialog_score_9_25">9.25</string>
     <string name="grading_dialog_score_9_5">9.50</string>
     <string name="grading_dialog_score_9_75">9.75</string>
+    <string name="menu_item_add">Add</string>
+    <string name="bean_frag_action_title">My Bean</string>
+    <string name="activity_new_bean_title">New Bean</string>
+    <string name="new_bean_activity_add_image">Add Image</string>
+    <string name="add_bean_origin">Origin</string>
+    <string name="add_bean_moisture">Moisture</string>
+    <string name="add_bean_variety">Variety</string>
+    <string name="add_bean_dealer">Dealer</string>
+    <string name="add_bean_altitude">Altitude</string>
+    <string name="add_bean_region">Region</string>
+    <string name="add_bean_grade">Grade</string>
+    <string name="add_bean_density">Density</string>
 </resources>
