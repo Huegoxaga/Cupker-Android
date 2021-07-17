@@ -38,6 +38,7 @@ public final class Bean implements Model {
   public static final QueryField VARIETY = field("Bean", "variety");
   public static final QueryField DENSITY = field("Bean", "density");
   public static final QueryField GRADE = field("Bean", "grade");
+  public static final QueryField IMAGE = field("Bean", "image");
   public static final QueryField DEALER = field("Bean", "beanDealerId");
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="Flavor") @HasMany(associatedWith = "beanID", type = Flavor.class) List<Flavor> flavors = null;
@@ -51,6 +52,7 @@ public final class Bean implements Model {
   private final @ModelField(targetType="String") String variety;
   private final @ModelField(targetType="String") String density;
   private final @ModelField(targetType="String") String grade;
+  private final @ModelField(targetType="String") String image;
   private final @ModelField(targetType="Dealer") @BelongsTo(targetName = "beanDealerId", type = Dealer.class) Dealer dealer;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;
@@ -102,6 +104,10 @@ public final class Bean implements Model {
       return grade;
   }
   
+  public String getImage() {
+      return image;
+  }
+  
   public Dealer getDealer() {
       return dealer;
   }
@@ -114,7 +120,7 @@ public final class Bean implements Model {
       return updatedAt;
   }
   
-  private Bean(String id, String name, String process, String origin, String region, String altitude_low, String altitude_high, String moisture, String variety, String density, String grade, Dealer dealer) {
+  private Bean(String id, String name, String process, String origin, String region, String altitude_low, String altitude_high, String moisture, String variety, String density, String grade, String image, Dealer dealer) {
     this.id = id;
     this.name = name;
     this.process = process;
@@ -126,6 +132,7 @@ public final class Bean implements Model {
     this.variety = variety;
     this.density = density;
     this.grade = grade;
+    this.image = image;
     this.dealer = dealer;
   }
   
@@ -148,6 +155,7 @@ public final class Bean implements Model {
               ObjectsCompat.equals(getVariety(), bean.getVariety()) &&
               ObjectsCompat.equals(getDensity(), bean.getDensity()) &&
               ObjectsCompat.equals(getGrade(), bean.getGrade()) &&
+              ObjectsCompat.equals(getImage(), bean.getImage()) &&
               ObjectsCompat.equals(getDealer(), bean.getDealer()) &&
               ObjectsCompat.equals(getCreatedAt(), bean.getCreatedAt()) &&
               ObjectsCompat.equals(getUpdatedAt(), bean.getUpdatedAt());
@@ -168,6 +176,7 @@ public final class Bean implements Model {
       .append(getVariety())
       .append(getDensity())
       .append(getGrade())
+      .append(getImage())
       .append(getDealer())
       .append(getCreatedAt())
       .append(getUpdatedAt())
@@ -190,6 +199,7 @@ public final class Bean implements Model {
       .append("variety=" + String.valueOf(getVariety()) + ", ")
       .append("density=" + String.valueOf(getDensity()) + ", ")
       .append("grade=" + String.valueOf(getGrade()) + ", ")
+      .append("image=" + String.valueOf(getImage()) + ", ")
       .append("dealer=" + String.valueOf(getDealer()) + ", ")
       .append("createdAt=" + String.valueOf(getCreatedAt()) + ", ")
       .append("updatedAt=" + String.valueOf(getUpdatedAt()))
@@ -232,6 +242,7 @@ public final class Bean implements Model {
       null,
       null,
       null,
+      null,
       null
     );
   }
@@ -248,6 +259,7 @@ public final class Bean implements Model {
       variety,
       density,
       grade,
+      image,
       dealer);
   }
   public interface BuildStep {
@@ -263,6 +275,7 @@ public final class Bean implements Model {
     BuildStep variety(String variety);
     BuildStep density(String density);
     BuildStep grade(String grade);
+    BuildStep image(String image);
     BuildStep dealer(Dealer dealer);
   }
   
@@ -279,6 +292,7 @@ public final class Bean implements Model {
     private String variety;
     private String density;
     private String grade;
+    private String image;
     private Dealer dealer;
     @Override
      public Bean build() {
@@ -296,6 +310,7 @@ public final class Bean implements Model {
           variety,
           density,
           grade,
+          image,
           dealer);
     }
     
@@ -360,6 +375,12 @@ public final class Bean implements Model {
     }
     
     @Override
+     public BuildStep image(String image) {
+        this.image = image;
+        return this;
+    }
+    
+    @Override
      public BuildStep dealer(Dealer dealer) {
         this.dealer = dealer;
         return this;
@@ -388,7 +409,7 @@ public final class Bean implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String name, String process, String origin, String region, String altitudeLow, String altitudeHigh, String moisture, String variety, String density, String grade, Dealer dealer) {
+    private CopyOfBuilder(String id, String name, String process, String origin, String region, String altitudeLow, String altitudeHigh, String moisture, String variety, String density, String grade, String image, Dealer dealer) {
       super.id(id);
       super.name(name)
         .process(process)
@@ -400,6 +421,7 @@ public final class Bean implements Model {
         .variety(variety)
         .density(density)
         .grade(grade)
+        .image(image)
         .dealer(dealer);
     }
     
@@ -451,6 +473,11 @@ public final class Bean implements Model {
     @Override
      public CopyOfBuilder grade(String grade) {
       return (CopyOfBuilder) super.grade(grade);
+    }
+    
+    @Override
+     public CopyOfBuilder image(String image) {
+      return (CopyOfBuilder) super.image(image);
     }
     
     @Override

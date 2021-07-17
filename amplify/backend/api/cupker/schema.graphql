@@ -3,6 +3,7 @@ type Session @model @auth(rules: [{ allow: owner }]) {
   name: String!
   roaster: Roaster! @connection
   roast_time: AWSDateTime!
+  avatar: String
   samples: [Sample] @connection(keyName: "bySession", fields: ["id"])
 }
 
@@ -19,6 +20,7 @@ type Bean @model @auth(rules: [{ allow: owner }]) {
   variety: String
   density: String
   grade: String
+  image: String
   dealer: Dealer @connection
 }
 

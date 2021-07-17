@@ -7,61 +7,62 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link BeansFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import com.amplifyframework.core.Amplify;
+import com.amplifyframework.datastore.generated.model.Bean;
+
+import java.util.ArrayList;
+
 public class BeansFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
     private static final String TAG = "===BEAN FRAGMENT===";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private ArrayList<Bean> beanObjs;
     private View view;
+    private ListView beanList;
 
     public BeansFragment() {
         // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment BeansFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static BeansFragment newInstance(String param1, String param2) {
-        BeansFragment fragment = new BeansFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+        beanObjs = new ArrayList<>();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
+        Amplify.DataStore.query(Bean.class,
+                queryRoaster -> {
+                    while (queryRoaster.hasNext()) {
+                        Bean bean = queryRoaster.next();
+                        beanObjs.add(bean);
+                        Log.i(TAG, "Get Bean Name: " + bean.getName());
+                    }
+                    handler.post(r);
+                },
+                error -> Log.e(TAG,  "Error retrieving roasters", error)
+        );
     }
+
+    private final Handler handler = new Handler();
+
+    private final Runnable r = new Runnable() {
+        @Override
+        public void run() {
+            if (view != null && beanList != null){
+                BeanListAdapter beanListAdapter = new BeanListAdapter(view.getContext(), beanObjs);
+                beanList.setAdapter(beanListAdapter);
+            }
+        }
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,6 +70,8 @@ public class BeansFragment extends Fragment {
 
         view = inflater.inflate(R.layout.fragment_beans, container, false);
         Toolbar toolbar = view.findViewById(R.id.bean_frag_toolbar);
+        beanList = view.findViewById(R.id.bean_frag_list);
+//        Log.d(TAG, "list length" + beanObjs.size());
         setHasOptionsMenu(true);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -89,7 +92,6 @@ public class BeansFragment extends Fragment {
                 Intent startNewBeamIntent = new Intent(getActivity(), NewBeanActivity.class);
                 startActivity(startNewBeamIntent);
                 return true;
-
 
             default:
                 // If we got here, the user's action was not recognized.

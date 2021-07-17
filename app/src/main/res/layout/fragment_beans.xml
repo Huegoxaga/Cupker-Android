@@ -22,7 +22,10 @@
             android:layout_gravity="center"
             android:text="@string/bean_frag_action_title"
             android:textColor="@android:color/white" />
+
     </androidx.appcompat.widget.Toolbar>
-
-
+    <ListView
+        android:id="@+id/bean_frag_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>
