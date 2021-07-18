@@ -54,7 +54,11 @@ public class BeanListAdapter extends BaseAdapter {
         // Setup
         beanName.setText(beans.get(position).getName());
         Log.d(TAG, beans.get(position).getName());
+
+        // Listener
+        beansListView.setOnClickListener(view -> Log.d(TAG, "Selected Bean Details " + beans.get(position)));
         return beansListView;
+
     }
 
 }

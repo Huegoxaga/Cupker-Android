@@ -8,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import androidx.fragment.app.FragmentActivity;
+
 import com.amplifyframework.datastore.generated.model.Sample;
 
 import java.util.Locale;
@@ -16,12 +18,12 @@ public class CuppingGridAdapter extends BaseAdapter {
 //    private static final String TAG = "===Cup Grid Adapter===";
     private final String[] gradingTitles = { "Fragrance/Aroma", "Flavor", "Aftertaste", "Acidity", "Body",
             "Uniformity", "Clean Cup", "Overall", "Balance", "Sweetness", "Defect Cups", "Intensity" };
-    private final CuppingActivity context;
+    private final FragmentActivity context;
     private final Sample sample;
     private final int listPosition;
 
     public CuppingGridAdapter(Context context, Sample sample, int listPosition) {
-        this.context =  (CuppingActivity) context;
+        this.context = (FragmentActivity) context;
         this.listPosition = listPosition;
         this.sample = sample;
     }

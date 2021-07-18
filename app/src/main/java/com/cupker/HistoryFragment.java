@@ -25,10 +25,11 @@ public class HistoryFragment extends Fragment {
     private final ArrayList<Session> sessionObjs;
     private View view;
     private ListView sessionList;
+    private final HistoryFragment self = this;
 
     public HistoryFragment() {
         // Required empty public constructor
-        sessionObjs = new ArrayList<>();
+        this.sessionObjs = new ArrayList<>();
     }
 
     @Override
@@ -54,7 +55,7 @@ public class HistoryFragment extends Fragment {
         @Override
         public void run() {
             if (view != null && sessionList != null){
-                HistoryListAdapter historyListAdapter = new HistoryListAdapter(view.getContext(), sessionObjs);
+                HistoryListAdapter historyListAdapter = new HistoryListAdapter(self, sessionObjs);
                 sessionList.setAdapter(historyListAdapter);
             }
         }
@@ -75,4 +76,6 @@ public class HistoryFragment extends Fragment {
 //        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         return view;
     }
+
+
 }

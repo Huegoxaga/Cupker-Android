@@ -48,4 +48,5 @@
     <string name="add_bean_grade">Grade</string>
     <string name="add_bean_density">Density</string>
     <string name="history_frag_action_title">Cupping History</string>
+    <string name="title_activity_history_activityy">FullscreenActivity</string>
 </resources>

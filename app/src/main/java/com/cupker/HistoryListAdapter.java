@@ -1,6 +1,7 @@
 package com.cupker;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,14 +15,17 @@ import java.util.List;
 
 public class HistoryListAdapter extends BaseAdapter {
 
-    private final Context context;
     private static final String TAG = "===HISTORY LIST ADPT===";
+    private static final int START_HISTORY_ACTIVITY = 2;
+    private static final String SESSION_ID = "SESSION ID";
+
     private final int sampleNum;
     private final List<Session> sessions;
+    private final HistoryFragment historyFragment;
 
-    public HistoryListAdapter(Context context, List<Session> sessions) {
+    public HistoryListAdapter(HistoryFragment fragment, List<Session> sessions) {
 
-        this.context = context;
+        this.historyFragment = fragment;
         this.sampleNum = sessions.size();
         this.sessions = sessions;
     }
@@ -42,19 +46,27 @@ public class HistoryListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View beansListView, ViewGroup parent) {
+    public View getView(int position, View sessionsListView, ViewGroup parent) {
 
         // Init
-        if (beansListView == null) {
-            LayoutInflater layoutInflater = LayoutInflater.from(context);
-            beansListView = layoutInflater.inflate(R.layout.fragment_history_list, parent, false);
+        if (sessionsListView == null) {
+            LayoutInflater layoutInflater = LayoutInflater.from(historyFragment.getContext());
+            sessionsListView = layoutInflater.inflate(R.layout.fragment_history_list, parent, false);
         }
-        TextView beanName = beansListView.findViewById(R.id.history_list_name);
+        TextView beanName = sessionsListView.findViewById(R.id.history_list_name);
 
         // Setup
         beanName.setText(sessions.get(position).getName());
-        Log.d(TAG, sessions.get(position).getName());
-        return beansListView;
+
+        // Listener
+        sessionsListView.setOnClickListener(view -> {
+            Log.d(TAG, "Selected Session Details " + sessions.get(position));
+            Intent startHistoryIntent = new Intent(historyFragment.getActivity(), HistoryActivity.class);
+            startHistoryIntent.putExtra(SESSION_ID, sessions.get(position).getId());
+            historyFragment.startActivityForResult(startHistoryIntent, START_HISTORY_ACTIVITY);
+        });
+
+        return sessionsListView;
     }
 
 }

@@ -35,6 +35,8 @@ public class CuppingFragment extends Fragment {
     private static final String SESSION_NAME = "SESSION NAME";
     private static final String ROASTER_ID = "ROASTER ID";
     private static final String ROAST_TIME = "ROAST TIME";
+    private static final int START_CUPPING_ACTIVITY = 1;
+
     private final ArrayList<String> roastersString;
     private final ArrayList<Roaster> roastersObj;
 
@@ -132,7 +134,7 @@ public class CuppingFragment extends Fragment {
                 startCuppingIntent.putExtra(ROASTER_ID, roastersObj.get(roasterSpinner.getSelectedItemPosition()).getId());
                 startCuppingIntent.putExtra(ROAST_TIME, dateString);
 
-                startActivityForResult(startCuppingIntent, 1);
+                startActivityForResult(startCuppingIntent, START_CUPPING_ACTIVITY);
             }
 //            startCuppingIntent.putExtra(ROAST_DATE, roastInput.getText().toString());
 //            startCuppingIntent.putExtra(SESSION_NAME, sessionInput.getText().toString());
