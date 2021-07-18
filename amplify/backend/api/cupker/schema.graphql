@@ -1,9 +1,9 @@
 type Session @model @auth(rules: [{ allow: owner }]) {
   id: ID!
   name: String!
-  roaster: Roaster! @connection
+  roaster: Roaster @connection(fields: ["roasterID"])
+  roasterID: ID!
   roast_time: AWSDateTime!
-  avatar: String
   samples: [Sample] @connection(keyName: "bySession", fields: ["id"])
 }
 

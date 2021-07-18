@@ -15,8 +15,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amplifyframework.core.Amplify;
+import com.amplifyframework.datastore.generated.model.Bean;
 import com.amplifyframework.datastore.generated.model.Sample;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CuppingListAdapter extends BaseAdapter {
@@ -24,19 +27,34 @@ public class CuppingListAdapter extends BaseAdapter {
     private final Context context;
     private static final String TAG = "===CUP LIST ADAPTER===";
     private final int sampleNum;
-
-    private final String[] bean = { "Bean A", "Bean B", "Bean C", "Bean D"};
+    private final ArrayList<Bean> beanObjs;
+    private final ArrayList<String> beansString;
     private final double[] roastLevel = { 95, 85, 75, 65, 55, 45, 35, 25};
     private final String[] roastLevelStr = { "# 95", "# 85", "# 75", "# 65", "# 55", "# 45", "# 35", "# 25"};
 
     private final List<Sample> samples;
 
-
     public CuppingListAdapter(Context context, List<Sample> samples) {
-
+        this.beanObjs = new ArrayList<>();
+        this.beansString = new ArrayList<>();
         this.context = context;
         this.sampleNum = samples.size();
         this.samples = samples;
+
+
+        beanObjs.add(null);
+        beansString.add("Blind Taste");
+        Amplify.DataStore.query(Bean.class,
+                queryRoaster -> {
+                    while (queryRoaster.hasNext()) {
+                        Bean bean = queryRoaster.next();
+                        beanObjs.add(bean);
+                        beansString.add(bean.getName());
+                        Log.i(TAG, "Get Roaster Name: " + bean.getName());
+                    }
+                },
+                error -> Log.e(TAG,  "Error retrieving roasters", error)
+        );
     }
 
     @Override
@@ -66,7 +84,7 @@ public class CuppingListAdapter extends BaseAdapter {
         Spinner beanSpinner = cuppingListView.findViewById(R.id.cupping_list_bean_spinner);
         Spinner roastLevelSpinner = cuppingListView.findViewById(R.id.cupping_list_roast_level_spinner);
         EditText notesInput = cuppingListView.findViewById(R.id.cupping_list_note_input);
-        ArrayAdapter<String> beanArray = new ArrayAdapter<>(cuppingListView.getContext(), android.R.layout.simple_spinner_item, bean);
+        ArrayAdapter<String> beanArray = new ArrayAdapter<>(cuppingListView.getContext(), android.R.layout.simple_spinner_item, beansString);
         ArrayAdapter<String> rosterLevelArray = new ArrayAdapter<>(cuppingListView.getContext(), android.R.layout.simple_spinner_item, roastLevelStr);
         CuppingGridView cuppingGridView = cuppingListView.findViewById(R.id.cupping_grid);
 
@@ -85,8 +103,10 @@ public class CuppingListAdapter extends BaseAdapter {
         // Listener
         beanSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
-                Log.d(TAG, bean[position] + " Selected in getVIew()");
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int selectedPosition, long id) {
+                CuppingActivity main = (CuppingActivity) context;
+                main.setBean(position, beanObjs.get(selectedPosition));
+                Log.d(TAG, beanObjs.get(selectedPosition) + " Selected in getVIew()");
             }
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
@@ -97,7 +117,6 @@ public class CuppingListAdapter extends BaseAdapter {
             public void onItemSelected(AdapterView<?> arg0, View arg1, int selectedPosition, long id) {
                 CuppingActivity main = (CuppingActivity) context;
                 Log.d(TAG, position + " Selected in list item id");
-
                 main.setRoastLevel(position, roastLevel[selectedPosition]);
             }
             @Override

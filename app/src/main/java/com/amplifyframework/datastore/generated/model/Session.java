@@ -1,6 +1,6 @@
 package com.amplifyframework.datastore.generated.model;
 
-import com.amplifyframework.core.model.annotations.BelongsTo;
+import com.amplifyframework.core.model.annotations.HasOne;
 import com.amplifyframework.core.model.temporal.Temporal;
 import com.amplifyframework.core.model.annotations.HasMany;
 
@@ -29,14 +29,13 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 public final class Session implements Model {
   public static final QueryField ID = field("Session", "id");
   public static final QueryField NAME = field("Session", "name");
-  public static final QueryField ROASTER = field("Session", "sessionRoasterId");
+  public static final QueryField ROASTER_ID = field("Session", "roasterID");
   public static final QueryField ROAST_TIME = field("Session", "roast_time");
-  public static final QueryField AVATAR = field("Session", "avatar");
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="String", isRequired = true) String name;
-  private final @ModelField(targetType="Roaster", isRequired = true) @BelongsTo(targetName = "sessionRoasterId", type = Roaster.class) Roaster roaster;
+  private final @ModelField(targetType="Roaster") @HasOne(associatedWith = "id", type = Roaster.class) Roaster roaster = null;
+  private final @ModelField(targetType="ID", isRequired = true) String roasterID;
   private final @ModelField(targetType="AWSDateTime", isRequired = true) Temporal.DateTime roast_time;
-  private final @ModelField(targetType="String") String avatar;
   private final @ModelField(targetType="Sample") @HasMany(associatedWith = "sessionID", type = Sample.class) List<Sample> samples = null;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;
@@ -52,12 +51,12 @@ public final class Session implements Model {
       return roaster;
   }
   
-  public Temporal.DateTime getRoastTime() {
-      return roast_time;
+  public String getRoasterId() {
+      return roasterID;
   }
   
-  public String getAvatar() {
-      return avatar;
+  public Temporal.DateTime getRoastTime() {
+      return roast_time;
   }
   
   public List<Sample> getSamples() {
@@ -72,12 +71,11 @@ public final class Session implements Model {
       return updatedAt;
   }
   
-  private Session(String id, String name, Roaster roaster, Temporal.DateTime roast_time, String avatar) {
+  private Session(String id, String name, String roasterID, Temporal.DateTime roast_time) {
     this.id = id;
     this.name = name;
-    this.roaster = roaster;
+    this.roasterID = roasterID;
     this.roast_time = roast_time;
-    this.avatar = avatar;
   }
   
   @Override
@@ -90,9 +88,8 @@ public final class Session implements Model {
       Session session = (Session) obj;
       return ObjectsCompat.equals(getId(), session.getId()) &&
               ObjectsCompat.equals(getName(), session.getName()) &&
-              ObjectsCompat.equals(getRoaster(), session.getRoaster()) &&
+              ObjectsCompat.equals(getRoasterId(), session.getRoasterId()) &&
               ObjectsCompat.equals(getRoastTime(), session.getRoastTime()) &&
-              ObjectsCompat.equals(getAvatar(), session.getAvatar()) &&
               ObjectsCompat.equals(getCreatedAt(), session.getCreatedAt()) &&
               ObjectsCompat.equals(getUpdatedAt(), session.getUpdatedAt());
       }
@@ -103,9 +100,8 @@ public final class Session implements Model {
     return new StringBuilder()
       .append(getId())
       .append(getName())
-      .append(getRoaster())
+      .append(getRoasterId())
       .append(getRoastTime())
-      .append(getAvatar())
       .append(getCreatedAt())
       .append(getUpdatedAt())
       .toString()
@@ -118,9 +114,8 @@ public final class Session implements Model {
       .append("Session {")
       .append("id=" + String.valueOf(getId()) + ", ")
       .append("name=" + String.valueOf(getName()) + ", ")
-      .append("roaster=" + String.valueOf(getRoaster()) + ", ")
+      .append("roasterID=" + String.valueOf(getRoasterId()) + ", ")
       .append("roast_time=" + String.valueOf(getRoastTime()) + ", ")
-      .append("avatar=" + String.valueOf(getAvatar()) + ", ")
       .append("createdAt=" + String.valueOf(getCreatedAt()) + ", ")
       .append("updatedAt=" + String.valueOf(getUpdatedAt()))
       .append("}")
@@ -154,7 +149,6 @@ public final class Session implements Model {
       id,
       null,
       null,
-      null,
       null
     );
   }
@@ -162,17 +156,16 @@ public final class Session implements Model {
   public CopyOfBuilder copyOfBuilder() {
     return new CopyOfBuilder(id,
       name,
-      roaster,
-      roast_time,
-      avatar);
+      roasterID,
+      roast_time);
   }
   public interface NameStep {
-    RoasterStep name(String name);
+    RoasterIdStep name(String name);
   }
   
 
-  public interface RoasterStep {
-    RoastTimeStep roaster(Roaster roaster);
+  public interface RoasterIdStep {
+    RoastTimeStep roasterId(String roasterId);
   }
   
 
@@ -184,16 +177,14 @@ public final class Session implements Model {
   public interface BuildStep {
     Session build();
     BuildStep id(String id) throws IllegalArgumentException;
-    BuildStep avatar(String avatar);
   }
   
 
-  public static class Builder implements NameStep, RoasterStep, RoastTimeStep, BuildStep {
+  public static class Builder implements NameStep, RoasterIdStep, RoastTimeStep, BuildStep {
     private String id;
     private String name;
-    private Roaster roaster;
+    private String roasterID;
     private Temporal.DateTime roast_time;
-    private String avatar;
     @Override
      public Session build() {
         String id = this.id != null ? this.id : UUID.randomUUID().toString();
@@ -201,22 +192,21 @@ public final class Session implements Model {
         return new Session(
           id,
           name,
-          roaster,
-          roast_time,
-          avatar);
+          roasterID,
+          roast_time);
     }
     
     @Override
-     public RoasterStep name(String name) {
+     public RoasterIdStep name(String name) {
         Objects.requireNonNull(name);
         this.name = name;
         return this;
     }
     
     @Override
-     public RoastTimeStep roaster(Roaster roaster) {
-        Objects.requireNonNull(roaster);
-        this.roaster = roaster;
+     public RoastTimeStep roasterId(String roasterId) {
+        Objects.requireNonNull(roasterId);
+        this.roasterID = roasterId;
         return this;
     }
     
@@ -224,12 +214,6 @@ public final class Session implements Model {
      public BuildStep roastTime(Temporal.DateTime roastTime) {
         Objects.requireNonNull(roastTime);
         this.roast_time = roastTime;
-        return this;
-    }
-    
-    @Override
-     public BuildStep avatar(String avatar) {
-        this.avatar = avatar;
         return this;
     }
     
@@ -256,12 +240,11 @@ public final class Session implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String name, Roaster roaster, Temporal.DateTime roastTime, String avatar) {
+    private CopyOfBuilder(String id, String name, String roasterId, Temporal.DateTime roastTime) {
       super.id(id);
       super.name(name)
-        .roaster(roaster)
-        .roastTime(roastTime)
-        .avatar(avatar);
+        .roasterId(roasterId)
+        .roastTime(roastTime);
     }
     
     @Override
@@ -270,18 +253,13 @@ public final class Session implements Model {
     }
     
     @Override
-     public CopyOfBuilder roaster(Roaster roaster) {
-      return (CopyOfBuilder) super.roaster(roaster);
+     public CopyOfBuilder roasterId(String roasterId) {
+      return (CopyOfBuilder) super.roasterId(roasterId);
     }
     
     @Override
      public CopyOfBuilder roastTime(Temporal.DateTime roastTime) {
       return (CopyOfBuilder) super.roastTime(roastTime);
-    }
-    
-    @Override
-     public CopyOfBuilder avatar(String avatar) {
-      return (CopyOfBuilder) super.avatar(avatar);
     }
   }
   

@@ -20,13 +20,15 @@ import android.widget.ListView;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Bean;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 
 public class BeansFragment extends Fragment {
 
     private static final String TAG = "===BEAN FRAGMENT===";
 
-    private ArrayList<Bean> beanObjs;
+    private final ArrayList<Bean> beanObjs;
     private View view;
     private ListView beanList;
 
@@ -81,23 +83,22 @@ public class BeansFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.toolbar_with_add, menu);
-        super.onCreateOptionsMenu(menu, inflater);
+    public void onCreateOptionsMenu(@NotNull Menu menu, @NotNull MenuInflater inflater) {
+        if (menu != null && inflater != null){
+            inflater.inflate(R.menu.toolbar_with_add, menu);
+            super.onCreateOptionsMenu(menu, inflater);
+        }
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.add_bean_menu_save_button:
-                Intent startNewBeamIntent = new Intent(getActivity(), NewBeanActivity.class);
-                startActivity(startNewBeamIntent);
-                return true;
-
-            default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
-                return super.onOptionsItemSelected(item);
-
+        if (item.getItemId() == R.id.add_bean_menu_save_button) {
+            Intent startNewBeamIntent = new Intent(getActivity(), NewBeanActivity.class);
+            startActivity(startNewBeamIntent);
+            return true;
         }
+        // If we got here, the user's action was not recognized.
+        // Invoke the superclass to handle it.
+        return super.onOptionsItemSelected(item);
     }
 }

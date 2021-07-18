@@ -32,7 +32,9 @@ public class CuppingFragment extends Fragment {
 
     private static final String TAG = "===CUPPING FRAGMENT===";
     private static final String SAMPLE_NUMBER = "SAMPLE NUMBER";
-    private static final String SESSION_OBJ = "SESSION NAME";
+    private static final String SESSION_NAME = "SESSION NAME";
+    private static final String ROASTER_ID = "ROASTER ID";
+    private static final String ROAST_TIME = "ROAST TIME";
     private final ArrayList<String> roastersString;
     private final ArrayList<Roaster> roastersObj;
 
@@ -119,17 +121,17 @@ public class CuppingFragment extends Fragment {
                 Toast.makeText(getContext(), "Please complete all fields", Toast.LENGTH_LONG).show();
             }
             else{
-                Session newSession = Session.builder()
-                        .name(sessionInput.getText().toString())
-                        .roaster(roastersObj.get(roasterSpinner.getSelectedItemPosition()))
-                        .roastTime(new Temporal.DateTime(dateString))
-                        .build();
+//                Session newSession = Session.builder()
+//                        .name(sessionInput.getText().toString())
+//                        .roaster(roastersObj.get(roasterSpinner.getSelectedItemPosition()))
+//                        .roastTime(new Temporal.DateTime(dateString))
+//                        .build();
 
-                Gson gson = new Gson();
-                String newSessionStr = gson.toJson(newSession);
-                startCuppingIntent.putExtra(SESSION_OBJ, newSessionStr);
+                startCuppingIntent.putExtra(SESSION_NAME, sessionInput.getText().toString());
                 startCuppingIntent.putExtra(SAMPLE_NUMBER, sampleNum);
-                Log.d(TAG, newSession.toString());
+                startCuppingIntent.putExtra(ROASTER_ID, roastersObj.get(roasterSpinner.getSelectedItemPosition()).getId());
+                startCuppingIntent.putExtra(ROAST_TIME, dateString);
+
                 startActivityForResult(startCuppingIntent, 1);
             }
 //            startCuppingIntent.putExtra(ROAST_DATE, roastInput.getText().toString());
