@@ -51,15 +51,11 @@ public class HistoryActivity extends AppCompatActivity {
     private static final String TAG = "===HISTORY ACTIVITY===";
     private static final String SESSION_ID = "SESSION ID";
 
-
     private ListView cuppingListView;
     private List<Sample> samples;
     private Session session;
     private TextView titleText;
     private CuppingListAdapter cuppingListAdapter;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

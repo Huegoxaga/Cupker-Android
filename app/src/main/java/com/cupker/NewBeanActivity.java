@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
@@ -34,6 +35,7 @@ public class NewBeanActivity extends AppCompatActivity {
     private String imageStr = null;
     private ImageButton newImageButton;
     private String currentPhotoPath;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +47,7 @@ public class NewBeanActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        newImageButton.setOnClickListener(v-> dispatchTakePictureIntent());
+        newImageButton.setOnClickListener(v -> dispatchTakePictureIntent());
     }
 
     @Override
@@ -54,6 +56,7 @@ public class NewBeanActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.toolbar_with_save, menu);
         return true;
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
@@ -84,7 +87,7 @@ public class NewBeanActivity extends AppCompatActivity {
         int photoH = bmOptions.outHeight;
 
         // Determine how much to scale down the image
-        int scaleFactor = Math.max(1, Math.min(photoW/targetW, photoH/targetH));
+        int scaleFactor = Math.max(1, Math.min(photoW / targetW, photoH / targetH));
 
         // Decode the image file into a Bitmap sized to fill the View
         bmOptions.inJustDecodeBounds = false;
@@ -100,7 +103,7 @@ public class NewBeanActivity extends AppCompatActivity {
         // Generate Base64 String
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-        byte[] byteArray = byteArrayOutputStream .toByteArray();
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
         imageStr = Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
@@ -143,6 +146,15 @@ public class NewBeanActivity extends AppCompatActivity {
         return image;
     }
 
+    private final Handler handler = new Handler();
+
+    private final Runnable goBack = new Runnable() {
+        @Override
+        public void run() {
+            finish();
+        }
+    };
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -162,10 +174,14 @@ public class NewBeanActivity extends AppCompatActivity {
                         .image(imageStr)
                         .build();
                 Amplify.DataStore.save(bean,
-                        success -> Log.i(TAG, "Saved item: " + success.item().getName()),
+                        success ->
+                        {
+                            Log.i(TAG, "Saved item: " + success.item().getName());
+                            handler.post(goBack);
+                        },
                         error -> Log.e(TAG, "Could not save item to DataStore", error)
                 );
-                finish();
+
                 return true;
 
             default:

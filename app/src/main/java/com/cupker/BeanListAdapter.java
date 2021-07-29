@@ -1,6 +1,7 @@
 package com.cupker;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,19 +10,23 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.amplifyframework.datastore.generated.model.Bean;
+import com.google.gson.Gson;
 
 import java.util.List;
 
 public class BeanListAdapter extends BaseAdapter {
 
-    private final Context context;
     private static final String TAG = "===BEAN LIST ADAPTER===";
+    private static final int START_BEAN_ACTIVITY = 3;
+    private static final String BEAN_OBJ = "BEAN OBJECT";
+
     private final int beanNum;
     private final List<Bean> beans;
+    private final BeansFragment beansFragment;
 
-    public BeanListAdapter(Context context, List<Bean> beans) {
+    public BeanListAdapter(BeansFragment fragment, List<Bean> beans) {
 
-        this.context = context;
+        this.beansFragment = fragment;
         this.beanNum = beans.size();
         this.beans = beans;
     }
@@ -46,7 +51,7 @@ public class BeanListAdapter extends BaseAdapter {
 
         // Init
         if (beansListView == null) {
-            LayoutInflater layoutInflater = LayoutInflater.from(context);
+            LayoutInflater layoutInflater = LayoutInflater.from(beansFragment.getContext());
             beansListView = layoutInflater.inflate(R.layout.fragment_beans_list, parent, false);
         }
         TextView beanName = beansListView.findViewById(R.id.bean_list_name);
@@ -56,7 +61,15 @@ public class BeanListAdapter extends BaseAdapter {
         Log.d(TAG, beans.get(position).getName());
 
         // Listener
-        beansListView.setOnClickListener(view -> Log.d(TAG, "Selected Bean Details " + beans.get(position)));
+        beansListView.setOnClickListener(view -> {
+            Gson gson = new Gson();
+            Log.d(TAG, beans.get(position).getName());
+            String beanObjStr = gson.toJson(beans.get(position));
+            Intent startHistoryIntent = new Intent(beansFragment.getActivity(), BeanActivity.class);
+            //TODO: image string to large
+//            startHistoryIntent.putExtra(BEAN_OBJ, beanObjStr);
+            beansFragment.startActivityForResult(startHistoryIntent, START_BEAN_ACTIVITY);
+        });
         return beansListView;
 
     }

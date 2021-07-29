@@ -28,18 +28,24 @@ public class BeansFragment extends Fragment {
 
     private static final String TAG = "===BEAN FRAGMENT===";
 
-    private final ArrayList<Bean> beanObjs;
+    private ArrayList<Bean> beanObjs;
     private View view;
     private ListView beanList;
+    private BeansFragment self = this;
 
     public BeansFragment() {
         // Required empty public constructor
-        beanObjs = new ArrayList<>();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        beanObjs = new ArrayList<>();
 
         Amplify.DataStore.query(Bean.class,
                 queryRoaster -> {
@@ -60,7 +66,7 @@ public class BeansFragment extends Fragment {
         @Override
         public void run() {
             if (view != null && beanList != null){
-                BeanListAdapter beanListAdapter = new BeanListAdapter(view.getContext(), beanObjs);
+                BeanListAdapter beanListAdapter = new BeanListAdapter(self, beanObjs);
                 beanList.setAdapter(beanListAdapter);
             }
         }
@@ -93,6 +99,7 @@ public class BeansFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.add_bean_menu_save_button) {
+
             Intent startNewBeamIntent = new Intent(getActivity(), NewBeanActivity.class);
             startActivity(startNewBeamIntent);
             return true;
