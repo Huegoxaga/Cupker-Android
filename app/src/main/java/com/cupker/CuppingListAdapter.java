@@ -24,36 +24,52 @@ import java.util.List;
 
 public class CuppingListAdapter extends BaseAdapter {
 
-    private final Context context;
+    // Keys
     private static final String TAG = "===CUP LIST ADAPTER===";
+
+    // UI
+    private final Context context;
     private final int sampleNum;
+
+    // Data
     private final ArrayList<Bean> beanObjs;
-    private final ArrayList<String> beansString;
+    private final ArrayList<String> beansString; // related array to store names for dropdown
     private final double[] roastLevel = { 95, 85, 75, 65, 55, 45, 35, 25};
     private final String[] roastLevelStr = { "# 95", "# 85", "# 75", "# 65", "# 55", "# 45", "# 35", "# 25"};
-
     private final List<Sample> samples;
 
+    /**
+     * This holds the cupping list for all samples in one session
+     * @param context context
+     * @param samples list of Sample data objects
+     */
     public CuppingListAdapter(Context context, List<Sample> samples) {
+
+        // TODO: Read only flag for this list
+        // Init Data
+
+        // Assign data
         this.beanObjs = new ArrayList<>();
         this.beansString = new ArrayList<>();
         this.context = context;
         this.sampleNum = samples.size();
         this.samples = samples;
 
-
+        // Add bean list first record
         beanObjs.add(null);
         beansString.add("Blind Taste");
+
+        // Query & populate Bean data
         Amplify.DataStore.query(Bean.class,
                 queryRoaster -> {
                     while (queryRoaster.hasNext()) {
                         Bean bean = queryRoaster.next();
                         beanObjs.add(bean);
                         beansString.add(bean.getName());
-                        Log.i(TAG, "Get Roaster Name: " + bean.getName());
+                        Log.i(TAG, "Get Bean Name: " + bean.getName());
                     }
                 },
-                error -> Log.e(TAG,  "Error retrieving roasters", error)
+                error -> Log.e(TAG,  "Error retrieving beans", error)
         );
     }
 

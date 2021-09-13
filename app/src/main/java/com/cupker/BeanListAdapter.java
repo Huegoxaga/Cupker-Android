@@ -1,6 +1,5 @@
 package com.cupker;
 
-import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,18 +13,25 @@ import com.google.gson.Gson;
 
 import java.util.List;
 
+/**
+ * This defines the bean list in bean page
+ */
 public class BeanListAdapter extends BaseAdapter {
 
+    // Keys
     private static final String TAG = "===BEAN LIST ADAPTER===";
+    private static final String BEAN_ID = "BEAN ID";
     private static final int START_BEAN_ACTIVITY = 3;
-    private static final String BEAN_OBJ = "BEAN OBJECT";
 
-    private final int beanNum;
-    private final List<Bean> beans;
+    // UI & Controllers
     private final BeansFragment beansFragment;
 
-    public BeanListAdapter(BeansFragment fragment, List<Bean> beans) {
+    // Data
+    private final int beanNum;
+    private final List<Bean> beans;
 
+    public BeanListAdapter(BeansFragment fragment, List<Bean> beans) {
+        // Init Data
         this.beansFragment = fragment;
         this.beanNum = beans.size();
         this.beans = beans;
@@ -58,16 +64,11 @@ public class BeanListAdapter extends BaseAdapter {
 
         // Setup
         beanName.setText(beans.get(position).getName());
-        Log.d(TAG, beans.get(position).getName());
 
         // Listener
         beansListView.setOnClickListener(view -> {
-            Gson gson = new Gson();
-            Log.d(TAG, beans.get(position).getName());
-            String beanObjStr = gson.toJson(beans.get(position));
             Intent startHistoryIntent = new Intent(beansFragment.getActivity(), BeanActivity.class);
-            //TODO: image string to large
-//            startHistoryIntent.putExtra(BEAN_OBJ, beanObjStr);
+            startHistoryIntent.putExtra(BEAN_ID, beans.get(position).getId());
             beansFragment.startActivityForResult(startHistoryIntent, START_BEAN_ACTIVITY);
         });
         return beansListView;

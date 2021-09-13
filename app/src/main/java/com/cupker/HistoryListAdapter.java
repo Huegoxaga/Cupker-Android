@@ -13,18 +13,25 @@ import com.amplifyframework.datastore.generated.model.Session;
 
 import java.util.List;
 
+/**
+ * This defines the session list in history page
+ */
 public class HistoryListAdapter extends BaseAdapter {
 
+    // Keys
     private static final String TAG = "===HISTORY LIST ADPT===";
     private static final int START_HISTORY_ACTIVITY = 2;
     private static final String SESSION_ID = "SESSION ID";
 
-    private final int sampleNum;
-    private final List<Session> sessions;
+    // UI & Controllers
     private final HistoryFragment historyFragment;
 
-    public HistoryListAdapter(HistoryFragment fragment, List<Session> sessions) {
+    // Data
+    private final List<Session> sessions;
+    private final int sampleNum;
 
+    public HistoryListAdapter(HistoryFragment fragment, List<Session> sessions) {
+        // Init data
         this.historyFragment = fragment;
         this.sampleNum = sessions.size();
         this.sessions = sessions;

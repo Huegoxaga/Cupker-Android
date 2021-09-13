@@ -18,18 +18,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amplifyframework.core.Amplify;
-import com.amplifyframework.core.model.temporal.Temporal;
 import com.amplifyframework.datastore.generated.model.Roaster;
-import com.amplifyframework.datastore.generated.model.Session;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * This is the create new cupping session page
+ */
 public class CuppingFragment extends Fragment {
 
+    // Init keys
     private static final String TAG = "===CUPPING FRAGMENT===";
     private static final String SAMPLE_NUMBER = "SAMPLE NUMBER";
     private static final String SESSION_NAME = "SESSION NAME";
@@ -37,9 +38,11 @@ public class CuppingFragment extends Fragment {
     private static final String ROAST_TIME = "ROAST TIME";
     private static final int START_CUPPING_ACTIVITY = 1;
 
+    // Init variables
     private final ArrayList<String> roastersString;
     private final ArrayList<Roaster> roastersObj;
 
+    // Init UI objects
     private EditText roastInput;
     private View cuppingFragView;
     private int sampleNum = 6;
@@ -49,6 +52,7 @@ public class CuppingFragment extends Fragment {
     private String dateString;
 
     public CuppingFragment() {
+        // Assign variables
         roastersObj = new ArrayList<>();
         roastersString = new ArrayList<>();
     }
@@ -56,8 +60,13 @@ public class CuppingFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Init data
+        // Add first roaster record
         roastersObj.add(null);
         roastersString.add("Select a Roaster");
+
+        // Query and assign rest roaster records
         Amplify.DataStore.query(Roaster.class,
                 queryRoaster -> {
                     while (queryRoaster.hasNext()) {
@@ -69,21 +78,13 @@ public class CuppingFragment extends Fragment {
                 },
                 error -> Log.e(TAG,  "Error retrieving roasters", error)
         );
-    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-//        roastInput.setText(sharedPreferences.getString(ROAST_DATE, ""));
-//        sessionInput.setText(sharedPreferences.getString(SESSION_NAME, ""));
-//        sampleNum = sharedPreferences.getInt(SAMPLE_NUMBER, 6);
-//        sampleLabel.setText(String.valueOf(sampleNum));
-//        roasterSpinner.setSelection(sharedPreferences.getInt(ROASTER_CHOICE, 0));
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // init
+
+        // Init
         cuppingFragView = inflater.inflate(R.layout.fragment_cupping, container, false);
         roasterSpinner = cuppingFragView.findViewById(R.id.cupping_roaster_spinner);
         sessionInput = cuppingFragView.findViewById(R.id.cupping_session_input);
@@ -91,14 +92,14 @@ public class CuppingFragment extends Fragment {
         sampleLabel = cuppingFragView.findViewById(R.id.cupping_sample_label);
         roastInput = cuppingFragView.findViewById(R.id.cupping_roast_date_input);
 
-        // setup
+        // Setup
         roasterSpinner.setSelection(0, false);
         rosterArray.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         roasterSpinner.setAdapter(rosterArray);
         sampleLabel.setText(String.valueOf(sampleNum));
         Log.d(TAG, String.format("Sample Number: %d in onCreateView", sampleNum));
 
-        // listener
+        // Listener
         roasterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
@@ -136,11 +137,6 @@ public class CuppingFragment extends Fragment {
 
                 startActivityForResult(startCuppingIntent, START_CUPPING_ACTIVITY);
             }
-//            startCuppingIntent.putExtra(ROAST_DATE, roastInput.getText().toString());
-//            startCuppingIntent.putExtra(SESSION_NAME, sessionInput.getText().toString());
-//            startCuppingIntent.putExtra(SAMPLE_NUMBER, Integer.parseInt(sampleLabel.getText().toString()));
-//            startCuppingIntent.putExtra(ROASTER_CHOICE, roastersObj.get(roasterSpinner.getSelectedItemPosition()).getId());
-//            Log.d(TAG, roasterSpinner.getSelectedItemPosition() + "");
         });
 
         return cuppingFragView;
@@ -174,13 +170,13 @@ public class CuppingFragment extends Fragment {
     public void updateSampleNum(View view){
         if (view.getId() == R.id.cupping_sample_add_button){
             if (sampleNum + 1 > 12) {
-                Toast.makeText(getActivity().getApplicationContext(),"Too many samples" , Toast.LENGTH_LONG).show();
+                Toast.makeText(requireActivity().getApplicationContext(),"Too many samples" , Toast.LENGTH_LONG).show();
             }else {
                 sampleNum++;
             }
         } else{
             if (sampleNum - 1 < 1) {
-                Toast.makeText(getActivity().getApplicationContext(),"At least one sample is required" , Toast.LENGTH_LONG).show();
+                Toast.makeText(requireActivity().getApplicationContext(),"At least one sample is required" , Toast.LENGTH_LONG).show();
             }else {
                 sampleNum--;
             }
@@ -189,25 +185,4 @@ public class CuppingFragment extends Fragment {
         Log.d(TAG, String.format("Sample Number: %d in updateSampleNum", sampleNum));
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//        editor.putString(ROAST_DATE, roastInput.getText().toString());
-//        editor.putString(SESSION_NAME, sessionInput.getText().toString());
-//        editor.putInt(SAMPLE_NUMBER, Integer.parseInt(sampleLabel.getText().toString()));
-//        editor.putInt(ROASTER_CHOICE, roasterSpinner.getSelectedItemPosition());
-//        editor.apply();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//        editor.putString(ROAST_DATE, "");
-//        editor.putString(SESSION_NAME, "");
-//        editor.putInt(SAMPLE_NUMBER, 6);
-//        editor.putInt(ROASTER_CHOICE, 0);
-//        editor.apply();
-    }
 }

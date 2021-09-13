@@ -29,30 +29,43 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * This defines add new bean form page
+ */
 public class NewBeanActivity extends AppCompatActivity {
+
+    // Keys
     private static final String TAG = "===NEW BEAN ACTIVITY===";
     private static final int DONE_ADD_BEAN = 2;
-    private String imageStr = null;
+
+    // UI & Controllers
     private ImageButton newImageButton;
     private String currentPhotoPath;
+
+    // Data
+    private String imageStr = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Init
         setContentView(R.layout.activity_new_bean);
         Toolbar toolbar = findViewById(R.id.new_bean_toolbar);
         newImageButton = findViewById((R.id.add_bean_new_image));
+
+        // Setup
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        // Listener
         newImageButton.setOnClickListener(v -> dispatchTakePictureIntent());
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.toolbar_with_save, menu);
         return true;
     }
@@ -73,15 +86,13 @@ public class NewBeanActivity extends AppCompatActivity {
 
     private void setPic() {
         // Get the dimensions of the View
-//        int targetW = newImageButton.getWidth();
+        // int targetW = newImageButton.getWidth();
         int targetW = 640;
         int targetH = newImageButton.getHeight();
 
         // Get the dimensions of the bitmap
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         bmOptions.inJustDecodeBounds = true;
-
-        BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
 
         int photoW = bmOptions.outWidth;
         int photoH = bmOptions.outHeight;
@@ -148,12 +159,7 @@ public class NewBeanActivity extends AppCompatActivity {
 
     private final Handler handler = new Handler();
 
-    private final Runnable goBack = new Runnable() {
-        @Override
-        public void run() {
-            finish();
-        }
-    };
+    private final Runnable goBack = this::finish;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -164,8 +170,8 @@ public class NewBeanActivity extends AppCompatActivity {
                 Bean bean = Bean.builder()
                         .name(((EditText) findViewById(R.id.new_bean_name_input)).getText().toString())
                         .origin(((EditText) findViewById(R.id.new_bean_origin_input)).getText().toString())
-                        .altitudeHigh(((EditText) findViewById(R.id.new_bean_altitude_input)).getText().toString())
-                        .altitudeLow(((EditText) findViewById(R.id.new_bean_altitude_input)).getText().toString())
+                        .altitudeHigh(((EditText) findViewById(R.id.new_bean_altitude_high)).getText().toString())
+                        .altitudeLow(((EditText) findViewById(R.id.new_bean_altitude_low)).getText().toString())
                         .variety(((EditText) findViewById(R.id.new_bean_variety_input)).getText().toString())
                         .region(((EditText) findViewById(R.id.new_bean_region_input)).getText().toString())
                         .density(((EditText) findViewById(R.id.new_bean_density_input)).getText().toString())
@@ -185,8 +191,7 @@ public class NewBeanActivity extends AppCompatActivity {
                 return true;
 
             default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
+                // Default handler
                 return super.onOptionsItemSelected(item);
 
         }

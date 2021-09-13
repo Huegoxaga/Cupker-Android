@@ -20,22 +20,27 @@ import java.util.ArrayList;
 
 public class HistoryFragment extends Fragment {
 
+    // Keys
     private static final String TAG = "===HISTORY FRAGMENT===";
 
-    private final ArrayList<Session> sessionObjs;
+    // UI & Controllers
     private View view;
     private ListView sessionList;
     private final HistoryFragment self = this;
 
+    // Data
+    private ArrayList<Session> sessionObjs;
+
     public HistoryFragment() {
         // Required empty public constructor
-        this.sessionObjs = new ArrayList<>();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Init Data
+        sessionObjs = new ArrayList<>();
         Amplify.DataStore.query(Session.class,
                 queryRoaster -> {
                     while (queryRoaster.hasNext()) {
@@ -65,17 +70,14 @@ public class HistoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        // Init
         view = inflater.inflate(R.layout.fragment_history, container, false);
         Toolbar toolbar = view.findViewById(R.id.history_frag_toolbar);
         sessionList = view.findViewById(R.id.history_frag_list);
-//        Log.d(TAG, "list length" + sessions.size());
-//        setHasOptionsMenu(true);
+
+        // Setup
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
-//        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         return view;
     }
-
-
 }

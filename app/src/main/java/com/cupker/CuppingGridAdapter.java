@@ -1,6 +1,7 @@
 package com.cupker;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,16 +15,27 @@ import com.amplifyframework.datastore.generated.model.Sample;
 
 import java.util.Locale;
 
+/**
+ * Grid for each sample in cupping list
+ */
 public class CuppingGridAdapter extends BaseAdapter {
-//    private static final String TAG = "===Cup Grid Adapter===";
-    private final String[] gradingTitles = { "Fragrance/Aroma", "Flavor", "Aftertaste", "Acidity", "Body",
-            "Uniformity", "Clean Cup", "Overall", "Balance", "Sweetness", "Defect Cups", "Intensity" };
+    // Keys
+    private static final String TAG = "===Cup Grid Adapter===";
+
+    // UI
     private final FragmentActivity context;
+
+    // Data
     private final Sample sample;
+    private final String[] gradingTitles = { "Aroma", "Flavor", "Aftertaste", "Acidity", "Body",
+            "Uniformity", "Clean Cup", "Overall", "Balance", "Sweetness", "Defect Cups", "Intensity" };
     private final int listPosition;
 
     public CuppingGridAdapter(Context context, Sample sample, int listPosition) {
+        // Init UI
         this.context = (FragmentActivity) context;
+
+        // Init Data
         this.listPosition = listPosition;
         this.sample = sample;
     }
@@ -50,6 +62,8 @@ public class CuppingGridAdapter extends BaseAdapter {
         if (gradingView == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(context);
             gradingView = layoutInflater.inflate(R.layout.activity_cupping_grading_grid, parent, false);
+            gradingView.setLayoutParams(new GridView.LayoutParams(140, 140));
+
         }
         TextView gradingTitleText = gradingView.findViewById(R.id.cupping_grid_grading_title);
         TextView gradingScoreText = gradingView.findViewById(R.id.cupping_grid_grading_score);
@@ -94,13 +108,14 @@ public class CuppingGridAdapter extends BaseAdapter {
                 gradingScoreText.setText(String.format(Locale.getDefault(),"%.0f", sample.getDefectType()));
                 break;
         }
-        gradingView.setLayoutParams(new GridView.LayoutParams(150, 150));
 
         // Listener
         gradingView.setOnClickListener(v -> {
+            Log.d(TAG, " Selected in grid ID " + position);
             GradingDialogFragment gradingDialog = new GradingDialogFragment(listPosition , position);
             gradingDialog.show(context.getSupportFragmentManager(), null);
         });
+
         return gradingView;
     }
 }

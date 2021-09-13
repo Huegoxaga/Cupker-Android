@@ -87,9 +87,9 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="7dp"
             android:text="@string/add_bean_altitude"
-            app:layout_constraintEnd_toStartOf="@+id/new_bean_altitude_input"
+            app:layout_constraintEnd_toStartOf="@+id/new_bean_altitude_low"
             app:layout_constraintStart_toEndOf="@+id/new_bean_variety_input"
-            app:layout_constraintTop_toTopOf="@+id/new_bean_altitude_input" />
+            app:layout_constraintTop_toTopOf="@+id/new_bean_altitude_low" />
 
         <TextView
             android:id="@+id/new_bean_region"
@@ -147,7 +147,7 @@
             android:ems="10"
             android:importantForAutofill="no"
             android:inputType="textPersonName"
-            app:layout_constraintBottom_toTopOf="@+id/new_bean_altitude_input"
+            app:layout_constraintBottom_toTopOf="@+id/new_bean_altitude_low"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/new_bean_region"
             app:layout_constraintTop_toTopOf="parent" />
@@ -164,7 +164,7 @@
             app:layout_constraintBottom_toTopOf="@+id/new_bean_dealer_input"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/new_bean_moisture"
-            app:layout_constraintTop_toBottomOf="@+id/new_bean_altitude_input" />
+            app:layout_constraintTop_toBottomOf="@+id/new_bean_altitude_low" />
 
         <EditText
             android:id="@+id/new_bean_dealer_input"
@@ -201,7 +201,7 @@
             android:ems="10"
             android:importantForAutofill="no"
             android:inputType="textPersonName"
-            app:layout_constraintBottom_toBottomOf="@+id/new_bean_altitude_input"
+            app:layout_constraintBottom_toBottomOf="@+id/new_bean_altitude_low"
             app:layout_constraintEnd_toStartOf="@+id/new_bean_altitude"
             app:layout_constraintStart_toEndOf="@+id/new_bean_variety"
             app:layout_constraintTop_toTopOf="@+id/new_bean_variety" />
@@ -219,9 +219,23 @@
             app:layout_constraintStart_toEndOf="@+id/new_bean_grade" />
 
         <EditText
-            android:id="@+id/new_bean_altitude_input"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:id="@+id/new_bean_altitude_low"
+            android:layout_width="56dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginBottom="47dp"
+            android:ems="10"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            app:layout_constraintBottom_toTopOf="@+id/new_bean_moisture_input"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/new_bean_altitude"
+            app:layout_constraintTop_toBottomOf="@+id/new_bean_region_input" />
+
+        <EditText
+            android:id="@+id/new_bean_altitude_high"
+            android:layout_width="56dp"
+            android:layout_height="24dp"
             android:layout_marginEnd="25dp"
             android:layout_marginBottom="47dp"
             android:ems="10"

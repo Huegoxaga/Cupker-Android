@@ -15,21 +15,30 @@ import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Roaster;
 
 /**
- * For a Dialog we must extend the DialogFragment Class
- * We implement OnClickListener to handle button click events
+ * This is the add roaster fragment for the roaster drop down in create new cupping session page
  */
 public class NewRoasterFragment extends DialogFragment{
+
+    // Init Keys
     private static final String TAG = "===New Roaster Frag===";
+
+    // Init UI objects
+    private View addRoasterView;
+    private Button addButton;
+    private Button cancelButton;
 
     public NewRoasterFragment() {
         // Required empty public constructor
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        // We saved the inflated layout in our myview variable
-        View addRoasterView = inflater.inflate(R.layout.fragment_new_roaster, container, false);
-        Button addButton = addRoasterView.findViewById(R.id.new_roaster_add_button);
+
+        // Init
+        addRoasterView = inflater.inflate(R.layout.fragment_new_roaster, container, false);
+        addButton = addRoasterView.findViewById(R.id.new_roaster_add_button);
+        cancelButton = addRoasterView.findViewById(R.id.new_roaster_cancel_button);
+
+        // Listeners
         addButton.setOnClickListener(v->{
             EditText newRoasterInput = getView().findViewById(R.id.new_roaster_name_input);
             String newRoasterName = newRoasterInput.getText().toString();
@@ -45,15 +54,11 @@ public class NewRoasterFragment extends DialogFragment{
                     success -> Log.i(TAG, "Saved item: " + success.item().getName()),
                     error -> Log.e(TAG, "Could not save item to DataStore", error)
             );
-//            AddRoasterAsyncTask addRoasterAsyncTask = new AddRoasterAsyncTask();
-//            addRoasterAsyncTask.execute(newRoasterName, "parameterB", "parameterC");
             dismiss();
         });
 
-
-
-        Button cancelButton = addRoasterView.findViewById(R.id.new_roaster_cancel_button);
         cancelButton.setOnClickListener(v->dismiss());
+
         return addRoasterView;
     }
 }

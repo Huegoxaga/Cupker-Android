@@ -4,6 +4,9 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.GridView;
 
+/**
+ * This defines each grid item in the grading page
+ */
 public class CuppingGridView extends GridView {
 
     public CuppingGridView(Context context) {

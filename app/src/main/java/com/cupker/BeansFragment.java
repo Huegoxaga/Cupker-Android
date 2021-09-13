@@ -24,14 +24,21 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
+/**
+ * This is the bean list page
+ */
 public class BeansFragment extends Fragment {
 
+    // Keys
     private static final String TAG = "===BEAN FRAGMENT===";
 
-    private ArrayList<Bean> beanObjs;
+    // UI & Controllers
     private View view;
     private ListView beanList;
     private BeansFragment self = this;
+
+    // Data
+    private ArrayList<Bean> beanObjs;
 
     public BeansFragment() {
         // Required empty public constructor
@@ -45,14 +52,14 @@ public class BeansFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        // Update data
         beanObjs = new ArrayList<>();
-
         Amplify.DataStore.query(Bean.class,
-                queryRoaster -> {
-                    while (queryRoaster.hasNext()) {
-                        Bean bean = queryRoaster.next();
+                queryBean -> {
+                    while (queryBean.hasNext()) {
+                        Bean bean = queryBean.next();
                         beanObjs.add(bean);
-                        Log.i(TAG, "Get Bean Name: " + bean.getName());
+                        Log.i(TAG, "Get Bean Name: " + bean.toString());
                     }
                     handler.post(r);
                 },
@@ -65,7 +72,7 @@ public class BeansFragment extends Fragment {
     private final Runnable r = new Runnable() {
         @Override
         public void run() {
-            if (view != null && beanList != null){
+            if (view != null && beanList != null) {
                 BeanListAdapter beanListAdapter = new BeanListAdapter(self, beanObjs);
                 beanList.setAdapter(beanListAdapter);
             }
@@ -76,13 +83,15 @@ public class BeansFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        // Init UI
         view = inflater.inflate(R.layout.fragment_beans, container, false);
         Toolbar toolbar = view.findViewById(R.id.bean_frag_toolbar);
         beanList = view.findViewById(R.id.bean_frag_list);
-//        Log.d(TAG, "list length" + beanObjs.size());
+
+        // Setup
         setHasOptionsMenu(true);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
 //        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //        ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         return view;
@@ -90,7 +99,7 @@ public class BeansFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(@NotNull Menu menu, @NotNull MenuInflater inflater) {
-        if (menu != null && inflater != null){
+        if (menu != null && inflater != null) {
             inflater.inflate(R.menu.toolbar_with_add, menu);
             super.onCreateOptionsMenu(menu, inflater);
         }
@@ -99,13 +108,11 @@ public class BeansFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.add_bean_menu_save_button) {
-
             Intent startNewBeamIntent = new Intent(getActivity(), NewBeanActivity.class);
             startActivity(startNewBeamIntent);
             return true;
         }
-        // If we got here, the user's action was not recognized.
-        // Invoke the superclass to handle it.
+        // default handler
         return super.onOptionsItemSelected(item);
     }
 }

@@ -8,20 +8,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 /**
- * For a Dialog we must extend the DialogFragment Class
- * We implement OnClickListener to handle button click events
+ * The grading popup
  */
 public class GradingDialogFragment extends DialogFragment{
 
+    // Declare Data
     private final int listPosition;
     private final int gridPosition;
+
     public GradingDialogFragment(int listPosition, int gridPosition) {
+
+        // Init Data
         this.listPosition = listPosition;
         this.gridPosition = gridPosition;
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         View gradingDialogView = inflater.inflate(R.layout.fragment_grading_dialog, container, false);
 
         gradingDialogView.findViewById(R.id.grading_dialog_score_6_0).setOnClickListener(this::saveScore);

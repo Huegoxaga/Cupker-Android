@@ -7,13 +7,18 @@ import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.AWSDataStorePlugin;
 
+/**
+ * This is the Application Class
+ */
 public class Cupker extends Application {
+
+    // Keys
     private static final String TAG = "===CUPPING ACTIVITY===";
 
     @Override
     public void onCreate() {
         super.onCreate();
-
+        // Init
         try {
             Amplify.addPlugin(new AWSDataStorePlugin());
             Amplify.addPlugin(new AWSCognitoAuthPlugin());
