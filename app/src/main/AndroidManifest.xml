@@ -18,7 +18,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Cupker">
-        <activity android:name=".BeanActivity"></activity>
+        <activity
+            android:name=".FullscreenDemo"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_fullscreen"
+            android:theme="@style/Theme.Cupker.Fullscreen"></activity>
+        <activity android:name=".BeanActivity" />
         <activity
             android:name=".HistoryActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"

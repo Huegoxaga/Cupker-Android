@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amplifyframework.core.Amplify;
+import com.amplifyframework.core.model.query.Where;
 import com.amplifyframework.datastore.generated.model.Bean;
 import com.amplifyframework.datastore.generated.model.Sample;
 import com.amplifyframework.datastore.generated.model.Status;
@@ -38,16 +39,18 @@ public class CuppingListAdapter extends BaseAdapter {
     private final double[] roastLevel = { 95, 85, 75, 65, 55, 45, 35, 25};
     private final String[] roastLevelStr = { "# 95", "# 85", "# 75", "# 65", "# 55", "# 45", "# 35", "# 25"};
     private final List<Sample> samples;
+    private final Boolean editable;
 
     /**
      * This holds the cupping list for all samples in one session
      * @param context context
      * @param samples list of Sample data objects
      */
-    public CuppingListAdapter(Context context, List<Sample> samples) {
+    public CuppingListAdapter(Context context, List<Sample> samples, Boolean editable) {
 
         // TODO: Read only flag for this list
         // Init Data
+        this.editable = editable;
 
         // Assign data
         this.beanObjs = new ArrayList<>();
@@ -65,6 +68,7 @@ public class CuppingListAdapter extends BaseAdapter {
 
         // Query & populate Bean data
         Amplify.DataStore.query(Bean.class,
+                Where.matches(Bean.STATUS.eq(Status.ACTIVE)),
                 queryRoaster -> {
                     while (queryRoaster.hasNext()) {
                         Bean bean = queryRoaster.next();
@@ -116,7 +120,7 @@ public class CuppingListAdapter extends BaseAdapter {
         roastLevelSpinner.setAdapter(rosterLevelArray);
         roastLevelSpinner.setSelection(3, false);
 
-        CuppingGridAdapter cuppingGridAdapter = new CuppingGridAdapter(cuppingListView.getContext(), samples.get(position), position);
+        CuppingGridAdapter cuppingGridAdapter = new CuppingGridAdapter(cuppingListView.getContext(), samples.get(position), position, editable);
         cuppingGridView.setAdapter(cuppingGridAdapter);
         sampleName.setText(context.getResources().getString(R.string.cupping_list_title_label, position + 1));
 

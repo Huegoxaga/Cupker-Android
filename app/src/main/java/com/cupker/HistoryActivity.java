@@ -1,11 +1,13 @@
 package com.cupker;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -37,17 +39,25 @@ public class HistoryActivity extends AppCompatActivity {
     // UI & Controllers
     private ListView cuppingListView;
     private TextView titleText;
-    private CuppingListAdapter cuppingListAdapter;
+    private HistoryListAdapter cuppingListAdapter;
 
     // Data
     private Session session;
     private List<Sample> samples;
+    private final int flags = View.SYSTEM_UI_FLAG_LOW_PROFILE
+            | View.SYSTEM_UI_FLAG_FULLSCREEN
+            | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //Init Views
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_history);
         FrameLayout mainFrame = findViewById(R.id.cupping_activity_main_frame);
         cuppingListView = findViewById(R.id.cupping_activity_list);
@@ -55,7 +65,8 @@ public class HistoryActivity extends AppCompatActivity {
         LayoutInflater layoutInflater = getLayoutInflater();
         View cuppingListViewHeader = layoutInflater.inflate(R.layout.activity_cupping_list_header, cuppingListView, false);
         cuppingListView.addHeaderView(cuppingListViewHeader);
-        titleText = findViewById(R.id.cupping_activity_title_label); // View exists only after adding header
+        titleText = findViewById(R.id.cupping_activity_title_date); // View exists only after adding header
+        final View decorView = getWindow().getDecorView();
 
         // Init Data
         samples = new ArrayList<>();
@@ -71,7 +82,7 @@ public class HistoryActivity extends AppCompatActivity {
                                             Sample s = matches.next();
                                             samples.add(s);
                                         }
-                                        cuppingListAdapter = new CuppingListAdapter(this, samples);
+                                        cuppingListAdapter = new HistoryListAdapter(this, samples, false);
                                         handler.post(updateView);
                                     },
                                     failure -> Log.e(TAG, "Query failed.", failure)
@@ -83,12 +94,14 @@ public class HistoryActivity extends AppCompatActivity {
         }
 
         // Setup
-        mainFrame.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        mainFrame.setSystemUiVisibility(flags);
+
+        // Listener
+        decorView.setOnSystemUiVisibilityChangeListener(visibility -> {
+            if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                decorView.setSystemUiVisibility(flags);
+            }
+        });
     }
 
     private final Handler handler = new Handler();
@@ -96,7 +109,7 @@ public class HistoryActivity extends AppCompatActivity {
     private final Runnable updateView = new Runnable() {
         @Override
         public void run() {
-            if (cuppingListView != null && cuppingListAdapter != null){
+            if (cuppingListView != null && cuppingListAdapter != null) {
                 cuppingListView.setAdapter(cuppingListAdapter);
                 titleText.setText(session.getName());
             }

@@ -18,7 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amplifyframework.core.Amplify;
+import com.amplifyframework.core.model.query.Where;
 import com.amplifyframework.datastore.generated.model.Roaster;
+import com.amplifyframework.datastore.generated.model.Status;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -68,6 +70,7 @@ public class CuppingFragment extends Fragment {
 
         // Query and assign rest roaster records
         Amplify.DataStore.query(Roaster.class,
+                Where.matches(Roaster.STATUS.eq(Status.ACTIVE)),
                 queryRoaster -> {
                     while (queryRoaster.hasNext()) {
                         Roaster roaster = queryRoaster.next();

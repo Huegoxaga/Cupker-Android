@@ -30,14 +30,16 @@ public class CuppingGridAdapter extends BaseAdapter {
     private final String[] gradingTitles = { "Aroma", "Flavor", "Aftertaste", "Acidity", "Body",
             "Uniformity", "Clean Cup", "Overall", "Balance", "Sweetness", "Defect Cups", "Intensity" };
     private final int listPosition;
+    private final boolean editable;
 
-    public CuppingGridAdapter(Context context, Sample sample, int listPosition) {
+    public CuppingGridAdapter(Context context, Sample sample, int listPosition, Boolean editable) {
         // Init UI
         this.context = (FragmentActivity) context;
 
         // Init Data
         this.listPosition = listPosition;
         this.sample = sample;
+        this.editable = editable;
     }
 
     @Override
@@ -112,8 +114,10 @@ public class CuppingGridAdapter extends BaseAdapter {
         // Listener
         gradingView.setOnClickListener(v -> {
             Log.d(TAG, " Selected in grid ID " + position);
-            GradingDialogFragment gradingDialog = new GradingDialogFragment(listPosition , position);
-            gradingDialog.show(context.getSupportFragmentManager(), null);
+            if (editable){
+                GradingDialogFragment gradingDialog = new GradingDialogFragment(listPosition , position);
+                gradingDialog.show(context.getSupportFragmentManager(), null);
+            }
         });
 
         return gradingView;

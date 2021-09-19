@@ -19,6 +19,7 @@ import com.amplifyframework.core.Amplify;
 import com.amplifyframework.core.model.query.Where;
 import com.amplifyframework.datastore.generated.model.Bean;
 import com.amplifyframework.datastore.generated.model.Session;
+import com.amplifyframework.datastore.generated.model.Status;
 
 import java.io.ByteArrayOutputStream;
 
@@ -52,7 +53,7 @@ public class BeanActivity extends AppCompatActivity {
         if (intent != null && intent.hasExtra(BEAN_ID)) {
             String beanID = intent.getStringExtra(BEAN_ID);
             Log.d(TAG, beanID);
-            Amplify.DataStore.query(Bean.class, Where.matches(Bean.ID.eq(beanID)),
+            Amplify.DataStore.query(Bean.class, Where.id(beanID),
                     match -> {
                         if (match.hasNext()) {
                             bean = match.next();

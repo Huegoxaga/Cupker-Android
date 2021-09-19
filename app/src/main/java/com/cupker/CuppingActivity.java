@@ -1,13 +1,18 @@
 package com.cupker;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -38,27 +43,41 @@ public class CuppingActivity extends AppCompatActivity {
     // UI & Controllers
     private ListView cuppingListView;
     private CuppingListAdapter cuppingListAdapter;
+    private LinearLayout mainFrame;
 
     // Data
     private List<Sample> samples;
     private Session newSession;
     private String sessionName;
+    private String roastTimeString;
+    private final int flags = View.SYSTEM_UI_FLAG_LOW_PROFILE
+            | View.SYSTEM_UI_FLAG_FULLSCREEN
+            | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //Init Views
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_cupping);
-        FrameLayout mainFrame = findViewById(R.id.cupping_activity_main_frame);
+        mainFrame = findViewById(R.id.cupping_activity_main_frame);
         cuppingListView = findViewById(R.id.cupping_activity_list);
         Intent intent = getIntent();
         LayoutInflater layoutInflater = getLayoutInflater();
-        View cuppingListViewHeader = layoutInflater.inflate(R.layout.activity_cupping_list_header, cuppingListView, false);
+        Toolbar toolBar = findViewById(R.id.cupping_activity_toolbar);
+        TextView titleText = findViewById(R.id.cupping_toolbar_title);
+//        View cuppingListViewHeader = layoutInflater.inflate(R.layout.activity_cupping_list_header, cuppingListView, false);
         View cuppingListViewFooter = layoutInflater.inflate(R.layout.activity_cupping_list_footer, cuppingListView, false);
-        cuppingListView.addHeaderView(cuppingListViewHeader);
+//        cuppingListView.addHeaderView(cuppingListViewHeader);
         cuppingListView.addFooterView(cuppingListViewFooter);
-        TextView titleText = findViewById(R.id.cupping_activity_title_label); // View exists only after adding header
+//        TextView titleDate = findViewById(R.id.cupping_activity_title_date); // View exists only after adding header
+//        TextView titleRoaster = findViewById(R.id.cupping_activity_title_roaster); // View exists only after adding header
+        final View decorView = getWindow().getDecorView();
 
         // Init Data
         if (intent != null
@@ -68,7 +87,7 @@ public class CuppingActivity extends AppCompatActivity {
                 && intent.hasExtra(SAMPLE_NUMBER)) {
             sessionName = intent.getStringExtra(SESSION_NAME);
             String roasterID = intent.getStringExtra(ROASTER_ID);
-            String roastTimeString = intent.getStringExtra(ROAST_TIME);
+            roastTimeString = intent.getStringExtra(ROAST_TIME);
             int sampleNum = intent.getIntExtra(SAMPLE_NUMBER, 0);
 
             newSession = Session.builder()
@@ -80,7 +99,7 @@ public class CuppingActivity extends AppCompatActivity {
 
             Log.i(TAG, "Got Session: " + newSession);
             samples = new ArrayList<>();
-            for(int i = 0; i<sampleNum; i++){
+            for (int i = 0; i < sampleNum; i++) {
                 Sample newSample = Sample.builder()
                         .sessionId(newSession.getId())
                         .beanId("00000000-0000-0000-0000-000000000000")
@@ -104,30 +123,26 @@ public class CuppingActivity extends AppCompatActivity {
             Log.d(TAG, "Check List" + samples.toString());
             Log.d(TAG, String.format("Sample Number: %d in onCreate", samples.size()));
             Log.d(TAG, String.format("Session Name: %s in onCreate", sessionName));
-            cuppingListAdapter = new CuppingListAdapter(this, samples);
+            cuppingListAdapter = new CuppingListAdapter(this, samples, true);
         }
 
         // Setup
-        mainFrame.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE
-                | View.SYSTEM_UI_FLAG_FULLSCREEN
-                | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-        titleText.setText(sessionName);
+        mainFrame.setSystemUiVisibility(flags);
         cuppingListView.setAdapter(cuppingListAdapter);
+        setSupportActionBar(toolBar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        titleText.setText(sessionName);
+//        titleDate.setText(roastTimeString);
 
         // Listener
         findViewById(R.id.cupping_activity_save_button).setOnClickListener(v -> {
-
             // Set result code for redirect
             setResult(DONE_CUPPING);
 
             // Upload completed cupping Data
             Amplify.DataStore.save(newSession,
                     savedSession -> {
-                        for (Sample sample : samples)
-                            {
+                        for (Sample sample : samples) {
                             Log.i(TAG, "Saving sample: " + sample.toString());
                             Amplify.DataStore.save(sample,
                                     success -> Log.i(TAG, "Saved item: " + success.item().getId()),
@@ -141,69 +156,82 @@ public class CuppingActivity extends AppCompatActivity {
             finish();
         });
 
+        decorView.setOnSystemUiVisibilityChangeListener(visibility -> {
+            if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                decorView.setSystemUiVisibility(flags);
+            }
+        });
+//        mainFrame.setOnTouchListener((view, motionEvent) -> {
+//            getSupportActionBar().hide();
+//            return false;
+//        });
+//        getSupportActionBar().addOnMenuVisibilityListener((isVisible) -> {
+//            Log.e(TAG, "UPUPUPUP");
+//        });
     }
+
 
     public void setScore(int listPosition, int gridPosition, double newScore) {
         Sample sample = samples.get(listPosition);
         Sample editedSample;
 
         switch (gridPosition) {
-            case 0 :
+            case 0:
                 editedSample = sample.copyOfBuilder()
                         .aroma(newScore)
                         .build();
                 break;
-            case 1 :
+            case 1:
                 editedSample = sample.copyOfBuilder()
                         .flavor(newScore)
                         .build();
                 break;
-            case 2 :
+            case 2:
                 editedSample = sample.copyOfBuilder()
                         .afterTaste(newScore)
                         .build();
                 break;
-            case 3 :
+            case 3:
                 editedSample = sample.copyOfBuilder()
                         .acidity(newScore)
                         .build();
                 break;
-            case 4 :
+            case 4:
                 editedSample = sample.copyOfBuilder()
                         .body(newScore)
                         .build();
                 break;
-            case 5 :
+            case 5:
                 editedSample = sample.copyOfBuilder()
                         .uniformity(newScore)
                         .build();
                 break;
-            case 6 :
+            case 6:
                 editedSample = sample.copyOfBuilder()
                         .cleanCup(newScore)
                         .build();
                 break;
-            case 7 :
+            case 7:
                 editedSample = sample.copyOfBuilder()
                         .overall(newScore)
                         .build();
                 break;
-            case 8 :
+            case 8:
                 editedSample = sample.copyOfBuilder()
                         .balance(newScore)
                         .build();
                 break;
-            case 9 :
+            case 9:
                 editedSample = sample.copyOfBuilder()
                         .sweetness(newScore)
                         .build();
                 break;
-            case 10 :
+            case 10:
                 editedSample = sample.copyOfBuilder()
                         .defectCount(newScore)
                         .build();
                 break;
-            case 11 :
+            case 11:
                 editedSample = sample.copyOfBuilder()
                         .defectType(newScore)
                         .build();

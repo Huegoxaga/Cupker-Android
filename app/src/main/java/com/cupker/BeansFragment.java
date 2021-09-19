@@ -20,6 +20,9 @@ import android.widget.ListView;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.core.model.query.Where;
 import com.amplifyframework.datastore.generated.model.Bean;
+import com.amplifyframework.datastore.generated.model.Roaster;
+import com.amplifyframework.datastore.generated.model.Session;
+import com.amplifyframework.datastore.generated.model.Status;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -60,6 +63,7 @@ public class BeansFragment extends Fragment {
         // Update data
         beanObjs = new ArrayList<>();
         Amplify.DataStore.query(Bean.class,
+                Where.matches(Bean.STATUS.eq(Status.ACTIVE)),
                 queryBean -> {
                     while (queryBean.hasNext()) {
                         Bean bean = queryBean.next();
@@ -110,13 +114,6 @@ public class BeansFragment extends Fragment {
             menuItemDelete = menu.findItem(R.id.add_bean_menu_delete_button);
             menuItemAdd = menu.findItem(R.id.add_bean_menu_save_button);
             menuItemDelete.setVisible(false);
-            menuItemDelete.setOnMenuItemClickListener(item -> {
-                beanListAdapter.notifyDataSetChanged();
-
-                beanListAdapter.removeSelectedBeans();
-                showDeleteMenu(false);
-                return true;
-            });
             super.onCreateOptionsMenu(menu, inflater);
         }
     }
@@ -126,7 +123,10 @@ public class BeansFragment extends Fragment {
         if (item.getItemId() == R.id.add_bean_menu_save_button) {
             Intent startNewBeamIntent = new Intent(getActivity(), NewBeanActivity.class);
             startActivity(startNewBeamIntent);
-            return true;
+        }else {
+            beanListAdapter.notifyDataSetChanged();
+            beanListAdapter.removeSelectedBeans();
+            showDeleteMenu(false);
         }
         // default handler
         return super.onOptionsItemSelected(item);
@@ -137,19 +137,23 @@ public class BeansFragment extends Fragment {
         menuItemAdd.setVisible(!show);
     }
 
-    public void removeSelectedBeans(List<Bean> selectedBeans) {
-        beanObjs.removeAll(selectedBeans);
+    public void removeSelectedBeans(List<Bean> selectedSessions) {
+        beanObjs.removeAll(selectedSessions);
 
-        for (Bean bean : selectedBeans) {
-            Amplify.DataStore.query(Bean.class, Where.matches(Bean.ID.eq(bean.getId())),
+        for (Bean session : selectedSessions) {
+            Amplify.DataStore.query(Session.class, Where.id(session.getId()),
                     match -> {
                         if (match.hasNext()) {
-                            Bean getBean = match.next();
-                            Log.d(TAG, "Bean for deletion: =====" + getBean.getName());
-                            Amplify.DataStore.delete(getBean,
-                                    deleted -> Log.i(TAG, "Deleted a bean."),
-                                    failure -> Log.e(TAG, "Delete failed.", failure)
+                            Session getBean = match.next();
+
+                            Session updatedBean = getBean.copyOfBuilder()
+                                    .status(Status.INACTIVE)
+                                    .build();
+                            Amplify.DataStore.save(updatedBean,
+                                    updated -> Log.i(TAG, "Updated a Session."),
+                                    failure -> Log.e(TAG, "Update failed.", failure)
                             );
+                            Log.d(TAG, "Inactivate Session =====" + getBean.getName());
                         }
                     },
                     failure -> Log.e(TAG, "Query failed.", failure)
