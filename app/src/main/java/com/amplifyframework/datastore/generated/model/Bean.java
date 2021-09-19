@@ -1,7 +1,5 @@
 package com.amplifyframework.datastore.generated.model;
 
-import com.amplifyframework.core.model.annotations.HasMany;
-import com.amplifyframework.core.model.annotations.BelongsTo;
 import com.amplifyframework.core.model.temporal.Temporal;
 
 import java.util.List;
@@ -28,6 +26,8 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 })
 public final class Bean implements Model {
   public static final QueryField ID = field("Bean", "id");
+  public static final QueryField FLAVORS = field("Bean", "flavors");
+  public static final QueryField STATUS = field("Bean", "status");
   public static final QueryField NAME = field("Bean", "name");
   public static final QueryField PROCESS = field("Bean", "process");
   public static final QueryField ORIGIN = field("Bean", "origin");
@@ -39,9 +39,10 @@ public final class Bean implements Model {
   public static final QueryField DENSITY = field("Bean", "density");
   public static final QueryField GRADE = field("Bean", "grade");
   public static final QueryField IMAGE = field("Bean", "image");
-  public static final QueryField DEALER = field("Bean", "beanDealerId");
+  public static final QueryField DEALER = field("Bean", "dealer");
   private final @ModelField(targetType="ID", isRequired = true) String id;
-  private final @ModelField(targetType="Flavor") @HasMany(associatedWith = "beanID", type = Flavor.class) List<Flavor> flavors = null;
+  private final @ModelField(targetType="ID") List<String> flavors;
+  private final @ModelField(targetType="Status", isRequired = true) Status status;
   private final @ModelField(targetType="String") String name;
   private final @ModelField(targetType="String") String process;
   private final @ModelField(targetType="String") String origin;
@@ -53,15 +54,19 @@ public final class Bean implements Model {
   private final @ModelField(targetType="String") String density;
   private final @ModelField(targetType="String") String grade;
   private final @ModelField(targetType="String") String image;
-  private final @ModelField(targetType="Dealer") @BelongsTo(targetName = "beanDealerId", type = Dealer.class) Dealer dealer;
+  private final @ModelField(targetType="ID") String dealer;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;
   public String getId() {
       return id;
   }
   
-  public List<Flavor> getFlavors() {
+  public List<String> getFlavors() {
       return flavors;
+  }
+  
+  public Status getStatus() {
+      return status;
   }
   
   public String getName() {
@@ -108,7 +113,7 @@ public final class Bean implements Model {
       return image;
   }
   
-  public Dealer getDealer() {
+  public String getDealer() {
       return dealer;
   }
   
@@ -120,8 +125,10 @@ public final class Bean implements Model {
       return updatedAt;
   }
   
-  private Bean(String id, String name, String process, String origin, String region, String altitude_low, String altitude_high, String moisture, String variety, String density, String grade, String image, Dealer dealer) {
+  private Bean(String id, List<String> flavors, Status status, String name, String process, String origin, String region, String altitude_low, String altitude_high, String moisture, String variety, String density, String grade, String image, String dealer) {
     this.id = id;
+    this.flavors = flavors;
+    this.status = status;
     this.name = name;
     this.process = process;
     this.origin = origin;
@@ -145,6 +152,8 @@ public final class Bean implements Model {
       } else {
       Bean bean = (Bean) obj;
       return ObjectsCompat.equals(getId(), bean.getId()) &&
+              ObjectsCompat.equals(getFlavors(), bean.getFlavors()) &&
+              ObjectsCompat.equals(getStatus(), bean.getStatus()) &&
               ObjectsCompat.equals(getName(), bean.getName()) &&
               ObjectsCompat.equals(getProcess(), bean.getProcess()) &&
               ObjectsCompat.equals(getOrigin(), bean.getOrigin()) &&
@@ -166,6 +175,8 @@ public final class Bean implements Model {
    public int hashCode() {
     return new StringBuilder()
       .append(getId())
+      .append(getFlavors())
+      .append(getStatus())
       .append(getName())
       .append(getProcess())
       .append(getOrigin())
@@ -189,6 +200,8 @@ public final class Bean implements Model {
     return new StringBuilder()
       .append("Bean {")
       .append("id=" + String.valueOf(getId()) + ", ")
+      .append("flavors=" + String.valueOf(getFlavors()) + ", ")
+      .append("status=" + String.valueOf(getStatus()) + ", ")
       .append("name=" + String.valueOf(getName()) + ", ")
       .append("process=" + String.valueOf(getProcess()) + ", ")
       .append("origin=" + String.valueOf(getOrigin()) + ", ")
@@ -207,7 +220,7 @@ public final class Bean implements Model {
       .toString();
   }
   
-  public static BuildStep builder() {
+  public static StatusStep builder() {
       return new Builder();
   }
   
@@ -243,12 +256,16 @@ public final class Bean implements Model {
       null,
       null,
       null,
+      null,
+      null,
       null
     );
   }
   
   public CopyOfBuilder copyOfBuilder() {
     return new CopyOfBuilder(id,
+      flavors,
+      status,
       name,
       process,
       origin,
@@ -262,9 +279,15 @@ public final class Bean implements Model {
       image,
       dealer);
   }
+  public interface StatusStep {
+    BuildStep status(Status status);
+  }
+  
+
   public interface BuildStep {
     Bean build();
     BuildStep id(String id) throws IllegalArgumentException;
+    BuildStep flavors(List<String> flavors);
     BuildStep name(String name);
     BuildStep process(String process);
     BuildStep origin(String origin);
@@ -276,12 +299,14 @@ public final class Bean implements Model {
     BuildStep density(String density);
     BuildStep grade(String grade);
     BuildStep image(String image);
-    BuildStep dealer(Dealer dealer);
+    BuildStep dealer(String dealer);
   }
   
 
-  public static class Builder implements BuildStep {
+  public static class Builder implements StatusStep, BuildStep {
     private String id;
+    private Status status;
+    private List<String> flavors;
     private String name;
     private String process;
     private String origin;
@@ -293,13 +318,15 @@ public final class Bean implements Model {
     private String density;
     private String grade;
     private String image;
-    private Dealer dealer;
+    private String dealer;
     @Override
      public Bean build() {
         String id = this.id != null ? this.id : UUID.randomUUID().toString();
         
         return new Bean(
           id,
+          flavors,
+          status,
           name,
           process,
           origin,
@@ -312,6 +339,19 @@ public final class Bean implements Model {
           grade,
           image,
           dealer);
+    }
+    
+    @Override
+     public BuildStep status(Status status) {
+        Objects.requireNonNull(status);
+        this.status = status;
+        return this;
+    }
+    
+    @Override
+     public BuildStep flavors(List<String> flavors) {
+        this.flavors = flavors;
+        return this;
     }
     
     @Override
@@ -381,37 +421,28 @@ public final class Bean implements Model {
     }
     
     @Override
-     public BuildStep dealer(Dealer dealer) {
+     public BuildStep dealer(String dealer) {
         this.dealer = dealer;
         return this;
     }
     
     /** 
-     * WARNING: Do not set ID when creating a new object. Leave this blank and one will be auto generated for you.
-     * This should only be set when referring to an already existing object.
      * @param id id
      * @return Current Builder instance, for fluent method chaining
-     * @throws IllegalArgumentException Checks that ID is in the proper format
      */
-    public BuildStep id(String id) throws IllegalArgumentException {
+    public BuildStep id(String id) {
         this.id = id;
-        
-        try {
-            UUID.fromString(id); // Check that ID is in the UUID format - if not an exception is thrown
-        } catch (Exception exception) {
-          throw new IllegalArgumentException("Model IDs must be unique in the format of UUID.",
-                    exception);
-        }
-        
         return this;
     }
   }
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String name, String process, String origin, String region, String altitudeLow, String altitudeHigh, String moisture, String variety, String density, String grade, String image, Dealer dealer) {
+    private CopyOfBuilder(String id, List<String> flavors, Status status, String name, String process, String origin, String region, String altitudeLow, String altitudeHigh, String moisture, String variety, String density, String grade, String image, String dealer) {
       super.id(id);
-      super.name(name)
+      super.status(status)
+        .flavors(flavors)
+        .name(name)
         .process(process)
         .origin(origin)
         .region(region)
@@ -423,6 +454,16 @@ public final class Bean implements Model {
         .grade(grade)
         .image(image)
         .dealer(dealer);
+    }
+    
+    @Override
+     public CopyOfBuilder status(Status status) {
+      return (CopyOfBuilder) super.status(status);
+    }
+    
+    @Override
+     public CopyOfBuilder flavors(List<String> flavors) {
+      return (CopyOfBuilder) super.flavors(flavors);
     }
     
     @Override
@@ -481,7 +522,7 @@ public final class Bean implements Model {
     }
     
     @Override
-     public CopyOfBuilder dealer(Dealer dealer) {
+     public CopyOfBuilder dealer(String dealer) {
       return (CopyOfBuilder) super.dealer(dealer);
     }
   }

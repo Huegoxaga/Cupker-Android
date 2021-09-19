@@ -24,24 +24,19 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 @ModelConfig(pluralName = "Flavors", authRules = {
   @AuthRule(allow = AuthStrategy.OWNER, ownerField = "owner", identityClaim = "cognito:username", provider = "userPools", operations = { ModelOperation.CREATE, ModelOperation.UPDATE, ModelOperation.DELETE, ModelOperation.READ })
 })
-@Index(name = "byBean", fields = {"beanID"})
 public final class Flavor implements Model {
   public static final QueryField ID = field("Flavor", "id");
-  public static final QueryField BEAN_ID = field("Flavor", "beanID");
   public static final QueryField NAME = field("Flavor", "name");
   public static final QueryField TYPE = field("Flavor", "type");
+  public static final QueryField STATUS = field("Flavor", "status");
   private final @ModelField(targetType="ID", isRequired = true) String id;
-  private final @ModelField(targetType="ID", isRequired = true) String beanID;
   private final @ModelField(targetType="String") String name;
   private final @ModelField(targetType="String") String type;
+  private final @ModelField(targetType="Status", isRequired = true) Status status;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;
   public String getId() {
       return id;
-  }
-  
-  public String getBeanId() {
-      return beanID;
   }
   
   public String getName() {
@@ -52,6 +47,10 @@ public final class Flavor implements Model {
       return type;
   }
   
+  public Status getStatus() {
+      return status;
+  }
+  
   public Temporal.DateTime getCreatedAt() {
       return createdAt;
   }
@@ -60,11 +59,11 @@ public final class Flavor implements Model {
       return updatedAt;
   }
   
-  private Flavor(String id, String beanID, String name, String type) {
+  private Flavor(String id, String name, String type, Status status) {
     this.id = id;
-    this.beanID = beanID;
     this.name = name;
     this.type = type;
+    this.status = status;
   }
   
   @Override
@@ -76,9 +75,9 @@ public final class Flavor implements Model {
       } else {
       Flavor flavor = (Flavor) obj;
       return ObjectsCompat.equals(getId(), flavor.getId()) &&
-              ObjectsCompat.equals(getBeanId(), flavor.getBeanId()) &&
               ObjectsCompat.equals(getName(), flavor.getName()) &&
               ObjectsCompat.equals(getType(), flavor.getType()) &&
+              ObjectsCompat.equals(getStatus(), flavor.getStatus()) &&
               ObjectsCompat.equals(getCreatedAt(), flavor.getCreatedAt()) &&
               ObjectsCompat.equals(getUpdatedAt(), flavor.getUpdatedAt());
       }
@@ -88,9 +87,9 @@ public final class Flavor implements Model {
    public int hashCode() {
     return new StringBuilder()
       .append(getId())
-      .append(getBeanId())
       .append(getName())
       .append(getType())
+      .append(getStatus())
       .append(getCreatedAt())
       .append(getUpdatedAt())
       .toString()
@@ -102,16 +101,16 @@ public final class Flavor implements Model {
     return new StringBuilder()
       .append("Flavor {")
       .append("id=" + String.valueOf(getId()) + ", ")
-      .append("beanID=" + String.valueOf(getBeanId()) + ", ")
       .append("name=" + String.valueOf(getName()) + ", ")
       .append("type=" + String.valueOf(getType()) + ", ")
+      .append("status=" + String.valueOf(getStatus()) + ", ")
       .append("createdAt=" + String.valueOf(getCreatedAt()) + ", ")
       .append("updatedAt=" + String.valueOf(getUpdatedAt()))
       .append("}")
       .toString();
   }
   
-  public static BeanIdStep builder() {
+  public static StatusStep builder() {
       return new Builder();
   }
   
@@ -144,12 +143,12 @@ public final class Flavor implements Model {
   
   public CopyOfBuilder copyOfBuilder() {
     return new CopyOfBuilder(id,
-      beanID,
       name,
-      type);
+      type,
+      status);
   }
-  public interface BeanIdStep {
-    BuildStep beanId(String beanId);
+  public interface StatusStep {
+    BuildStep status(Status status);
   }
   
 
@@ -161,9 +160,9 @@ public final class Flavor implements Model {
   }
   
 
-  public static class Builder implements BeanIdStep, BuildStep {
+  public static class Builder implements StatusStep, BuildStep {
     private String id;
-    private String beanID;
+    private Status status;
     private String name;
     private String type;
     @Override
@@ -172,15 +171,15 @@ public final class Flavor implements Model {
         
         return new Flavor(
           id,
-          beanID,
           name,
-          type);
+          type,
+          status);
     }
     
     @Override
-     public BuildStep beanId(String beanId) {
-        Objects.requireNonNull(beanId);
-        this.beanID = beanId;
+     public BuildStep status(Status status) {
+        Objects.requireNonNull(status);
+        this.status = status;
         return this;
     }
     
@@ -197,38 +196,27 @@ public final class Flavor implements Model {
     }
     
     /** 
-     * WARNING: Do not set ID when creating a new object. Leave this blank and one will be auto generated for you.
-     * This should only be set when referring to an already existing object.
      * @param id id
      * @return Current Builder instance, for fluent method chaining
-     * @throws IllegalArgumentException Checks that ID is in the proper format
      */
-    public BuildStep id(String id) throws IllegalArgumentException {
+    public BuildStep id(String id) {
         this.id = id;
-        
-        try {
-            UUID.fromString(id); // Check that ID is in the UUID format - if not an exception is thrown
-        } catch (Exception exception) {
-          throw new IllegalArgumentException("Model IDs must be unique in the format of UUID.",
-                    exception);
-        }
-        
         return this;
     }
   }
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String beanId, String name, String type) {
+    private CopyOfBuilder(String id, String name, String type, Status status) {
       super.id(id);
-      super.beanId(beanId)
+      super.status(status)
         .name(name)
         .type(type);
     }
     
     @Override
-     public CopyOfBuilder beanId(String beanId) {
-      return (CopyOfBuilder) super.beanId(beanId);
+     public CopyOfBuilder status(Status status) {
+      return (CopyOfBuilder) super.status(status);
     }
     
     @Override

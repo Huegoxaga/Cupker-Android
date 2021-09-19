@@ -16,6 +16,7 @@ import com.amplifyframework.core.model.temporal.Temporal;
 import com.amplifyframework.datastore.generated.model.Bean;
 import com.amplifyframework.datastore.generated.model.Sample;
 import com.amplifyframework.datastore.generated.model.Session;
+import com.amplifyframework.datastore.generated.model.Status;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +75,7 @@ public class CuppingActivity extends AppCompatActivity {
                     .name(sessionName)
                     .roasterId(roasterID)
                     .roastTime(new Temporal.DateTime(roastTimeString))
+                    .status(Status.ACTIVE)
                     .build();
 
             Log.i(TAG, "Got Session: " + newSession);
@@ -81,6 +83,7 @@ public class CuppingActivity extends AppCompatActivity {
             for(int i = 0; i<sampleNum; i++){
                 Sample newSample = Sample.builder()
                         .sessionId(newSession.getId())
+                        .beanId("00000000-0000-0000-0000-000000000000")
                         .aroma(6.0)
                         .flavor(6.0)
                         .acidity(6.0)
@@ -124,8 +127,8 @@ public class CuppingActivity extends AppCompatActivity {
             Amplify.DataStore.save(newSession,
                     savedSession -> {
                         for (Sample sample : samples)
-                        {
-                            Log.i(TAG, "Saving sample: " + sample);
+                            {
+                            Log.i(TAG, "Saving sample: " + sample.toString());
                             Amplify.DataStore.save(sample,
                                     success -> Log.i(TAG, "Saved item: " + success.item().getId()),
                                     error -> Log.e(TAG, "Could not save sample", error)
@@ -234,9 +237,10 @@ public class CuppingActivity extends AppCompatActivity {
     public void setBean(int listPosition, Bean bean) {
         Sample sample = samples.get(listPosition);
         Sample editedSample = sample.copyOfBuilder()
-                .bean(bean)
+                .beanId(bean.getId())
                 .build();
         samples.set(listPosition, editedSample);
         Log.d(TAG, editedSample + "Edited in list index" + listPosition);
+
     }
 }

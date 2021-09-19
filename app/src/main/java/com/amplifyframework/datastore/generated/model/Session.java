@@ -1,6 +1,5 @@
 package com.amplifyframework.datastore.generated.model;
 
-import com.amplifyframework.core.model.annotations.HasOne;
 import com.amplifyframework.core.model.temporal.Temporal;
 import com.amplifyframework.core.model.annotations.HasMany;
 
@@ -26,17 +25,19 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 @ModelConfig(pluralName = "Sessions", authRules = {
   @AuthRule(allow = AuthStrategy.OWNER, ownerField = "owner", identityClaim = "cognito:username", provider = "userPools", operations = { ModelOperation.CREATE, ModelOperation.UPDATE, ModelOperation.DELETE, ModelOperation.READ })
 })
+@Index(name = "byRoaster", fields = {"roasterID","roast_time"})
 public final class Session implements Model {
   public static final QueryField ID = field("Session", "id");
   public static final QueryField NAME = field("Session", "name");
   public static final QueryField ROASTER_ID = field("Session", "roasterID");
   public static final QueryField ROAST_TIME = field("Session", "roast_time");
+  public static final QueryField STATUS = field("Session", "status");
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="String", isRequired = true) String name;
-  private final @ModelField(targetType="Roaster") @HasOne(associatedWith = "id", type = Roaster.class) Roaster roaster = null;
   private final @ModelField(targetType="ID", isRequired = true) String roasterID;
   private final @ModelField(targetType="AWSDateTime", isRequired = true) Temporal.DateTime roast_time;
-  private final @ModelField(targetType="Sample") @HasMany(associatedWith = "sessionID", type = Sample.class) List<Sample> samples = null;
+  private final @ModelField(targetType="Status", isRequired = true) Status status;
+  private final @ModelField(targetType="Sample") @HasMany(associatedWith = "sessionID", type = Sample.class) List<Sample> sample = null;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;
   public String getId() {
@@ -47,10 +48,6 @@ public final class Session implements Model {
       return name;
   }
   
-  public Roaster getRoaster() {
-      return roaster;
-  }
-  
   public String getRoasterId() {
       return roasterID;
   }
@@ -59,8 +56,12 @@ public final class Session implements Model {
       return roast_time;
   }
   
-  public List<Sample> getSamples() {
-      return samples;
+  public Status getStatus() {
+      return status;
+  }
+  
+  public List<Sample> getSample() {
+      return sample;
   }
   
   public Temporal.DateTime getCreatedAt() {
@@ -71,11 +72,12 @@ public final class Session implements Model {
       return updatedAt;
   }
   
-  private Session(String id, String name, String roasterID, Temporal.DateTime roast_time) {
+  private Session(String id, String name, String roasterID, Temporal.DateTime roast_time, Status status) {
     this.id = id;
     this.name = name;
     this.roasterID = roasterID;
     this.roast_time = roast_time;
+    this.status = status;
   }
   
   @Override
@@ -90,6 +92,7 @@ public final class Session implements Model {
               ObjectsCompat.equals(getName(), session.getName()) &&
               ObjectsCompat.equals(getRoasterId(), session.getRoasterId()) &&
               ObjectsCompat.equals(getRoastTime(), session.getRoastTime()) &&
+              ObjectsCompat.equals(getStatus(), session.getStatus()) &&
               ObjectsCompat.equals(getCreatedAt(), session.getCreatedAt()) &&
               ObjectsCompat.equals(getUpdatedAt(), session.getUpdatedAt());
       }
@@ -102,6 +105,7 @@ public final class Session implements Model {
       .append(getName())
       .append(getRoasterId())
       .append(getRoastTime())
+      .append(getStatus())
       .append(getCreatedAt())
       .append(getUpdatedAt())
       .toString()
@@ -116,6 +120,7 @@ public final class Session implements Model {
       .append("name=" + String.valueOf(getName()) + ", ")
       .append("roasterID=" + String.valueOf(getRoasterId()) + ", ")
       .append("roast_time=" + String.valueOf(getRoastTime()) + ", ")
+      .append("status=" + String.valueOf(getStatus()) + ", ")
       .append("createdAt=" + String.valueOf(getCreatedAt()) + ", ")
       .append("updatedAt=" + String.valueOf(getUpdatedAt()))
       .append("}")
@@ -149,6 +154,7 @@ public final class Session implements Model {
       id,
       null,
       null,
+      null,
       null
     );
   }
@@ -157,7 +163,8 @@ public final class Session implements Model {
     return new CopyOfBuilder(id,
       name,
       roasterID,
-      roast_time);
+      roast_time,
+      status);
   }
   public interface NameStep {
     RoasterIdStep name(String name);
@@ -170,7 +177,12 @@ public final class Session implements Model {
   
 
   public interface RoastTimeStep {
-    BuildStep roastTime(Temporal.DateTime roastTime);
+    StatusStep roastTime(Temporal.DateTime roastTime);
+  }
+  
+
+  public interface StatusStep {
+    BuildStep status(Status status);
   }
   
 
@@ -180,11 +192,12 @@ public final class Session implements Model {
   }
   
 
-  public static class Builder implements NameStep, RoasterIdStep, RoastTimeStep, BuildStep {
+  public static class Builder implements NameStep, RoasterIdStep, RoastTimeStep, StatusStep, BuildStep {
     private String id;
     private String name;
     private String roasterID;
     private Temporal.DateTime roast_time;
+    private Status status;
     @Override
      public Session build() {
         String id = this.id != null ? this.id : UUID.randomUUID().toString();
@@ -193,7 +206,8 @@ public final class Session implements Model {
           id,
           name,
           roasterID,
-          roast_time);
+          roast_time,
+          status);
     }
     
     @Override
@@ -211,40 +225,37 @@ public final class Session implements Model {
     }
     
     @Override
-     public BuildStep roastTime(Temporal.DateTime roastTime) {
+     public StatusStep roastTime(Temporal.DateTime roastTime) {
         Objects.requireNonNull(roastTime);
         this.roast_time = roastTime;
         return this;
     }
     
+    @Override
+     public BuildStep status(Status status) {
+        Objects.requireNonNull(status);
+        this.status = status;
+        return this;
+    }
+    
     /** 
-     * WARNING: Do not set ID when creating a new object. Leave this blank and one will be auto generated for you.
-     * This should only be set when referring to an already existing object.
      * @param id id
      * @return Current Builder instance, for fluent method chaining
-     * @throws IllegalArgumentException Checks that ID is in the proper format
      */
-    public BuildStep id(String id) throws IllegalArgumentException {
+    public BuildStep id(String id) {
         this.id = id;
-        
-        try {
-            UUID.fromString(id); // Check that ID is in the UUID format - if not an exception is thrown
-        } catch (Exception exception) {
-          throw new IllegalArgumentException("Model IDs must be unique in the format of UUID.",
-                    exception);
-        }
-        
         return this;
     }
   }
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String name, String roasterId, Temporal.DateTime roastTime) {
+    private CopyOfBuilder(String id, String name, String roasterId, Temporal.DateTime roastTime, Status status) {
       super.id(id);
       super.name(name)
         .roasterId(roasterId)
-        .roastTime(roastTime);
+        .roastTime(roastTime)
+        .status(status);
     }
     
     @Override
@@ -260,6 +271,11 @@ public final class Session implements Model {
     @Override
      public CopyOfBuilder roastTime(Temporal.DateTime roastTime) {
       return (CopyOfBuilder) super.roastTime(roastTime);
+    }
+    
+    @Override
+     public CopyOfBuilder status(Status status) {
+      return (CopyOfBuilder) super.status(status);
     }
   }
   

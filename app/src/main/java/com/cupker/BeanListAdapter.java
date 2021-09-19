@@ -6,11 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amplifyframework.datastore.generated.model.Bean;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,19 +30,21 @@ public class BeanListAdapter extends BaseAdapter {
     private final BeansFragment beansFragment;
 
     // Data
-    private final int beanNum;
-    private final List<Bean> beans;
+    private List<Bean> beans;
+    private List<Bean> selectedBeans;
+    private List<View> selectedRows;
 
     public BeanListAdapter(BeansFragment fragment, List<Bean> beans) {
         // Init Data
         this.beansFragment = fragment;
-        this.beanNum = beans.size();
         this.beans = beans;
+        this.selectedBeans = new ArrayList<>();
+        this.selectedRows = new ArrayList<>();
     }
 
     @Override
     public int getCount() {
-        return beanNum ;
+        return beans.size();
     }
 
     @Override
@@ -71,8 +76,36 @@ public class BeanListAdapter extends BaseAdapter {
             startHistoryIntent.putExtra(BEAN_ID, beans.get(position).getId());
             beansFragment.startActivityForResult(startHistoryIntent, START_BEAN_ACTIVITY);
         });
+        beansListView.setOnLongClickListener(view -> {
+            // highlight and add to newly selected items to list, reset existing item from list
+            if(selectedRows.contains(view)){
+                selectedRows.remove(view);
+                selectedBeans.remove(beans.get(position));
+                view.setBackgroundResource(R.color.white);
+            }else{
+                selectedBeans.add(beans.get(position));
+                selectedRows.add(view);
+                view.setBackgroundResource(R.color.light_blue_600);
+            }
+            if(selectedBeans.size() > 0){
+                beansFragment.showDeleteMenu(true);
+            }else{
+                beansFragment.showDeleteMenu(false);
+            }
+
+            return true;
+        });
+
         return beansListView;
 
+    }
+
+    public void removeSelectedBeans(){
+        beansFragment.removeSelectedBeans(selectedBeans);
+        selectedBeans.clear();
+        for(View view : selectedRows)
+            view.setBackgroundResource(R.color.white);
+        selectedRows.clear();
     }
 
 }

@@ -1,34 +1,27 @@
-type Session @model @auth(rules: [{ allow: owner }]) {
+type Roaster @model @auth(rules: [{ allow: owner }]) {
   id: ID!
   name: String!
-  roaster: Roaster @connection(fields: ["roasterID"])
-  roasterID: ID!
-  roast_time: AWSDateTime!
-  samples: [Sample] @connection(keyName: "bySession", fields: ["id"])
+  email: AWSEmail
+  status: Status!
 }
 
-type Bean @model @auth(rules: [{ allow: owner }]) {
+type Session @model
+  @auth(rules: [{ allow: owner }])
+  @key(name: "byRoaster", fields: ["roasterID", "roast_time"]) {
   id: ID!
-  flavors: [Flavor] @connection(keyName: "byBean", fields: ["id"])
-  name: String
-  process: String
-  origin: String
-  region: String
-  altitude_low: String
-  altitude_high: String
-  moisture: String
-  variety: String
-  density: String
-  grade: String
-  image: String
-  dealer: Dealer @connection
+  name: String!
+  roasterID: ID!
+  roast_time: AWSDateTime!
+  status: Status!
+  sample: [Sample] @connection(keyName: "bySession", fields: ["id"])
 }
 
 type Sample @model @auth(rules: [{ allow: owner }])
-  @key(name: "bySession", fields: ["sessionID"]) {
+  @key(name: "bySession", fields: ["sessionID"])
+  @key(name: "byBean", fields: ["beanID"]){
   id: ID!
   sessionID: ID!
-  bean: Bean @connection
+  beanID: ID
   roast_level: Float
   aroma: Float
   flavor: Float
@@ -45,22 +38,39 @@ type Sample @model @auth(rules: [{ allow: owner }])
   notes: String
 }
 
-type Roaster @model @auth(rules: [{ allow: owner }]) {
+type Bean @model @auth(rules: [{ allow: owner }]) {
   id: ID!
+  flavors: [ID]
+  status: Status!
   name: String
-  email: AWSEmail
+  process: String
+  origin: String
+  region: String
+  altitude_low: String
+  altitude_high: String
+  moisture: String
+  variety: String
+  density: String
+  grade: String
+  image: String
+  dealer: ID
 }
 
-type Flavor @model @auth(rules: [{ allow: owner }])
-  @key(name: "byBean", fields: ["beanID"]) {
+type Flavor @model @auth(rules: [{ allow: owner }]) {
   id: ID!
-  beanID: ID!
   name: String
   type: String
+  status: Status!
 }
 
 type Dealer @model @auth(rules: [{ allow: owner }]) {
   id: ID!
   name: String!
   email: AWSEmail!
+  status: Status!
+}
+
+enum Status {
+  ACTIVE
+  INACTIVE
 }

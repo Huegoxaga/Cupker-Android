@@ -6,4 +6,9 @@
         android:icon="@android:drawable/ic_input_add"
         android:title="@string/menu_item_add"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/add_bean_menu_delete_button"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:title="@string/menu_item_delete"
+        app:showAsAction="always" />
 </menu>

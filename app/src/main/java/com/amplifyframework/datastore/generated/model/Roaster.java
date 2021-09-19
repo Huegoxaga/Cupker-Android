@@ -28,9 +28,11 @@ public final class Roaster implements Model {
   public static final QueryField ID = field("Roaster", "id");
   public static final QueryField NAME = field("Roaster", "name");
   public static final QueryField EMAIL = field("Roaster", "email");
+  public static final QueryField STATUS = field("Roaster", "status");
   private final @ModelField(targetType="ID", isRequired = true) String id;
-  private final @ModelField(targetType="String") String name;
+  private final @ModelField(targetType="String", isRequired = true) String name;
   private final @ModelField(targetType="AWSEmail") String email;
+  private final @ModelField(targetType="Status", isRequired = true) Status status;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;
   public String getId() {
@@ -45,6 +47,10 @@ public final class Roaster implements Model {
       return email;
   }
   
+  public Status getStatus() {
+      return status;
+  }
+  
   public Temporal.DateTime getCreatedAt() {
       return createdAt;
   }
@@ -53,10 +59,11 @@ public final class Roaster implements Model {
       return updatedAt;
   }
   
-  private Roaster(String id, String name, String email) {
+  private Roaster(String id, String name, String email, Status status) {
     this.id = id;
     this.name = name;
     this.email = email;
+    this.status = status;
   }
   
   @Override
@@ -70,6 +77,7 @@ public final class Roaster implements Model {
       return ObjectsCompat.equals(getId(), roaster.getId()) &&
               ObjectsCompat.equals(getName(), roaster.getName()) &&
               ObjectsCompat.equals(getEmail(), roaster.getEmail()) &&
+              ObjectsCompat.equals(getStatus(), roaster.getStatus()) &&
               ObjectsCompat.equals(getCreatedAt(), roaster.getCreatedAt()) &&
               ObjectsCompat.equals(getUpdatedAt(), roaster.getUpdatedAt());
       }
@@ -81,6 +89,7 @@ public final class Roaster implements Model {
       .append(getId())
       .append(getName())
       .append(getEmail())
+      .append(getStatus())
       .append(getCreatedAt())
       .append(getUpdatedAt())
       .toString()
@@ -94,13 +103,14 @@ public final class Roaster implements Model {
       .append("id=" + String.valueOf(getId()) + ", ")
       .append("name=" + String.valueOf(getName()) + ", ")
       .append("email=" + String.valueOf(getEmail()) + ", ")
+      .append("status=" + String.valueOf(getStatus()) + ", ")
       .append("createdAt=" + String.valueOf(getCreatedAt()) + ", ")
       .append("updatedAt=" + String.valueOf(getUpdatedAt()))
       .append("}")
       .toString();
   }
   
-  public static BuildStep builder() {
+  public static NameStep builder() {
       return new Builder();
   }
   
@@ -126,6 +136,7 @@ public final class Roaster implements Model {
     return new Roaster(
       id,
       null,
+      null,
       null
     );
   }
@@ -133,19 +144,30 @@ public final class Roaster implements Model {
   public CopyOfBuilder copyOfBuilder() {
     return new CopyOfBuilder(id,
       name,
-      email);
+      email,
+      status);
   }
+  public interface NameStep {
+    StatusStep name(String name);
+  }
+  
+
+  public interface StatusStep {
+    BuildStep status(Status status);
+  }
+  
+
   public interface BuildStep {
     Roaster build();
     BuildStep id(String id) throws IllegalArgumentException;
-    BuildStep name(String name);
     BuildStep email(String email);
   }
   
 
-  public static class Builder implements BuildStep {
+  public static class Builder implements NameStep, StatusStep, BuildStep {
     private String id;
     private String name;
+    private Status status;
     private String email;
     @Override
      public Roaster build() {
@@ -154,12 +176,21 @@ public final class Roaster implements Model {
         return new Roaster(
           id,
           name,
-          email);
+          email,
+          status);
     }
     
     @Override
-     public BuildStep name(String name) {
+     public StatusStep name(String name) {
+        Objects.requireNonNull(name);
         this.name = name;
+        return this;
+    }
+    
+    @Override
+     public BuildStep status(Status status) {
+        Objects.requireNonNull(status);
+        this.status = status;
         return this;
     }
     
@@ -170,37 +201,32 @@ public final class Roaster implements Model {
     }
     
     /** 
-     * WARNING: Do not set ID when creating a new object. Leave this blank and one will be auto generated for you.
-     * This should only be set when referring to an already existing object.
      * @param id id
      * @return Current Builder instance, for fluent method chaining
-     * @throws IllegalArgumentException Checks that ID is in the proper format
      */
-    public BuildStep id(String id) throws IllegalArgumentException {
+    public BuildStep id(String id) {
         this.id = id;
-        
-        try {
-            UUID.fromString(id); // Check that ID is in the UUID format - if not an exception is thrown
-        } catch (Exception exception) {
-          throw new IllegalArgumentException("Model IDs must be unique in the format of UUID.",
-                    exception);
-        }
-        
         return this;
     }
   }
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String name, String email) {
+    private CopyOfBuilder(String id, String name, String email, Status status) {
       super.id(id);
       super.name(name)
+        .status(status)
         .email(email);
     }
     
     @Override
      public CopyOfBuilder name(String name) {
       return (CopyOfBuilder) super.name(name);
+    }
+    
+    @Override
+     public CopyOfBuilder status(Status status) {
+      return (CopyOfBuilder) super.status(status);
     }
     
     @Override

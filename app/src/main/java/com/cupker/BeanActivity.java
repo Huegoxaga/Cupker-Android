@@ -108,9 +108,12 @@ public class BeanActivity extends AppCompatActivity {
             ((EditText) findViewById(R.id.new_bean_moisture_input)).setText(bean.getMoisture());
             ((EditText) findViewById(R.id.new_bean_grade_input)).setText(bean.getGrade());
             // Decode image string
-            byte[] imageBytes = Base64.decode(bean.getImage(), Base64.DEFAULT);
-            Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-            beanImage.setImageBitmap(decodedImage);
+            if (bean.getImage() != null) {
+                byte[] imageBytes = Base64.decode(bean.getImage(), Base64.DEFAULT);
+                Bitmap decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
+                beanImage.setImageBitmap(decodedImage);
+            }
+
         }
     };
 }

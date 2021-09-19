@@ -13,6 +13,7 @@ import android.widget.EditText;
 
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Roaster;
+import com.amplifyframework.datastore.generated.model.Status;
 
 /**
  * This is the add roaster fragment for the roaster drop down in create new cupping session page
@@ -45,6 +46,7 @@ public class NewRoasterFragment extends DialogFragment{
 
             Roaster newRoaster = Roaster.builder()
                     .name(newRoasterName)
+                    .status(Status.ACTIVE)
                     .build();
 
             CuppingFragment parentFrag = ((CuppingFragment)this.getParentFragment());

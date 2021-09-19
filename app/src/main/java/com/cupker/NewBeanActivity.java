@@ -22,6 +22,7 @@ import android.widget.ImageView;
 
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Bean;
+import com.amplifyframework.datastore.generated.model.Status;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -168,9 +169,10 @@ public class NewBeanActivity extends AppCompatActivity {
                 setResult(DONE_ADD_BEAN);
 
                 Bean bean = Bean.builder()
+                        .status(Status.ACTIVE)
                         .name(((EditText) findViewById(R.id.new_bean_name_input)).getText().toString())
                         .origin(((EditText) findViewById(R.id.new_bean_origin_input)).getText().toString())
-                        .altitudeHigh(((EditText) findViewById(R.id.new_bean_altitude_high)).getText().toString())
+//                        .altitudeHigh(((EditText) findViewById(R.id.new_bean_altitude_high)).getText().toString())
                         .altitudeLow(((EditText) findViewById(R.id.new_bean_altitude_low)).getText().toString())
                         .variety(((EditText) findViewById(R.id.new_bean_variety_input)).getText().toString())
                         .region(((EditText) findViewById(R.id.new_bean_region_input)).getText().toString())

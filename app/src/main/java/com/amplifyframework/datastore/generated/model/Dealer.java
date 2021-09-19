@@ -28,9 +28,11 @@ public final class Dealer implements Model {
   public static final QueryField ID = field("Dealer", "id");
   public static final QueryField NAME = field("Dealer", "name");
   public static final QueryField EMAIL = field("Dealer", "email");
+  public static final QueryField STATUS = field("Dealer", "status");
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="String", isRequired = true) String name;
   private final @ModelField(targetType="AWSEmail", isRequired = true) String email;
+  private final @ModelField(targetType="Status", isRequired = true) Status status;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;
   public String getId() {
@@ -45,6 +47,10 @@ public final class Dealer implements Model {
       return email;
   }
   
+  public Status getStatus() {
+      return status;
+  }
+  
   public Temporal.DateTime getCreatedAt() {
       return createdAt;
   }
@@ -53,10 +59,11 @@ public final class Dealer implements Model {
       return updatedAt;
   }
   
-  private Dealer(String id, String name, String email) {
+  private Dealer(String id, String name, String email, Status status) {
     this.id = id;
     this.name = name;
     this.email = email;
+    this.status = status;
   }
   
   @Override
@@ -70,6 +77,7 @@ public final class Dealer implements Model {
       return ObjectsCompat.equals(getId(), dealer.getId()) &&
               ObjectsCompat.equals(getName(), dealer.getName()) &&
               ObjectsCompat.equals(getEmail(), dealer.getEmail()) &&
+              ObjectsCompat.equals(getStatus(), dealer.getStatus()) &&
               ObjectsCompat.equals(getCreatedAt(), dealer.getCreatedAt()) &&
               ObjectsCompat.equals(getUpdatedAt(), dealer.getUpdatedAt());
       }
@@ -81,6 +89,7 @@ public final class Dealer implements Model {
       .append(getId())
       .append(getName())
       .append(getEmail())
+      .append(getStatus())
       .append(getCreatedAt())
       .append(getUpdatedAt())
       .toString()
@@ -94,6 +103,7 @@ public final class Dealer implements Model {
       .append("id=" + String.valueOf(getId()) + ", ")
       .append("name=" + String.valueOf(getName()) + ", ")
       .append("email=" + String.valueOf(getEmail()) + ", ")
+      .append("status=" + String.valueOf(getStatus()) + ", ")
       .append("createdAt=" + String.valueOf(getCreatedAt()) + ", ")
       .append("updatedAt=" + String.valueOf(getUpdatedAt()))
       .append("}")
@@ -126,6 +136,7 @@ public final class Dealer implements Model {
     return new Dealer(
       id,
       null,
+      null,
       null
     );
   }
@@ -133,7 +144,8 @@ public final class Dealer implements Model {
   public CopyOfBuilder copyOfBuilder() {
     return new CopyOfBuilder(id,
       name,
-      email);
+      email,
+      status);
   }
   public interface NameStep {
     EmailStep name(String name);
@@ -141,7 +153,12 @@ public final class Dealer implements Model {
   
 
   public interface EmailStep {
-    BuildStep email(String email);
+    StatusStep email(String email);
+  }
+  
+
+  public interface StatusStep {
+    BuildStep status(Status status);
   }
   
 
@@ -151,10 +168,11 @@ public final class Dealer implements Model {
   }
   
 
-  public static class Builder implements NameStep, EmailStep, BuildStep {
+  public static class Builder implements NameStep, EmailStep, StatusStep, BuildStep {
     private String id;
     private String name;
     private String email;
+    private Status status;
     @Override
      public Dealer build() {
         String id = this.id != null ? this.id : UUID.randomUUID().toString();
@@ -162,7 +180,8 @@ public final class Dealer implements Model {
         return new Dealer(
           id,
           name,
-          email);
+          email,
+          status);
     }
     
     @Override
@@ -173,39 +192,36 @@ public final class Dealer implements Model {
     }
     
     @Override
-     public BuildStep email(String email) {
+     public StatusStep email(String email) {
         Objects.requireNonNull(email);
         this.email = email;
         return this;
     }
     
+    @Override
+     public BuildStep status(Status status) {
+        Objects.requireNonNull(status);
+        this.status = status;
+        return this;
+    }
+    
     /** 
-     * WARNING: Do not set ID when creating a new object. Leave this blank and one will be auto generated for you.
-     * This should only be set when referring to an already existing object.
      * @param id id
      * @return Current Builder instance, for fluent method chaining
-     * @throws IllegalArgumentException Checks that ID is in the proper format
      */
-    public BuildStep id(String id) throws IllegalArgumentException {
+    public BuildStep id(String id) {
         this.id = id;
-        
-        try {
-            UUID.fromString(id); // Check that ID is in the UUID format - if not an exception is thrown
-        } catch (Exception exception) {
-          throw new IllegalArgumentException("Model IDs must be unique in the format of UUID.",
-                    exception);
-        }
-        
         return this;
     }
   }
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String name, String email) {
+    private CopyOfBuilder(String id, String name, String email, Status status) {
       super.id(id);
       super.name(name)
-        .email(email);
+        .email(email)
+        .status(status);
     }
     
     @Override
@@ -216,6 +232,11 @@ public final class Dealer implements Model {
     @Override
      public CopyOfBuilder email(String email) {
       return (CopyOfBuilder) super.email(email);
+    }
+    
+    @Override
+     public CopyOfBuilder status(Status status) {
+      return (CopyOfBuilder) super.status(status);
     }
   }
   

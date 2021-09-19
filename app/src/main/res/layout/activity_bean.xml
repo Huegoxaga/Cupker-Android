@@ -36,7 +36,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toStartOf="@+id/new_bean_altitude_high"
+        app:layout_constraintStart_toStartOf="@+id/new_bean_altitude_high">
 
         <TextView
             android:id="@+id/new_bean_origin"
@@ -202,7 +204,7 @@
             android:importantForAutofill="no"
             android:inputType="textPersonName"
             app:layout_constraintBottom_toBottomOf="@+id/new_bean_altitude_low"
-            app:layout_constraintEnd_toStartOf="@+id/new_bean_altitude"
+            app:layout_constraintEnd_toStartOf="@+id/new_bean_altitude_low"
             app:layout_constraintStart_toEndOf="@+id/new_bean_variety"
             app:layout_constraintTop_toTopOf="@+id/new_bean_variety" />
 
@@ -220,20 +222,6 @@
 
         <EditText
             android:id="@+id/new_bean_altitude_low"
-            android:layout_width="56dp"
-            android:layout_height="24dp"
-            android:layout_marginEnd="25dp"
-            android:layout_marginBottom="47dp"
-            android:ems="10"
-            android:importantForAutofill="no"
-            android:inputType="textPersonName"
-            app:layout_constraintBottom_toTopOf="@+id/new_bean_moisture_input"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/new_bean_altitude"
-            app:layout_constraintTop_toBottomOf="@+id/new_bean_region_input" />
-
-        <EditText
-            android:id="@+id/new_bean_altitude_high"
             android:layout_width="56dp"
             android:layout_height="24dp"
             android:layout_marginEnd="25dp"
@@ -268,6 +256,17 @@
             app:layout_constraintEnd_toEndOf="@+id/new_bean_region_input"
             app:layout_constraintStart_toEndOf="@+id/new_bean_origin"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/new_bean_altitude_high"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="1dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            app:layout_constraintStart_toEndOf="@+id/new_bean_origin_input"
+            app:layout_constraintTop_toBottomOf="@+id/new_bean_region_input" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

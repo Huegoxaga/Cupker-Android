@@ -1,6 +1,5 @@
 package com.amplifyframework.datastore.generated.model;
 
-import com.amplifyframework.core.model.annotations.BelongsTo;
 import com.amplifyframework.core.model.temporal.Temporal;
 
 import java.util.List;
@@ -26,10 +25,11 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
   @AuthRule(allow = AuthStrategy.OWNER, ownerField = "owner", identityClaim = "cognito:username", provider = "userPools", operations = { ModelOperation.CREATE, ModelOperation.UPDATE, ModelOperation.DELETE, ModelOperation.READ })
 })
 @Index(name = "bySession", fields = {"sessionID"})
+@Index(name = "byBean", fields = {"beanID"})
 public final class Sample implements Model {
   public static final QueryField ID = field("Sample", "id");
   public static final QueryField SESSION_ID = field("Sample", "sessionID");
-  public static final QueryField BEAN = field("Sample", "sampleBeanId");
+  public static final QueryField BEAN_ID = field("Sample", "beanID");
   public static final QueryField ROAST_LEVEL = field("Sample", "roast_level");
   public static final QueryField AROMA = field("Sample", "aroma");
   public static final QueryField FLAVOR = field("Sample", "flavor");
@@ -46,7 +46,7 @@ public final class Sample implements Model {
   public static final QueryField NOTES = field("Sample", "notes");
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="ID", isRequired = true) String sessionID;
-  private final @ModelField(targetType="Bean") @BelongsTo(targetName = "sampleBeanId", type = Bean.class) Bean bean;
+  private final @ModelField(targetType="ID") String beanID;
   private final @ModelField(targetType="Float") Double roast_level;
   private final @ModelField(targetType="Float") Double aroma;
   private final @ModelField(targetType="Float") Double flavor;
@@ -71,8 +71,8 @@ public final class Sample implements Model {
       return sessionID;
   }
   
-  public Bean getBean() {
-      return bean;
+  public String getBeanId() {
+      return beanID;
   }
   
   public Double getRoastLevel() {
@@ -139,10 +139,10 @@ public final class Sample implements Model {
       return updatedAt;
   }
   
-  private Sample(String id, String sessionID, Bean bean, Double roast_level, Double aroma, Double flavor, Double acidity, Double overall, Double body, Double balance, Double uniformity, Double clean_cup, Double after_taste, Double sweetness, Double defect_type, Double defect_count, String notes) {
+  private Sample(String id, String sessionID, String beanID, Double roast_level, Double aroma, Double flavor, Double acidity, Double overall, Double body, Double balance, Double uniformity, Double clean_cup, Double after_taste, Double sweetness, Double defect_type, Double defect_count, String notes) {
     this.id = id;
     this.sessionID = sessionID;
-    this.bean = bean;
+    this.beanID = beanID;
     this.roast_level = roast_level;
     this.aroma = aroma;
     this.flavor = flavor;
@@ -169,7 +169,7 @@ public final class Sample implements Model {
       Sample sample = (Sample) obj;
       return ObjectsCompat.equals(getId(), sample.getId()) &&
               ObjectsCompat.equals(getSessionId(), sample.getSessionId()) &&
-              ObjectsCompat.equals(getBean(), sample.getBean()) &&
+              ObjectsCompat.equals(getBeanId(), sample.getBeanId()) &&
               ObjectsCompat.equals(getRoastLevel(), sample.getRoastLevel()) &&
               ObjectsCompat.equals(getAroma(), sample.getAroma()) &&
               ObjectsCompat.equals(getFlavor(), sample.getFlavor()) &&
@@ -194,7 +194,7 @@ public final class Sample implements Model {
     return new StringBuilder()
       .append(getId())
       .append(getSessionId())
-      .append(getBean())
+      .append(getBeanId())
       .append(getRoastLevel())
       .append(getAroma())
       .append(getFlavor())
@@ -221,7 +221,7 @@ public final class Sample implements Model {
       .append("Sample {")
       .append("id=" + String.valueOf(getId()) + ", ")
       .append("sessionID=" + String.valueOf(getSessionId()) + ", ")
-      .append("bean=" + String.valueOf(getBean()) + ", ")
+      .append("beanID=" + String.valueOf(getBeanId()) + ", ")
       .append("roast_level=" + String.valueOf(getRoastLevel()) + ", ")
       .append("aroma=" + String.valueOf(getAroma()) + ", ")
       .append("flavor=" + String.valueOf(getFlavor()) + ", ")
@@ -289,7 +289,7 @@ public final class Sample implements Model {
   public CopyOfBuilder copyOfBuilder() {
     return new CopyOfBuilder(id,
       sessionID,
-      bean,
+      beanID,
       roast_level,
       aroma,
       flavor,
@@ -313,7 +313,7 @@ public final class Sample implements Model {
   public interface BuildStep {
     Sample build();
     BuildStep id(String id) throws IllegalArgumentException;
-    BuildStep bean(Bean bean);
+    BuildStep beanId(String beanId);
     BuildStep roastLevel(Double roastLevel);
     BuildStep aroma(Double aroma);
     BuildStep flavor(Double flavor);
@@ -334,7 +334,7 @@ public final class Sample implements Model {
   public static class Builder implements SessionIdStep, BuildStep {
     private String id;
     private String sessionID;
-    private Bean bean;
+    private String beanID;
     private Double roast_level;
     private Double aroma;
     private Double flavor;
@@ -356,7 +356,7 @@ public final class Sample implements Model {
         return new Sample(
           id,
           sessionID,
-          bean,
+          beanID,
           roast_level,
           aroma,
           flavor,
@@ -381,8 +381,8 @@ public final class Sample implements Model {
     }
     
     @Override
-     public BuildStep bean(Bean bean) {
-        this.bean = bean;
+     public BuildStep beanId(String beanId) {
+        this.beanID = beanId;
         return this;
     }
     
@@ -471,32 +471,21 @@ public final class Sample implements Model {
     }
     
     /** 
-     * WARNING: Do not set ID when creating a new object. Leave this blank and one will be auto generated for you.
-     * This should only be set when referring to an already existing object.
      * @param id id
      * @return Current Builder instance, for fluent method chaining
-     * @throws IllegalArgumentException Checks that ID is in the proper format
      */
-    public BuildStep id(String id) throws IllegalArgumentException {
+    public BuildStep id(String id) {
         this.id = id;
-        
-        try {
-            UUID.fromString(id); // Check that ID is in the UUID format - if not an exception is thrown
-        } catch (Exception exception) {
-          throw new IllegalArgumentException("Model IDs must be unique in the format of UUID.",
-                    exception);
-        }
-        
         return this;
     }
   }
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String sessionId, Bean bean, Double roastLevel, Double aroma, Double flavor, Double acidity, Double overall, Double body, Double balance, Double uniformity, Double cleanCup, Double afterTaste, Double sweetness, Double defectType, Double defectCount, String notes) {
+    private CopyOfBuilder(String id, String sessionId, String beanId, Double roastLevel, Double aroma, Double flavor, Double acidity, Double overall, Double body, Double balance, Double uniformity, Double cleanCup, Double afterTaste, Double sweetness, Double defectType, Double defectCount, String notes) {
       super.id(id);
       super.sessionId(sessionId)
-        .bean(bean)
+        .beanId(beanId)
         .roastLevel(roastLevel)
         .aroma(aroma)
         .flavor(flavor)
@@ -519,8 +508,8 @@ public final class Sample implements Model {
     }
     
     @Override
-     public CopyOfBuilder bean(Bean bean) {
-      return (CopyOfBuilder) super.bean(bean);
+     public CopyOfBuilder beanId(String beanId) {
+      return (CopyOfBuilder) super.beanId(beanId);
     }
     
     @Override

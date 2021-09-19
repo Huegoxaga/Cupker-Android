@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Bean;
 import com.amplifyframework.datastore.generated.model.Sample;
+import com.amplifyframework.datastore.generated.model.Status;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +57,10 @@ public class CuppingListAdapter extends BaseAdapter {
         this.samples = samples;
 
         // Add bean list first record
-        beanObjs.add(null);
+        beanObjs.add(Bean.builder()
+                .status(Status.INACTIVE)
+                .id("00000000-0000-0000-0000-000000000000")
+                .build());
         beansString.add("Blind Taste");
 
         // Query & populate Bean data
