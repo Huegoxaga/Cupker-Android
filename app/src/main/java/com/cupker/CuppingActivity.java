@@ -269,6 +269,5 @@ public class CuppingActivity extends AppCompatActivity {
                 .build();
         samples.set(listPosition, editedSample);
         Log.d(TAG, editedSample + "Edited in list index" + listPosition);
-
     }
 }

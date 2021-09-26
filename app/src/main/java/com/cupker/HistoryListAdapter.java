@@ -1,9 +1,6 @@
 package com.cupker;
 
 import android.content.Context;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,16 +10,12 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.amplifyframework.core.Amplify;
-import com.amplifyframework.core.model.query.Where;
 import com.amplifyframework.datastore.generated.model.Bean;
-import com.amplifyframework.datastore.generated.model.Roaster;
 import com.amplifyframework.datastore.generated.model.Sample;
-import com.amplifyframework.datastore.generated.model.Status;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class HistoryListAdapter extends BaseAdapter {
@@ -32,59 +25,45 @@ public class HistoryListAdapter extends BaseAdapter {
 
     // UI
     private final Context context;
-    private final int sampleNum;
 
     // Data
+    private final int sampleNum;
     private final ArrayList<Bean> beanObjs;
     private final ArrayList<String> beansString; // related array to store names for dropdown
-    private final double[] roastLevel = { 95, 85, 75, 65, 55, 45, 35, 25};
-    private final String[] roastLevelStr = { "# 95", "# 85", "# 75", "# 65", "# 55", "# 45", "# 35", "# 25"};
+    private final ArrayList<String> beanIds; // related array to match sample's bean selection
+    private final double[] roastLevel = {95, 85, 75, 65, 55, 45, 35, 25};
+    private final String[] roastLevelStr = {"# 95", "# 85", "# 75", "# 65", "# 55", "# 45", "# 35", "# 25"};
     private final List<Sample> samples;
     private final Boolean editable;
 
     /**
-     * This holds the cupping list for all samples in one session
+     * This holds the history list for all samples in one session
+     *
      * @param context context
      * @param samples list of Sample data objects
      */
-    public HistoryListAdapter(Context context, List<Sample> samples, Boolean editable) {
+    public HistoryListAdapter(Context context, List<Sample> samples, Boolean editable, ArrayList<Bean> beans) {
 
-        // TODO: Read only flag for this list
         // Init Data
         this.editable = editable;
 
         // Assign data
-        this.beanObjs = new ArrayList<>();
-        this.beansString = new ArrayList<>();
+        this.beanObjs = beans;
+        this.beansString = new ArrayList<>(); // related array to store names for dropdown
+        this.beanIds = new ArrayList<>(); // related array to match sample's bean selection
         this.context = context;
         this.sampleNum = samples.size();
         this.samples = samples;
-
-        // Add bean list first record
-        beanObjs.add(Bean.builder()
-                .status(Status.INACTIVE)
-                .id("00000000-0000-0000-0000-000000000000")
-                .build());
-        beansString.add("Blind Taste");
-
-        // Query & populate Bean data
-        Amplify.DataStore.query(Bean.class,
-                Where.matches(Bean.STATUS.eq(Status.ACTIVE)),
-                queryRoaster -> {
-                    while (queryRoaster.hasNext()) {
-                        Bean bean = queryRoaster.next();
-                        beanObjs.add(bean);
-                        beansString.add(bean.getName());
-                        Log.i(TAG, "Get Bean Name: " + bean.getName());
-                    }
-                },
-                error -> Log.e(TAG,  "Error retrieving beans", error)
-        );
+        for (Bean bean : beans) {
+            beansString.add(bean.getName());
+            beanIds.add(bean.getId());
+        }
     }
+
 
     @Override
     public int getCount() {
-        return sampleNum ;
+        return sampleNum;
     }
 
     @Override
@@ -109,34 +88,45 @@ public class HistoryListAdapter extends BaseAdapter {
         Spinner beanSpinner = cuppingListView.findViewById(R.id.cupping_list_bean_spinner);
         Spinner roastLevelSpinner = cuppingListView.findViewById(R.id.cupping_list_roast_level_spinner);
         EditText notesInput = cuppingListView.findViewById(R.id.cupping_list_note_input);
+        notesInput.setEnabled(false);
         ArrayAdapter<String> beanArray = new ArrayAdapter<>(cuppingListView.getContext(), android.R.layout.simple_spinner_item, beansString);
         ArrayAdapter<String> rosterLevelArray = new ArrayAdapter<>(cuppingListView.getContext(), android.R.layout.simple_spinner_item, roastLevelStr);
         CuppingGridView cuppingGridView = cuppingListView.findViewById(R.id.cupping_grid);
 
-        // Setup
-        beanArray.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        beanSpinner.setAdapter(beanArray);
-        beanSpinner.setSelection(0, false);
-        rosterLevelArray.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        roastLevelSpinner.setAdapter(rosterLevelArray);
-        roastLevelSpinner.setSelection(3, false);
+        // Init Data
+        Sample sample = samples.get(position);
+        int selectedBeanIdx = beanIds.indexOf(sample.getBeanId());
+        int selectedRoastLevelIdx = Collections.singletonList(roastLevel).indexOf(sample.getBeanId());
 
+        // Setup
+        notesInput.setText(sample.getNotes());
+        notesInput.setEnabled(false);
+        beanArray.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        beanSpinner.setEnabled(false);
+//        beanSpinner.setClickable(false);
+        beanSpinner.setAdapter(beanArray);
+        beanSpinner.setSelection(selectedBeanIdx, false);
+        rosterLevelArray.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        roastLevelSpinner.setEnabled(false);
+        roastLevelSpinner.setClickable(false);
+        roastLevelSpinner.setAdapter(rosterLevelArray);
+        roastLevelSpinner.setSelection(selectedRoastLevelIdx, false);
         CuppingGridAdapter cuppingGridAdapter = new CuppingGridAdapter(cuppingListView.getContext(), samples.get(position), position, editable);
         cuppingGridView.setAdapter(cuppingGridAdapter);
         sampleName.setText(context.getResources().getString(R.string.cupping_list_title_label, position + 1));
 
         // Listener
-//        beanSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> arg0, View arg1, int selectedPosition, long id) {
-//                HistoryActivity main = (HistoryActivity) context;
-//                main.setBean(position, beanObjs.get(selectedPosition));
-//                Log.d(TAG, beanObjs.get(selectedPosition) + " Selected in getVIew()");
-//            }
-//            @Override
-//            public void onNothingSelected(AdapterView<?> arg0) {
-//            }
-//        });
+        beanSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1, int selectedPosition, long id) {
+                HistoryActivity main = (HistoryActivity) context;
+                main.setBean(position, beanObjs.get(selectedPosition));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
 //        roastLevelSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 //            @Override
 //            public void onItemSelected(AdapterView<?> arg0, View arg1, int selectedPosition, long id) {
@@ -149,15 +139,7 @@ public class HistoryListAdapter extends BaseAdapter {
 //            }
 //        });
 
-//        notesInput.addTextChangedListener(new TextWatcher() {
-//            public void afterTextChanged(Editable s) {
-//                HistoryActivity main = (HistoryActivity) context;
-////                main.setNote(position, s.toString());
-//            }
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-//        });
-        cuppingListView.setOnClickListener(view -> Toast.makeText(context, "The name of the Sample is " + sampleName.getText(), Toast.LENGTH_SHORT).show());
+//        cuppingListView.setOnClickListener(view -> Toast.makeText(context, "The name of the Sample is " + sampleName.getText(), Toast.LENGTH_SHORT).show());
 
         return cuppingListView;
     }
