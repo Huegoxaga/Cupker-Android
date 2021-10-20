@@ -1,15 +1,14 @@
 package com.cupker;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.DialogFragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+
+import androidx.fragment.app.DialogFragment;
 
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.datastore.generated.model.Roaster;
@@ -18,7 +17,7 @@ import com.amplifyframework.datastore.generated.model.Status;
 /**
  * This is the add roaster fragment for the roaster drop down in create new cupping session page
  */
-public class NewRoasterFragment extends DialogFragment {
+public class NewRoasterProfileFragment extends DialogFragment {
 
     // Init Keys
     private static final String TAG = "===New Roaster Frag===";
@@ -28,7 +27,7 @@ public class NewRoasterFragment extends DialogFragment {
     private Button addButton;
     private Button cancelButton;
 
-    public NewRoasterFragment() {
+    public NewRoasterProfileFragment() {
         // Required empty public constructor
     }
 
@@ -50,8 +49,8 @@ public class NewRoasterFragment extends DialogFragment {
                     .status(Status.ACTIVE)
                     .build();
 
-            CuppingFragment parentFrag = ((CuppingFragment) this.getParentFragment());
-            parentFrag.updateRoaster(newRoasterName, newRoaster);
+            RoasterActivity roasterActivity = (RoasterActivity) getActivity();
+            roasterActivity.updateList(newRoaster);
 
             Amplify.DataStore.save(newRoaster,
                     success -> {

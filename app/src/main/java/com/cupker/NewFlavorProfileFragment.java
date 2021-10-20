@@ -1,9 +1,6 @@
 package com.cupker;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.DialogFragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,14 +8,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.fragment.app.DialogFragment;
+
 import com.amplifyframework.core.Amplify;
+import com.amplifyframework.datastore.generated.model.Flavor;
 import com.amplifyframework.datastore.generated.model.Roaster;
 import com.amplifyframework.datastore.generated.model.Status;
 
 /**
  * This is the add roaster fragment for the roaster drop down in create new cupping session page
  */
-public class NewRoasterFragment extends DialogFragment {
+public class NewFlavorProfileFragment extends DialogFragment {
 
     // Init Keys
     private static final String TAG = "===New Roaster Frag===";
@@ -28,7 +28,7 @@ public class NewRoasterFragment extends DialogFragment {
     private Button addButton;
     private Button cancelButton;
 
-    public NewRoasterFragment() {
+    public NewFlavorProfileFragment() {
         // Required empty public constructor
     }
 
@@ -43,17 +43,17 @@ public class NewRoasterFragment extends DialogFragment {
         // Listeners
         addButton.setOnClickListener(v -> {
             EditText newRoasterInput = getView().findViewById(R.id.new_roaster_name_input);
-            String newRoasterName = newRoasterInput.getText().toString();
+            String newFlavorName = newRoasterInput.getText().toString();
 
-            Roaster newRoaster = Roaster.builder()
-                    .name(newRoasterName)
+            Flavor newFlavor = Flavor.builder()
                     .status(Status.ACTIVE)
+                    .name(newFlavorName)
                     .build();
 
-            CuppingFragment parentFrag = ((CuppingFragment) this.getParentFragment());
-            parentFrag.updateRoaster(newRoasterName, newRoaster);
+            FlavorActivity flavorActivity = (FlavorActivity) getActivity();
+            flavorActivity.updateList(newFlavor);
 
-            Amplify.DataStore.save(newRoaster,
+            Amplify.DataStore.save(newFlavor,
                     success -> {
                         Log.i(TAG, "Saved item: " + success.item().getName());
                         dismiss();

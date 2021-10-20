@@ -5,13 +5,14 @@ import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
-
+    //TODO: Filter timer my flavor delete, zero to one flavor bug
     // Keys
-//    private static final String TAG = "===MAIN ACTIVITY===";
+    private static final String TAG = "===MAIN ACTIVITY===";
     // Activity return codes
     private static final int DONE_CUPPING = 1;
     private static final int DONE_ADD_BEAN = 2;
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
                     selectedFragment = new HistoryFragment();
                     break;
                 case R.id.nav_profile:
-                    selectedFragment = new SettingsFragment();
+                    selectedFragment = new ProfileFragment();
                     break;
             }
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void setBottomNav(int selectedID){
+    public void setBottomNav(int selectedID) {
         bottomNav.setSelectedItemId(selectedID);
     }
 
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         //Return after saving cupping result
-        if (resultCode == DONE_CUPPING){
+        if (resultCode == DONE_CUPPING) {
             bottomNav.setSelectedItemId(R.id.nav_history);
         } else if (resultCode == DONE_ADD_BEAN) {
             bottomNav.setSelectedItemId(R.id.nav_beans);

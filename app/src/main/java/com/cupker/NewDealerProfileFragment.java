@@ -1,9 +1,6 @@
 package com.cupker;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.DialogFragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,14 +8,18 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.fragment.app.DialogFragment;
+
 import com.amplifyframework.core.Amplify;
+import com.amplifyframework.datastore.generated.model.Dealer;
+import com.amplifyframework.datastore.generated.model.Flavor;
 import com.amplifyframework.datastore.generated.model.Roaster;
 import com.amplifyframework.datastore.generated.model.Status;
 
 /**
  * This is the add roaster fragment for the roaster drop down in create new cupping session page
  */
-public class NewRoasterFragment extends DialogFragment {
+public class NewDealerProfileFragment extends DialogFragment {
 
     // Init Keys
     private static final String TAG = "===New Roaster Frag===";
@@ -28,7 +29,7 @@ public class NewRoasterFragment extends DialogFragment {
     private Button addButton;
     private Button cancelButton;
 
-    public NewRoasterFragment() {
+    public NewDealerProfileFragment() {
         // Required empty public constructor
     }
 
@@ -43,17 +44,19 @@ public class NewRoasterFragment extends DialogFragment {
         // Listeners
         addButton.setOnClickListener(v -> {
             EditText newRoasterInput = getView().findViewById(R.id.new_roaster_name_input);
-            String newRoasterName = newRoasterInput.getText().toString();
+            String newDealerName = newRoasterInput.getText().toString();
+            String newDealerEmail = "example@gamil.com";
 
-            Roaster newRoaster = Roaster.builder()
-                    .name(newRoasterName)
+            Dealer newDealer = Dealer.builder()
+                    .name(newDealerName)
+                    .email(newDealerEmail)
                     .status(Status.ACTIVE)
                     .build();
 
-            CuppingFragment parentFrag = ((CuppingFragment) this.getParentFragment());
-            parentFrag.updateRoaster(newRoasterName, newRoaster);
+            DealerActivity dealerActivity = (DealerActivity) getActivity();
+            dealerActivity.updateList(newDealer);
 
-            Amplify.DataStore.save(newRoaster,
+            Amplify.DataStore.save(newDealer,
                     success -> {
                         Log.i(TAG, "Saved item: " + success.item().getName());
                         dismiss();
