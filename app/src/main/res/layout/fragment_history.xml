@@ -24,6 +24,13 @@
             android:textColor="@android:color/white" />
 
     </androidx.appcompat.widget.Toolbar>
+
+    <SearchView
+        android:id="@+id/history_frag_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:iconifiedByDefault="false" />
+
     <ListView
         android:id="@+id/history_frag_list"
         android:layout_width="match_parent"

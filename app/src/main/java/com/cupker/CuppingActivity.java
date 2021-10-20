@@ -1,9 +1,12 @@
 package com.cupker;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -25,6 +29,8 @@ import com.amplifyframework.datastore.generated.model.Status;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * This is the main cupping grading page in full Screen
@@ -44,12 +50,18 @@ public class CuppingActivity extends AppCompatActivity {
     private ListView cuppingListView;
     private CuppingListAdapter cuppingListAdapter;
     private LinearLayout mainFrame;
+    private Button timerToggleButton;
+    private TextView titleText;
 
     // Data
     private List<Sample> samples;
     private Session newSession;
     private String sessionName;
     private String roastTimeString;
+    private Timer timer;
+    private boolean timerStarted = false;
+    private TimerTask timerTask;
+    private Double time = 0.0;
     private final int flags = View.SYSTEM_UI_FLAG_LOW_PROFILE
             | View.SYSTEM_UI_FLAG_FULLSCREEN
             | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -67,10 +79,11 @@ public class CuppingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cupping);
         mainFrame = findViewById(R.id.cupping_activity_main_frame);
         cuppingListView = findViewById(R.id.cupping_activity_list);
+        timerToggleButton = findViewById(R.id.cupping_activity_timer_toggle_btn);
         Intent intent = getIntent();
         LayoutInflater layoutInflater = getLayoutInflater();
         Toolbar toolBar = findViewById(R.id.cupping_activity_toolbar);
-        TextView titleText = findViewById(R.id.cupping_toolbar_title);
+        titleText = findViewById(R.id.cupping_toolbar_title);
 //        View cuppingListViewHeader = layoutInflater.inflate(R.layout.activity_cupping_list_header, cuppingListView, false);
         View cuppingListViewFooter = layoutInflater.inflate(R.layout.activity_cupping_list_footer, cuppingListView, false);
 //        cuppingListView.addHeaderView(cuppingListViewHeader);
@@ -131,6 +144,7 @@ public class CuppingActivity extends AppCompatActivity {
         cuppingListView.setAdapter(cuppingListAdapter);
         setSupportActionBar(toolBar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        timer = new Timer();
         titleText.setText(sessionName);
 //        titleDate.setText(roastTimeString);
 
@@ -156,10 +170,53 @@ public class CuppingActivity extends AppCompatActivity {
             finish();
         });
 
+
         decorView.setOnSystemUiVisibilityChangeListener(visibility -> {
             if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
                 decorView.setSystemUiVisibility(flags);
             }
+        });
+
+
+        findViewById(R.id.cupping_activity_timer_reset_btn).setOnClickListener(v -> {
+
+            AlertDialog.Builder resetAlert = new AlertDialog.Builder(this);
+            resetAlert.setTitle("Reset Timer");
+            resetAlert.setMessage("Are you sure you want to reset the timer?");
+            resetAlert.setPositiveButton("Reset", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    if (timerTask != null) {
+                        timerTask.cancel();
+                        setButtonUI("START", R.color.design_default_color_secondary);
+                        time = 0.0;
+                        timerStarted = false;
+                        titleText.setText(sessionName);
+                    }
+                }
+            });
+
+            resetAlert.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    //do nothing
+                }
+            });
+
+            resetAlert.show();
+        });
+        findViewById(R.id.cupping_activity_timer_toggle_btn).setOnClickListener(v -> {
+
+            if (timerStarted == false) {
+                timerStarted = true;
+                setButtonUI("STOP", R.color.design_default_color_error);
+                startTimer();
+            } else {
+                timerStarted = false;
+                setButtonUI("START", R.color.design_default_color_primary_variant);
+                timerTask.cancel();
+            }
+
         });
 //        mainFrame.setOnTouchListener((view, motionEvent) -> {
 //            getSupportActionBar().hide();
@@ -170,6 +227,49 @@ public class CuppingActivity extends AppCompatActivity {
 //        });
     }
 
+    private void setButtonUI(String start, int color)
+    {
+        timerToggleButton.setText(start);
+        timerToggleButton.setTextColor(ContextCompat.getColor(this, color));
+    }
+
+    private void startTimer()
+    {
+        timerTask = new TimerTask()
+        {
+            @Override
+            public void run()
+            {
+                runOnUiThread(new Runnable()
+                {
+                    @Override
+                    public void run()
+                    {
+                        time++;
+                        titleText.setText(getTimerText());
+                    }
+                });
+            }
+
+        };
+        timer.scheduleAtFixedRate(timerTask, 0 ,1000);
+    }
+
+
+    private String getTimerText()
+    {
+        int rounded = (int) Math.round(time);
+
+        int seconds = ((rounded % 86400) % 3600) % 60;
+        int minutes = ((rounded % 86400) % 3600) / 60;
+
+        return formatTime(seconds, minutes);
+    }
+
+    private String formatTime(int seconds, int minutes)
+    {
+        return String.format("%02d",minutes) + " : " + String.format("%02d",seconds);
+    }
 
     public void setScore(int listPosition, int gridPosition, double newScore) {
         Sample sample = samples.get(listPosition);

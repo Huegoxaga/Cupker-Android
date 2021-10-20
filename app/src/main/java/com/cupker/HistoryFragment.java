@@ -7,6 +7,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,7 +16,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SearchView;
 
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.core.model.query.Where;
@@ -38,9 +42,12 @@ public class HistoryFragment extends Fragment {
     private MenuItem menuItemDelete;
     private MenuItem menuItemAdd;
     private HistorySessionListAdapter historySessionListAdapter;
+    private SearchView searchView;
 
     // Data
     private ArrayList<Session> sessionObjs;
+    private String currentSearchText = "";
+
 
     public HistoryFragment() {
         // Required empty public constructor
@@ -86,13 +93,40 @@ public class HistoryFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_history, container, false);
         Toolbar toolbar = view.findViewById(R.id.history_frag_toolbar);
         sessionList = view.findViewById(R.id.history_frag_list);
+        searchView = view.findViewById(R.id.history_frag_search);
 
         // Setup
         setHasOptionsMenu(true);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        // Listener
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                currentSearchText = s;
+                ArrayList<Session> filteredSessions = new ArrayList<>();
+                Log.d(TAG, s);
+                for (Session session : sessionObjs) {
+
+                    if (session.getName().toLowerCase().contains(s.toLowerCase())) {
+                        Log.d(TAG, session.toString());
+                        filteredSessions.add(session);
+                    }
+                }
+                historySessionListAdapter = new HistorySessionListAdapter(self, filteredSessions);
+                sessionList.setAdapter(historySessionListAdapter);
+                return false;
+            }
+        });
         return view;
     }
+
 
     public void showDeleteMenu(boolean show) {
         menuItemDelete.setVisible(show);

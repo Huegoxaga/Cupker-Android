@@ -81,4 +81,7 @@
     <string name="dealer_activity_title">My Dealers</string>
     <string name="roaster_activity_title">My Roasters</string>
     <string name="flavor_activity_title">My Flavors</string>
+    <string name="cupping_activity_reset">RESET</string>
+    <string name="cupping_activity_start">START</string>
+    <string name="toolbar_search">Search</string>
 </resources>

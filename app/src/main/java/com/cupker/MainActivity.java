@@ -10,7 +10,7 @@ import android.util.Log;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
-    //TODO: Filter timer my flavor delete, zero to one flavor bug
+
     // Keys
     private static final String TAG = "===MAIN ACTIVITY===";
     // Activity return codes

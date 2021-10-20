@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.amplifyframework.datastore.generated.model.Bean;
@@ -18,7 +20,7 @@ import java.util.List;
 /**
  * This defines the session list in history page
  */
-public class HistorySessionListAdapter extends BaseAdapter {
+public class HistorySessionListAdapter extends BaseAdapter{
 
     // Keys
     private static final String TAG = "===HISTORY LIST ADPT===";
@@ -29,11 +31,11 @@ public class HistorySessionListAdapter extends BaseAdapter {
     private final HistoryFragment historyFragment;
 
     // Data
-    private final List<Session> sessions;
-    private List<Session> selectedSessions;
-    private List<View> selectedRows;
+    private ArrayList<Session> sessions;
+    private ArrayList<Session> selectedSessions;
+    private ArrayList<View> selectedRows;
 
-    public HistorySessionListAdapter(HistoryFragment fragment, List<Session> sessions) {
+    public HistorySessionListAdapter(HistoryFragment fragment, ArrayList<Session> sessions) {
         // Init data
         this.historyFragment = fragment;
         this.sessions = sessions;
@@ -43,7 +45,7 @@ public class HistorySessionListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return sessions.size() ;
+        return sessions.size();
     }
 
     @Override
@@ -78,18 +80,18 @@ public class HistorySessionListAdapter extends BaseAdapter {
 
         sessionsListView.setOnLongClickListener(view -> {
             // highlight and add to newly selected items to list, reset existing item from list
-            if(selectedRows.contains(view)){
+            if (selectedRows.contains(view)) {
                 selectedRows.remove(view);
                 selectedSessions.remove(sessions.get(position));
                 view.setBackgroundResource(R.color.white);
-            }else{
+            } else {
                 selectedSessions.add(sessions.get(position));
                 selectedRows.add(view);
                 view.setBackgroundResource(R.color.light_blue_600);
             }
-            if(selectedSessions.size() > 0){
+            if (selectedSessions.size() > 0) {
                 historyFragment.showDeleteMenu(true);
-            }else{
+            } else {
                 historyFragment.showDeleteMenu(false);
             }
 
@@ -99,10 +101,10 @@ public class HistorySessionListAdapter extends BaseAdapter {
         return sessionsListView;
     }
 
-    public void removeSelectedSessions(){
+    public void removeSelectedSessions() {
         historyFragment.removeSelectedSessions(selectedSessions);
         selectedSessions.clear();
-        for(View view : selectedRows)
+        for (View view : selectedRows)
             view.setBackgroundResource(R.color.white);
         selectedRows.clear();
     }

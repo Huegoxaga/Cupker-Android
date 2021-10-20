@@ -17,6 +17,15 @@
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme">
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cupping_activity_timer_reset_btn"
+            android:text="@string/cupping_activity_reset"
+            android:background="@null"
+            android:textColor="@color/design_default_color_surface"
+            />
+
         <TextView
             android:id="@+id/cupping_toolbar_title"
             style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
@@ -24,6 +33,18 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textColor="@android:color/white" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cupping_activity_start"
+            android:id="@+id/cupping_activity_timer_toggle_btn"
+            android:background="@null"
+            android:textColor="@color/design_default_color_secondary"
+            android:layout_gravity="end"
+            android:layout_marginRight="15dp"
+            />
+
     </androidx.appcompat.widget.Toolbar>
 
     <ListView
