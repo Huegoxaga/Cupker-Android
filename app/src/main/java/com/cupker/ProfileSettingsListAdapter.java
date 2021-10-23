@@ -87,6 +87,10 @@ public class ProfileSettingsListAdapter extends BaseAdapter {
                     Amplify.Auth.signOut(
                             () -> {
                                 profileFragment.setGuestMode(true, "Guest User");
+                                Amplify.DataStore.clear(
+                                        () -> Log.i(TAG, "DataStore cleared"),
+                                        error -> Log.e(TAG, "Error clearing DataStore", error)
+                                );
                                 Log.i(TAG, "Signed out successfully");
                             },
                             error -> Log.e(TAG, error.toString())

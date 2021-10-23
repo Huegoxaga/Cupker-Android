@@ -9,115 +9,167 @@
 
     <!-- TODO: Update blank fragment layout -->
 
+    <TextView
+        android:id="@+id/cupping_frag_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:text="@string/cupping_frag_title"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/cupping_start_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="30dp"
         android:text="@string/cupping_start_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <TextView
+        android:id="@+id/cupping_frag_session_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:text="@string/cupping_frag_session_name"
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/cupping_session_input"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/cupping_frag_sample_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="56dp"
+
+        android:text="@string/cupping_frag_sample_count"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cupping_frag_session_name" />
+
+    <TextView
+        android:id="@+id/cupping_frag_roaster_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="56dp"
+        android:labelFor="@id/cupping_roaster_spinner"
+        android:text="@string/cupping_frag_roaster_input"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cupping_frag_sample_count" />
+
+    <TextView
+        android:id="@+id/cupping_frag_roast_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="56dp"
+        android:text="@string/cupping_frag_roaster_input_label"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cupping_frag_roaster_label" />
+
+    <EditText
+        android:id="@+id/cupping_roast_date_input"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:ems="6"
+        android:hint="@string/cupping_roast_date_input"
+        android:inputType="date"
+
+        app:layout_constraintBottom_toBottomOf="@+id/cupping_frag_roast_date"
+        app:layout_constraintEnd_toEndOf="@+id/cupping_roaster_spinner"
+        app:layout_constraintStart_toStartOf="@+id/cupping_roaster_spinner"
+        app:layout_constraintTop_toTopOf="@+id/cupping_frag_roast_date" />
+
     <ImageButton
         android:id="@+id/cupping_roast_date_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="30dp"
         android:contentDescription="@string/cupping_roast_date_button"
         android:src="@android:drawable/ic_menu_my_calendar"
         app:layout_constraintBottom_toBottomOf="@+id/cupping_roast_date_input"
-        app:layout_constraintStart_toEndOf="@+id/cupping_roast_date_input" />
-
-    <EditText
-        android:id="@+id/cupping_roast_date_input"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="49dp"
-        android:layout_marginLeft="49dp"
-        android:autofillHints=""
-        android:ems="10"
-        android:hint="@string/cupping_roast_date_input"
-        android:inputType="date"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/cupping_roast_date_input" />
 
     <Spinner
         android:id="@+id/cupping_roaster_spinner"
-        android:layout_width="174dp"
-        android:layout_height="27dp"
-        android:layout_marginStart="100dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="44dp"
-        app:layout_constraintBottom_toTopOf="@+id/cupping_roast_date_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/cupping_frag_roaster_label"
+        app:layout_constraintEnd_toEndOf="@+id/cupping_sample_minus_button"
+        app:layout_constraintStart_toStartOf="@+id/cupping_sample_label"
+        app:layout_constraintTop_toTopOf="@+id/cupping_frag_roaster_label" />
 
     <ImageButton
         android:id="@+id/cupping_roaster_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginEnd="30dp"
         android:contentDescription="@string/cupping_roaster_button"
         android:src="@android:drawable/ic_input_add"
-        app:layout_constraintBottom_toTopOf="@+id/cupping_roast_date_input"
-        app:layout_constraintStart_toEndOf="@+id/cupping_roaster_spinner" />
+        app:layout_constraintBottom_toBottomOf="@+id/cupping_roaster_spinner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/cupping_roaster_spinner" />
 
     <EditText
         android:id="@+id/cupping_session_input"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="75dp"
+        android:layout_marginEnd="30dp"
         android:autofillHints=""
         android:ems="10"
         android:hint="@string/cupping_session_input"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.53"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/cupping_frag_session_name"
+        app:layout_constraintStart_toStartOf="@+id/cupping_sample_label"
+        app:layout_constraintTop_toBottomOf="@+id/cupping_frag_title" />
 
     <TextView
         android:id="@+id/cupping_sample_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="14dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginRight="24dp"
+        android:layout_marginStart="30dp"
+        android:textSize="18sp"
         android:text="@string/cupping_sample_label"
-        app:layout_constraintEnd_toStartOf="@+id/cupping_sample_add_button"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/cupping_sample_minus_button"
-        app:layout_constraintTop_toTopOf="@+id/cupping_sample_add_button" />
+        app:layout_constraintBottom_toBottomOf="@+id/cupping_frag_sample_count"
+        app:layout_constraintStart_toEndOf="@+id/cupping_frag_sample_count"
+        app:layout_constraintTop_toTopOf="@+id/cupping_frag_sample_count" />
 
     <ImageButton
         android:id="@+id/cupping_sample_add_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="27dp"
-        android:layout_marginLeft="27dp"
-        android:layout_marginTop="23dp"
+        android:layout_marginEnd="30dp"
         android:contentDescription="@string/cuppint_sample_add_button"
         android:src="@android:drawable/ic_input_add"
-        app:layout_constraintStart_toEndOf="@+id/cupping_roaster_button"
-        app:layout_constraintTop_toBottomOf="@+id/cupping_session_input" />
+        app:layout_constraintBottom_toBottomOf="@+id/cupping_sample_minus_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/cupping_sample_minus_button" />
 
     <ImageButton
         android:id="@+id/cupping_sample_minus_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginEnd="20dp"
         android:contentDescription="@string/cupping_sample_minus_button"
         android:src="@android:drawable/ic_delete"
-        app:layout_constraintEnd_toStartOf="@+id/cupping_roaster_spinner"
-        app:layout_constraintHorizontal_bias="0.446"
-        app:layout_constraintStart_toStartOf="@+id/cupping_roaster_spinner"
-        app:layout_constraintTop_toBottomOf="@+id/cupping_session_input" />
+        app:layout_constraintBottom_toBottomOf="@+id/cupping_sample_label"
+        app:layout_constraintEnd_toStartOf="@+id/cupping_sample_add_button"
+        app:layout_constraintTop_toTopOf="@+id/cupping_sample_label" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

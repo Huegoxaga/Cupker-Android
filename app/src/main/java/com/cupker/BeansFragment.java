@@ -137,21 +137,21 @@ public class BeansFragment extends Fragment {
         menuItemAdd.setVisible(!show);
     }
 
-    public void removeSelectedBeans(List<Bean> selectedSessions) {
-        beanObjs.removeAll(selectedSessions);
+    public void removeSelectedBeans(List<Bean> selectedBeans) {
+        beanObjs.removeAll(selectedBeans);
 
-        for (Bean session : selectedSessions) {
-            Amplify.DataStore.query(Session.class, Where.id(session.getId()),
+        for (Bean bean : selectedBeans) {
+            Amplify.DataStore.query(Bean.class, Where.id(bean.getId()),
                     match -> {
                         if (match.hasNext()) {
-                            Session getBean = match.next();
+                            Bean getBean = match.next();
 
-                            Session updatedBean = getBean.copyOfBuilder()
+                            Bean updatedBean = getBean.copyOfBuilder()
                                     .status(Status.INACTIVE)
                                     .build();
                             Amplify.DataStore.save(updatedBean,
-                                    updated -> Log.i(TAG, "Updated a Session."),
-                                    failure -> Log.e(TAG, "Update failed.", failure)
+                                    updated -> Log.i(TAG, "Inactivate a Bean."),
+                                    failure -> Log.e(TAG, "Remove Bean failed.", failure)
                             );
                             Log.d(TAG, "Inactivate Session =====" + getBean.getName());
                         }

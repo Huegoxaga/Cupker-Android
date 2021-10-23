@@ -6,7 +6,7 @@
     <string name="cupping_roast_date_button">Calendar</string>
     <string name="cupping_roast_date_input">YYYY/MM/DD</string>
     <string name="cupping_roaster_button">Add New Roaster</string>
-    <string name="cupping_session_input">African Natural Processed Group I</string>
+    <string name="cupping_session_input">African Natural Process</string>
     <string name="cuppint_sample_add_button">Add a Sample</string>
     <string name="cupping_sample_minus_button">Remove a Sample</string>
     <string name="add_button">Add</string>
@@ -84,4 +84,15 @@
     <string name="cupping_activity_reset">RESET</string>
     <string name="cupping_activity_start">START</string>
     <string name="toolbar_search">Search</string>
+    <string name="new_roaster_frag_email">Roaster Email</string>
+    <string name="new_roaster_frag_name">Roaster Name</string>
+    <string name="cupping_frag_roaster_input_label">Roast Date</string>
+    <string name="cupping_frag_title">New Cupping Session</string>
+    <string name="cupping_frag_session_name">Session Name</string>
+    <string name="cupping_frag_roaster_input">Roaster</string>
+    <string name="cupping_frag_sample_count"># of Samples</string>
+    <string name="navi_cupping">Cupping</string>
+    <string name="navi_beans">Beans</string>
+    <string name="navi_history">History</string>
+    <string name="navi_profile">Profile</string>
 </resources>

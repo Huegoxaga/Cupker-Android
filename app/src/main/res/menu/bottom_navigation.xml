@@ -2,18 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/nav_cupping"
-        android:icon="@android:drawable/btn_star"
-        android:title="Cupping" />
+        android:icon="@drawable/cup"
+        android:title="@string/navi_cupping" />
     <item
         android:id="@+id/nav_beans"
-        android:icon="@android:drawable/ic_dialog_email"
-        android:title="Beans" />
+        android:icon="@drawable/beans"
+        android:title="@string/navi_beans" />
     <item
         android:id="@+id/nav_history"
-        android:icon="@android:drawable/presence_audio_online"
-        android:title="History" />
+        android:icon="@drawable/history"
+        android:title="@string/navi_history" />
     <item
         android:id="@+id/nav_profile"
-        android:icon="@android:drawable/presence_audio_online"
-        android:title="Profile" />
+        android:icon="@drawable/settings"
+        android:title="@string/navi_profile" />
 </menu>
