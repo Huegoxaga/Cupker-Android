@@ -46,12 +46,12 @@ public class ProfileFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
         settingsTitles = new ArrayList<>(Arrays.asList("My Dealers", "My Roasters", "My Flavors", "Logout"));
         Amplify.Auth.fetchAuthSession(
                 result -> {
-                    Log.d(TAG, result.toString());
+                    Log.d(TAG, "SIGN IN STATUS: " + result.toString());
                     if (result.isSignedIn()) {
                         Amplify.Auth.fetchUserAttributes(
                                 attributes -> {
@@ -129,8 +129,17 @@ public class ProfileFragment extends Fragment {
         usernameLabel = profileView.findViewById(R.id.profile_frag_username_text);
 
         loginBtn.setOnClickListener(view -> {
-            Intent startNewBeamIntent = new Intent(getActivity(), LoginActivity.class);
-            startActivity(startNewBeamIntent);
+//            Intent startNewBeamIntent = new Intent(getActivity(), LoginActivity.class);
+//            startActivity(startNewBeamIntent);
+            Amplify.Auth.signInWithWebUI(getActivity(),
+                    result -> {
+                        Log.i(TAG, "SIGN IN COMPLETE " + result.toString());
+                        onStart();
+                    },
+                    error -> {
+                        Log.e(TAG, error.toString());
+                    }
+            );
         });
 
         // Auth test

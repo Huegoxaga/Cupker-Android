@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/grading_dialog_layout"
     android:layout_width="match_parent"
@@ -11,7 +12,15 @@
     <TextView
         android:id="@+id/grading_dialog_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:height="50dp"
+        android:background="@color/main_brown_light"
+        android:gravity="center_vertical"
+        android:paddingStart="15sp"
+        android:paddingTop="3sp"
+        android:paddingEnd="15sp"
+        android:textColor="@color/white"
+        android:textSize="24sp" />
 
     <GridLayout
         android:id="@+id/grading_dialog_score_grid"
@@ -20,103 +29,249 @@
         android:layout_gravity="center"
         android:columnCount="4"
         android:orientation="horizontal"
+        android:paddingVertical="10dp"
+        android:paddingHorizontal="10dp"
         android:rowCount="4">
 
         <TextView
             android:id="@+id/grading_dialog_score_6_0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/grading_dialog_score_6_0" />
+            android:height="50dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center|center_vertical"
+            android:paddingStart="5dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp"
+            android:text="@string/grading_dialog_score_6_0"
+            android:textSize="28sp" />
 
         <TextView
             android:id="@+id/grading_dialog_score_6_25"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/grading_dialog_score_6_25" />
+            android:height="50dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center|center_vertical"
+            android:paddingStart="5dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp"
+            android:text="@string/grading_dialog_score_6_25"
+            android:textSize="28sp" />
 
         <TextView
             android:id="@+id/grading_dialog_score_6_5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/grading_dialog_score_6_5" />
+            android:height="50dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center|center_vertical"
+            android:paddingStart="5dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp"
+            android:text="@string/grading_dialog_score_6_5"
+            android:textSize="28sp" />
 
         <TextView
             android:id="@+id/grading_dialog_score_6_75"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/grading_dialog_score_6_75" />
+            android:height="50dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center|center_vertical"
+            android:paddingStart="5dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp"
+            android:text="@string/grading_dialog_score_6_75"
+            android:textSize="28sp" />
 
         <TextView
             android:id="@+id/grading_dialog_score_7_0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/grading_dialog_score_7_0" />
+            android:height="50dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center|center_vertical"
+            android:paddingStart="5dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp"
+            android:text="@string/grading_dialog_score_7_0"
+            android:textSize="28sp" />
 
         <TextView
             android:id="@+id/grading_dialog_score_7_25"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/grading_dialog_score_7_25" />
+            android:height="50dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center|center_vertical"
+            android:paddingStart="5dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp"
+            android:text="@string/grading_dialog_score_7_25"
+            android:textSize="28sp" />
 
         <TextView
             android:id="@+id/grading_dialog_score_7_5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/grading_dialog_score_7_5" />
+            android:height="50dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center|center_vertical"
+            android:paddingStart="5dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp"
+            android:text="@string/grading_dialog_score_7_5"
+            android:textSize="28sp" />
 
         <TextView
             android:id="@+id/grading_dialog_score_7_75"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/grading_dialog_score_7_75" />
+            android:height="50dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center|center_vertical"
+            android:paddingStart="5dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp"
+            android:text="@string/grading_dialog_score_7_75"
+            android:textSize="28sp" />
 
         <TextView
             android:id="@+id/grading_dialog_score_8_0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/grading_dialog_score_8_0" />
+            android:height="50dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center|center_vertical"
+            android:paddingStart="5dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp"
+            android:text="@string/grading_dialog_score_8_0"
+            android:textSize="28sp" />
 
         <TextView
             android:id="@+id/grading_dialog_score_8_25"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/grading_dialog_score_8_25" />
+            android:height="50dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center|center_vertical"
+            android:paddingStart="5dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp"
+            android:text="@string/grading_dialog_score_8_25"
+            android:textSize="28sp" />
 
         <TextView
             android:id="@+id/grading_dialog_score_8_5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/grading_dialog_score_8_5" />
+            android:height="50dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center|center_vertical"
+            android:paddingStart="5dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp"
+            android:text="@string/grading_dialog_score_8_5"
+            android:textSize="28sp" />
 
         <TextView
             android:id="@+id/grading_dialog_score_8_75"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/grading_dialog_score_8_75" />
+            android:height="50dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center|center_vertical"
+            android:paddingStart="5dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp"
+            android:text="@string/grading_dialog_score_8_75"
+            android:textSize="28sp" />
 
         <TextView
             android:id="@+id/grading_dialog_score_9_0"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/grading_dialog_score_9_0" />
+            android:height="50dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center|center_vertical"
+            android:paddingStart="5dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp"
+            android:text="@string/grading_dialog_score_9_0"
+            android:textSize="28sp" />
 
         <TextView
             android:id="@+id/grading_dialog_score_9_25"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/grading_dialog_score_9_25" />
+            android:height="50dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center|center_vertical"
+            android:paddingStart="5dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp"
+            android:text="@string/grading_dialog_score_9_25"
+            android:textSize="28sp" />
 
         <TextView
             android:id="@+id/grading_dialog_score_9_5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/grading_dialog_score_9_5" />
+            android:height="50dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center|center_vertical"
+            android:paddingStart="5dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp"
+            android:text="@string/grading_dialog_score_9_5"
+            android:textSize="28sp" />
 
         <TextView
             android:id="@+id/grading_dialog_score_9_75"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/grading_dialog_score_9_75" />
+            android:height="50dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center|center_vertical"
+            android:paddingStart="5dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp"
+            android:text="@string/grading_dialog_score_9_75"
+            android:textSize="28sp" />
     </GridLayout>
 
 </LinearLayout>

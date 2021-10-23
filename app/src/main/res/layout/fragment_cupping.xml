@@ -98,7 +98,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="30dp"
         android:contentDescription="@string/cupping_roast_date_button"
-        android:src="@android:drawable/ic_menu_my_calendar"
+        android:src="@drawable/calendar"
         app:layout_constraintBottom_toBottomOf="@+id/cupping_roast_date_input"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/cupping_roast_date_input" />
@@ -119,7 +119,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="30dp"
         android:contentDescription="@string/cupping_roaster_button"
-        android:src="@android:drawable/ic_input_add"
+        android:src="@drawable/roaster_add"
         app:layout_constraintBottom_toBottomOf="@+id/cupping_roaster_spinner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/cupping_roaster_spinner" />
@@ -156,7 +156,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="30dp"
         android:contentDescription="@string/cuppint_sample_add_button"
-        android:src="@android:drawable/ic_input_add"
+        android:src="@drawable/plus"
         app:layout_constraintBottom_toBottomOf="@+id/cupping_sample_minus_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/cupping_sample_minus_button" />
@@ -167,7 +167,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="20dp"
         android:contentDescription="@string/cupping_sample_minus_button"
-        android:src="@android:drawable/ic_delete"
+        android:src="@drawable/minus"
         app:layout_constraintBottom_toBottomOf="@+id/cupping_sample_label"
         app:layout_constraintEnd_toStartOf="@+id/cupping_sample_add_button"
         app:layout_constraintTop_toTopOf="@+id/cupping_sample_label" />

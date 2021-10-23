@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:backgroundTint="#D8D8D8"
     android:orientation="vertical"
     tools:context=".NewBeanActivity">
 
@@ -30,109 +31,128 @@
         android:id="@+id/add_bean_new_image"
         android:layout_width="match_parent"
         android:layout_height="144dp"
+        android:background="#FFD8D8D8"
         android:contentDescription="@string/new_bean_activity_add_image"
         android:scaleType="center"
         app:srcCompat="@android:drawable/ic_menu_camera" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="@+id/guideline">
 
-        <TextView
+        <ImageView
             android:id="@+id/new_bean_origin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="45dp"
-            android:layout_marginEnd="8dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="50dp"
+            android:labelFor="@id/new_bean_origin_input"
+            android:scaleType="fitCenter"
             android:text="@string/add_bean_origin"
-            app:layout_constraintBottom_toBottomOf="@+id/new_bean_region"
-            app:layout_constraintEnd_toStartOf="@+id/new_bean_origin_input"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/new_bean_region" />
+            app:layout_constraintTop_toBottomOf="@+id/new_bean_name"
+            app:srcCompat="@drawable/origin" />
 
-        <TextView
+        <ImageView
             android:id="@+id/new_bean_variety"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="45dp"
-            android:layout_marginTop="35dp"
-            android:layout_marginEnd="2dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="50dp"
+            android:labelFor="@id/new_bean_variety_input"
+            android:scaleType="fitCenter"
             android:text="@string/add_bean_variety"
-            app:layout_constraintEnd_toStartOf="@+id/new_bean_variety_input"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/new_bean_origin_input" />
+            app:layout_constraintTop_toBottomOf="@+id/new_bean_origin"
+            app:srcCompat="@drawable/variety" />
 
-        <TextView
+        <ImageView
             android:id="@+id/new_bean_dealer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:labelFor="@id/new_bean_dealer_input"
+            android:scaleType="fitCenter"
             android:text="@string/add_bean_dealer"
-            app:layout_constraintEnd_toStartOf="@+id/new_bean_dealer_input"
-            app:layout_constraintStart_toEndOf="@+id/new_bean_grade_input"
-            app:layout_constraintTop_toTopOf="@+id/new_bean_dealer_input" />
+            app:layout_constraintBottom_toBottomOf="@+id/new_bean_grade"
+            app:layout_constraintStart_toStartOf="@+id/new_bean_moisture"
+            app:layout_constraintTop_toTopOf="@+id/new_bean_grade"
+            app:srcCompat="@drawable/dealer" />
 
-        <TextView
+        <ImageView
             android:id="@+id/new_bean_moisture"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:labelFor="@id/new_bean_moisture_input"
+            android:scaleType="fitCenter"
             android:text="@string/add_bean_moisture"
-            app:layout_constraintEnd_toStartOf="@+id/new_bean_moisture_input"
-            app:layout_constraintStart_toEndOf="@+id/new_bean_density_input"
-            app:layout_constraintTop_toTopOf="@+id/new_bean_moisture_input" />
+            app:layout_constraintBottom_toBottomOf="@+id/new_bean_density"
+            app:layout_constraintStart_toStartOf="@+id/new_bean_altitude"
+            app:layout_constraintTop_toTopOf="@+id/new_bean_density"
+            app:srcCompat="@drawable/moisture" />
 
-        <TextView
+        <ImageView
             android:id="@+id/new_bean_altitude"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="7dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:labelFor="@id/new_bean_altitude_low"
+            android:scaleType="fitCenter"
             android:text="@string/add_bean_altitude"
-            app:layout_constraintEnd_toStartOf="@+id/new_bean_altitude_low"
-            app:layout_constraintStart_toEndOf="@+id/new_bean_variety_input"
-            app:layout_constraintTop_toTopOf="@+id/new_bean_altitude_low" />
+            app:layout_constraintBottom_toBottomOf="@+id/new_bean_variety"
+            app:layout_constraintStart_toStartOf="@+id/new_bean_region"
+            app:layout_constraintTop_toTopOf="@+id/new_bean_variety"
+            app:srcCompat="@drawable/altitude" />
 
-        <TextView
+        <ImageView
             android:id="@+id/new_bean_region"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:labelFor="@id/new_bean_region_input"
+            android:scaleType="fitCenter"
             android:text="@string/add_bean_region"
-            app:layout_constraintBottom_toBottomOf="@+id/new_bean_region_input"
-            app:layout_constraintEnd_toStartOf="@+id/new_bean_region_input"
-            app:layout_constraintStart_toEndOf="@+id/new_bean_origin_input" />
+            app:layout_constraintBottom_toBottomOf="@+id/new_bean_origin_input"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toTopOf="@+id/new_bean_origin_input"
+            app:srcCompat="@drawable/region" />
 
-        <TextView
+        <ImageView
             android:id="@+id/new_bean_grade"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="45dp"
-            android:layout_marginTop="36dp"
-            android:layout_marginEnd="9dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="50dp"
+            android:labelFor="@id/new_bean_grade_input"
+            android:scaleType="fitCenter"
             android:text="@string/add_bean_grade"
-            app:layout_constraintEnd_toStartOf="@+id/new_bean_grade_input"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/new_bean_density_input" />
+            app:layout_constraintTop_toBottomOf="@+id/new_bean_density"
+            app:srcCompat="@drawable/grade" />
 
-        <TextView
+        <ImageView
             android:id="@+id/new_bean_density"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="45dp"
-            android:layout_marginEnd="9dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="50dp"
+            android:labelFor="@id/new_bean_density_input"
+            android:scaleType="fitCenter"
             android:text="@string/add_bean_density"
-            app:layout_constraintBottom_toBottomOf="@+id/new_bean_moisture"
-            app:layout_constraintEnd_toStartOf="@+id/new_bean_density_input"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/new_bean_moisture" />
+            app:layout_constraintTop_toBottomOf="@+id/new_bean_variety"
+            app:srcCompat="@drawable/density" />
 
         <EditText
             android:id="@+id/new_bean_origin_input"
             android:layout_width="0dp"
-            android:layout_height="26dp"
-            android:layout_marginEnd="30dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
             android:ems="10"
+            android:hint="@string/add_bean_origin"
             android:importantForAutofill="no"
             android:inputType="textPersonName"
+            app:layout_constraintBottom_toBottomOf="@+id/new_bean_origin"
             app:layout_constraintEnd_toStartOf="@+id/new_bean_region"
             app:layout_constraintStart_toEndOf="@+id/new_bean_origin"
             app:layout_constraintTop_toTopOf="@+id/new_bean_origin" />
@@ -140,120 +160,138 @@
         <EditText
             android:id="@+id/new_bean_region_input"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="88dp"
-            android:layout_marginEnd="25dp"
-            android:layout_marginBottom="42dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="40dp"
             android:ems="10"
+            android:hint="@string/add_bean_region"
             android:importantForAutofill="no"
             android:inputType="textPersonName"
-            app:layout_constraintBottom_toTopOf="@+id/new_bean_altitude_low"
+            app:layout_constraintBottom_toBottomOf="@+id/new_bean_origin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/new_bean_region"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/new_bean_origin" />
 
         <EditText
             android:id="@+id/new_bean_moisture_input"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginEnd="25dp"
-            android:layout_marginBottom="36dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="40dp"
             android:ems="10"
+            android:hint="@string/add_bean_moisture"
             android:importantForAutofill="no"
             android:inputType="textPersonName"
-            app:layout_constraintBottom_toTopOf="@+id/new_bean_dealer_input"
+            app:layout_constraintBottom_toBottomOf="@+id/new_bean_density"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/new_bean_moisture"
-            app:layout_constraintTop_toBottomOf="@+id/new_bean_altitude_low" />
+            app:layout_constraintTop_toTopOf="@+id/new_bean_density"
+            tools:layout_editor_absoluteY="228dp" />
 
         <EditText
             android:id="@+id/new_bean_dealer_input"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginEnd="25dp"
-            android:layout_marginBottom="214dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="40dp"
             android:ems="10"
+            android:hint="@string/add_bean_dealer"
             android:importantForAutofill="no"
             android:inputType="textPersonName"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/new_bean_grade"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/new_bean_dealer"
-            app:layout_constraintTop_toBottomOf="@+id/new_bean_moisture_input" />
+            app:layout_constraintTop_toTopOf="@+id/new_bean_grade"
+            tools:layout_editor_absoluteY="292dp" />
 
         <EditText
             android:id="@+id/new_bean_density_input"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginEnd="19dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
             android:ems="10"
+            android:hint="@string/add_bean_density"
             android:importantForAutofill="no"
             android:inputType="textPersonName"
-            app:layout_constraintBottom_toBottomOf="@+id/new_bean_moisture_input"
-            app:layout_constraintEnd_toStartOf="@+id/new_bean_moisture"
+            app:layout_constraintBottom_toBottomOf="@+id/new_bean_density"
+            app:layout_constraintEnd_toEndOf="@+id/new_bean_variety_input"
             app:layout_constraintStart_toEndOf="@+id/new_bean_density"
             app:layout_constraintTop_toTopOf="@+id/new_bean_density" />
 
         <EditText
             android:id="@+id/new_bean_variety_input"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginEnd="28dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
             android:ems="10"
             android:importantForAutofill="no"
             android:inputType="textPersonName"
-            app:layout_constraintBottom_toBottomOf="@+id/new_bean_altitude_low"
-            app:layout_constraintEnd_toStartOf="@+id/new_bean_altitude"
+            android:hint="@string/add_bean_variety"
+            app:layout_constraintBottom_toBottomOf="@+id/new_bean_variety"
+            app:layout_constraintEnd_toEndOf="@+id/new_bean_origin_input"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/new_bean_variety"
             app:layout_constraintTop_toTopOf="@+id/new_bean_variety" />
 
         <EditText
             android:id="@+id/new_bean_grade_input"
             android:layout_width="0dp"
-            android:layout_height="26dp"
-            android:layout_marginEnd="28dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:ems="10"
+            android:hint="@string/add_bean_grade"
             android:importantForAutofill="no"
             android:inputType="textPersonName"
             app:layout_constraintBottom_toBottomOf="@+id/new_bean_grade"
-            app:layout_constraintEnd_toStartOf="@+id/new_bean_dealer"
-            app:layout_constraintStart_toEndOf="@+id/new_bean_grade" />
+            app:layout_constraintEnd_toEndOf="@+id/new_bean_density_input"
+            app:layout_constraintStart_toEndOf="@+id/new_bean_grade"
+            app:layout_constraintTop_toTopOf="@+id/new_bean_grade" />
 
         <EditText
             android:id="@+id/new_bean_altitude_low"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginEnd="25dp"
-            android:layout_marginBottom="47dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="40dp"
             android:ems="10"
+            android:hint="@string/add_bean_altitude"
             android:importantForAutofill="no"
             android:inputType="textPersonName"
-            app:layout_constraintBottom_toTopOf="@+id/new_bean_moisture_input"
+            app:layout_constraintBottom_toBottomOf="@+id/new_bean_variety"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/new_bean_altitude"
-            app:layout_constraintTop_toBottomOf="@+id/new_bean_region_input" />
+            app:layout_constraintTop_toTopOf="@+id/new_bean_variety" />
 
         <TextView
             android:id="@+id/new_bean_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="39dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="50dp"
             android:text="Name"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/new_bean_name_input"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="46dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginEnd="48dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="40dp"
             android:ems="10"
             android:inputType="textPersonName"
-            app:layout_constraintEnd_toEndOf="@+id/new_bean_region_input"
-            app:layout_constraintStart_toEndOf="@+id/new_bean_origin"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBaseline_toBaselineOf="@+id/new_bean_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/new_bean_name" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

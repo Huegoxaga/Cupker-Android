@@ -27,7 +27,7 @@ public class CuppingGridAdapter extends BaseAdapter {
 
     // Data
     private final Sample sample;
-    private final String[] gradingTitles = { "Aroma", "Flavor", "Aftertaste", "Acidity", "Body",
+    public static final String[] gradingTitles = { "Aroma", "Flavor", "Aftertaste", "Acidity", "Body",
             "Uniformity", "Clean Cup", "Overall", "Balance", "Sweetness", "Defect Cups", "Intensity" };
     private final int listPosition;
     private final boolean editable;

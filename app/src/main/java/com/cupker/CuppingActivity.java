@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -50,7 +51,7 @@ public class CuppingActivity extends AppCompatActivity {
     private ListView cuppingListView;
     private CuppingListAdapter cuppingListAdapter;
     private LinearLayout mainFrame;
-    private Button timerToggleButton;
+    private ImageButton timerToggleButton;
     private TextView titleText;
 
     // Data
@@ -188,7 +189,7 @@ public class CuppingActivity extends AppCompatActivity {
                 public void onClick(DialogInterface dialogInterface, int i) {
                     if (timerTask != null) {
                         timerTask.cancel();
-                        setButtonUI("START", R.color.design_default_color_secondary);
+                        timerToggleButton.setImageResource(R.drawable.play);
                         time = 0.0;
                         timerStarted = false;
                         titleText.setText(sessionName);
@@ -209,11 +210,12 @@ public class CuppingActivity extends AppCompatActivity {
 
             if (timerStarted == false) {
                 timerStarted = true;
-                setButtonUI("STOP", R.color.design_default_color_error);
+                timerToggleButton.setImageResource(R.drawable.pause);
+
                 startTimer();
             } else {
                 timerStarted = false;
-                setButtonUI("START", R.color.design_default_color_primary_variant);
+                timerToggleButton.setImageResource(R.drawable.play);
                 timerTask.cancel();
             }
 
@@ -227,11 +229,6 @@ public class CuppingActivity extends AppCompatActivity {
 //        });
     }
 
-    private void setButtonUI(String start, int color)
-    {
-        timerToggleButton.setText(start);
-        timerToggleButton.setTextColor(ContextCompat.getColor(this, color));
-    }
 
     private void startTimer()
     {

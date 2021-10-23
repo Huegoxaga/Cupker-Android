@@ -66,7 +66,7 @@ public class CuppingFragment extends Fragment {
         // Init data
         // Add first roaster record
         roastersObj.add(null);
-        roastersString.add("Select a Roaster");
+        roastersString.add("Select...");
 
         // Query and assign rest roaster records
         Amplify.DataStore.query(Roaster.class,

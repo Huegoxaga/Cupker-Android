@@ -12,23 +12,27 @@ import android.widget.TextView;
 /**
  * The grading popup
  */
-public class GradingDialogFragment extends DialogFragment{
+public class GradingDialogFragment extends DialogFragment {
 
     // Declare Data
     private final int listPosition;
     private final int gridPosition;
+    private final CuppingActivity main;
 
     public GradingDialogFragment(int listPosition, int gridPosition) {
 
         // Init Data
         this.listPosition = listPosition;
         this.gridPosition = gridPosition;
+        this.main = (CuppingActivity) getActivity();
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View gradingDialogView = inflater.inflate(R.layout.fragment_grading_dialog, container, false);
-
+        TextView titleText = gradingDialogView.findViewById(R.id.grading_dialog_title);
+        titleText.setText(String.format("#%d - %s", (listPosition + 1), CuppingGridAdapter.gradingTitles[gridPosition]));
         gradingDialogView.findViewById(R.id.grading_dialog_score_6_0).setOnClickListener(this::saveScore);
         gradingDialogView.findViewById(R.id.grading_dialog_score_6_25).setOnClickListener(this::saveScore);
         gradingDialogView.findViewById(R.id.grading_dialog_score_6_5).setOnClickListener(this::saveScore);
@@ -51,7 +55,6 @@ public class GradingDialogFragment extends DialogFragment{
     public void saveScore(View v) {
         TextView scoreTextView = (TextView) v;
         double score = Double.parseDouble(scoreTextView.getText().toString());
-        CuppingActivity main = (CuppingActivity) getActivity();
         main.setScore(listPosition, gridPosition, score);
         dismiss();
     }

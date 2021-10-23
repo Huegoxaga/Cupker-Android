@@ -9,12 +9,19 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.amplifyframework.core.Amplify;
+import com.amplifyframework.core.model.query.Where;
+import com.amplifyframework.datastore.generated.model.Bean;
+import com.amplifyframework.datastore.generated.model.Status;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "===LOGIN ACTIVITY===";
 
+    private boolean loggedIn = false;
+    private int attempt;
 
 //    private Button loginBtn;
 //    private EditText usernameInput;
@@ -23,12 +30,11 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Amplify.Auth.signInWithWebUI(
                 this,
                 result -> {
                     Log.i(TAG, result.toString());
-                    finish();
+                    this.loggedIn = true;
                 },
                 error -> {
                     Log.e(TAG, error.toString());

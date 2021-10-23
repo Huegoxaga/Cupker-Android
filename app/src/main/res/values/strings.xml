@@ -16,7 +16,7 @@
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="cupping_list_note_label">Notes:</string>
     <string name="cupping_list_title_label"># %d</string>
-    <string name="cupping_list_note_input">notes</string>
+    <string name="cupping_list_note_input">Notes</string>
     <string name="cupping_activity_save_button">Save</string>
     <string name="cupping_sample_label">6</string>
     <string name="grading_dialog_score_6_0">6.00</string>

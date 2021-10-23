@@ -7,6 +7,8 @@ import androidx.core.content.FileProvider;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -16,6 +18,8 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -62,7 +66,22 @@ public class NewBeanActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         // Listener
-        newImageButton.setOnClickListener(v -> dispatchTakePictureIntent());
+        newImageButton.setOnTouchListener((arg0, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN: {
+                    newImageButton.setBackgroundColor(Color.parseColor("#bdbdbd"));
+                    break;
+                }
+                case MotionEvent.ACTION_BUTTON_RELEASE: {
+                    dispatchTakePictureIntent();
+                }
+                default: {
+                    newImageButton.setBackgroundColor(Color.parseColor("#D8D8D8"));
+
+                }
+            }
+            return true;
+        });
     }
 
     @Override
