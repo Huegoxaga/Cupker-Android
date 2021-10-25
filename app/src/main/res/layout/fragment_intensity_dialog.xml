@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/intensity_dialog_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".GradingDialogFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/intensity_dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:height="50dp"
+        android:background="@color/main_brown_light"
+        android:gravity="center_vertical"
+        android:paddingStart="15sp"
+        android:paddingTop="3sp"
+        android:paddingEnd="15sp"
+        android:textColor="@color/white"
+        android:textSize="24sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/intensity_dialog_taint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:height="120dp"
+            android:gravity="center"
+            android:minWidth="240dp"
+            android:text="@string/dialog_intensity_taint"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/intensity_dialog_fault"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:height="120dp"
+            android:gravity="center"
+            android:minWidth="240dp"
+            android:text="@string/dialog_intensity_fault"
+            android:textSize="30sp" />
+    </LinearLayout>
+
+</LinearLayout>

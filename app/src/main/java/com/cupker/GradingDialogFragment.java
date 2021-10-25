@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +15,13 @@ import android.widget.TextView;
  */
 public class GradingDialogFragment extends DialogFragment {
 
+    // Key
+    private static final String TAG = "===GRADING DIA FRAG===";
+
     // Declare Data
     private final int listPosition;
     private final int gridPosition;
-    private final CuppingActivity main;
+    private CuppingActivity main;
 
     public GradingDialogFragment(int listPosition, int gridPosition) {
 
@@ -55,6 +59,7 @@ public class GradingDialogFragment extends DialogFragment {
     public void saveScore(View v) {
         TextView scoreTextView = (TextView) v;
         double score = Double.parseDouble(scoreTextView.getText().toString());
+        if (main == null) main = (CuppingActivity) getActivity();
         main.setScore(listPosition, gridPosition, score);
         dismiss();
     }

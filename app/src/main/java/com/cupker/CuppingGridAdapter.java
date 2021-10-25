@@ -27,8 +27,8 @@ public class CuppingGridAdapter extends BaseAdapter {
 
     // Data
     private final Sample sample;
-    public static final String[] gradingTitles = { "Aroma", "Flavor", "Aftertaste", "Acidity", "Body",
-            "Uniformity", "Clean Cup", "Overall", "Balance", "Sweetness", "Defect Cups", "Intensity" };
+    public static final String[] gradingTitles = {"Aroma", "Flavor", "Aftertaste", "Acidity", "Body",
+            "Uniformity", "Clean Cup", "Overall", "Balance", "Sweetness", "Defect Cups", "Intensity"};
     private final int listPosition;
     private final boolean editable;
 
@@ -73,53 +73,96 @@ public class CuppingGridAdapter extends BaseAdapter {
         // Setup
         gradingTitleText.setText(gradingTitles[position]);
         switch (position) {
-            case 0 :
-                gradingScoreText.setText(String.format(Locale.getDefault(),"%.2f", sample.getAroma()));
+            case 0:
+                gradingScoreText.setText(String.format(Locale.getDefault(), "%.2f", sample.getAroma()));
                 break;
-            case 1 :
-                gradingScoreText.setText(String.format(Locale.getDefault(),"%.2f", sample.getFlavor()));
+            case 1:
+                gradingScoreText.setText(String.format(Locale.getDefault(), "%.2f", sample.getFlavor()));
                 break;
-            case 2 :
-                gradingScoreText.setText(String.format(Locale.getDefault(),"%.2f", sample.getAfterTaste()));
+            case 2:
+                gradingScoreText.setText(String.format(Locale.getDefault(), "%.2f", sample.getAfterTaste()));
                 break;
-            case 3 :
-                gradingScoreText.setText(String.format(Locale.getDefault(),"%.2f", sample.getAcidity()));
+            case 3:
+                gradingScoreText.setText(String.format(Locale.getDefault(), "%.2f", sample.getAcidity()));
                 break;
-            case 4 :
-                gradingScoreText.setText(String.format(Locale.getDefault(),"%.2f", sample.getBody()));
+            case 4:
+                gradingScoreText.setText(String.format(Locale.getDefault(), "%.2f", sample.getBody()));
                 break;
-            case 5 :
-                gradingScoreText.setText(String.format(Locale.getDefault(),"%.0f", sample.getUniformity()));
+            case 5:
+                gradingScoreText.setText(String.format(Locale.getDefault(), "%.0f", getCupsScore(sample.getUniformity())));
                 break;
-            case 6 :
-                gradingScoreText.setText(String.format(Locale.getDefault(),"%.0f", sample.getCleanCup()));
+            case 6:
+                gradingScoreText.setText(String.format(Locale.getDefault(), "%.0f", getCupsScore(sample.getCleanCup())));
                 break;
-            case 7 :
-                gradingScoreText.setText(String.format(Locale.getDefault(),"%.2f", sample.getOverall()));
+            case 7:
+                gradingScoreText.setText(String.format(Locale.getDefault(), "%.2f", sample.getOverall()));
                 break;
-            case 8 :
-                gradingScoreText.setText(String.format(Locale.getDefault(),"%.2f", sample.getBalance()));
+            case 8:
+                gradingScoreText.setText(String.format(Locale.getDefault(), "%.2f", sample.getBalance()));
                 break;
-            case 9 :
-                gradingScoreText.setText(String.format(Locale.getDefault(),"%.0f", sample.getSweetness()));
+            case 9:
+                gradingScoreText.setText(String.format(Locale.getDefault(), "%.0f", getCupsScore(sample.getSweetness())));
                 break;
-            case 10 :
-                gradingScoreText.setText(String.format(Locale.getDefault(),"%.0f", sample.getDefectCount()));
+            case 10:
+                String scorePosition = Integer.toBinaryString(sample.getDefectCount().intValue());
+                double count = (scorePosition.length() - scorePosition.replace("1", "").length()) * -1;
+                gradingScoreText.setTextColor(context.getResources().getColor(R.color.design_default_color_error));
+                gradingScoreText.setText(String.format(Locale.getDefault(), "%.0f", count));
                 break;
-            case 11 :
-                gradingScoreText.setText(String.format(Locale.getDefault(),"%.0f", sample.getDefectType()));
+            case 11:
+                gradingScoreText.setText(String.format(Locale.getDefault(), "%.0f", sample.getDefectType()));
                 break;
         }
 
         // Listener
         gradingView.setOnClickListener(v -> {
+            CupsDialogFragment cupsDialog;
+            GradingDialogFragment gradingDialog;
+            IntensityDialogFragment intensityDialog;
+
             Log.d(TAG, " Selected in grid ID " + position);
-            if (editable){
-                GradingDialogFragment gradingDialog = new GradingDialogFragment(listPosition , position);
-                gradingDialog.show(context.getSupportFragmentManager(), null);
+            if (editable) {
+                switch (position) {
+                    case 0:
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                    case 7:
+                    case 8:
+                        gradingDialog = new GradingDialogFragment(listPosition, position);
+                        gradingDialog.show(context.getSupportFragmentManager(), null);
+                        break;
+                    case 5:
+                        cupsDialog = new CupsDialogFragment(listPosition, position, sample.getUniformity());
+                        cupsDialog.show(context.getSupportFragmentManager(), null);
+                        break;
+                    case 6:
+                        cupsDialog = new CupsDialogFragment(listPosition, position, sample.getCleanCup());
+                        cupsDialog.show(context.getSupportFragmentManager(), null);
+                        break;
+                    case 9:
+                        cupsDialog = new CupsDialogFragment(listPosition, position, sample.getSweetness());
+                        cupsDialog.show(context.getSupportFragmentManager(), null);
+                        break;
+                    case 10:
+                        cupsDialog = new CupsDialogFragment(listPosition, position, sample.getDefectCount());
+                        cupsDialog.show(context.getSupportFragmentManager(), null);
+                        break;
+                    case 11:
+                        intensityDialog = new IntensityDialogFragment(listPosition, position);
+                        intensityDialog.show(context.getSupportFragmentManager(), null);
+                        break;
+                }
+
             }
         });
 
         return gradingView;
+    }
+
+    private double getCupsScore(Double scoreCode) {
+        String scorePosition = Integer.toBinaryString(scoreCode.intValue());
+        return 10 - (scorePosition.length() - scorePosition.replace("1", "").length()) * 2;
     }
 }

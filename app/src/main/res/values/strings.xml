@@ -95,4 +95,12 @@
     <string name="navi_beans">Beans</string>
     <string name="navi_history">History</string>
     <string name="navi_profile">Profile</string>
+    <string name="dialog_intensity_taint">Taint = 2</string>
+    <string name="dialog_intensity_fault">Fault = 4</string>
+    <string name="cup_one">Cup One</string>
+    <string name="cup_two">Cup Two</string>
+    <string name="cup_three">Cup Three</string>
+    <string name="cup_four">Cup Four</string>
+    <string name="cup_five">Cup Five</string>
+    <string name="ok">OK</string>
 </resources>

@@ -122,10 +122,10 @@ public class CuppingActivity extends AppCompatActivity {
                         .acidity(6.0)
                         .body(6.0)
                         .balance(6.0)
-                        .uniformity(10.0)
-                        .cleanCup(10.0)
+                        .uniformity(0.0)
+                        .cleanCup(0.0)
                         .afterTaste(6.0)
-                        .sweetness(10.0)
+                        .sweetness(0.0)
                         .roastLevel(65.0)
                         .defectType(2.0)
                         .defectCount(0.0)
@@ -269,6 +269,7 @@ public class CuppingActivity extends AppCompatActivity {
     }
 
     public void setScore(int listPosition, int gridPosition, double newScore) {
+//        Log.d(TAG, samples.toString());
         Sample sample = samples.get(listPosition);
         Sample editedSample;
 
