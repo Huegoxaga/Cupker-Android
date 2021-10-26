@@ -57,9 +57,9 @@ public class GradingDialogFragment extends DialogFragment {
     }
 
     public void saveScore(View v) {
+        if (main == null) main = (CuppingActivity) getActivity();
         TextView scoreTextView = (TextView) v;
         double score = Double.parseDouble(scoreTextView.getText().toString());
-        if (main == null) main = (CuppingActivity) getActivity();
         main.setScore(listPosition, gridPosition, score);
         dismiss();
     }

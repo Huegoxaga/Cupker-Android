@@ -8,20 +8,17 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.InputType;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.ImageView;
 
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.core.model.query.Where;
 import com.amplifyframework.datastore.generated.model.Bean;
-import com.amplifyframework.datastore.generated.model.Session;
-import com.amplifyframework.datastore.generated.model.Status;
-
-import java.io.ByteArrayOutputStream;
+import com.amplifyframework.datastore.generated.model.Dealer;
 
 /**
  * This defines bean detail page
@@ -33,11 +30,24 @@ public class BeanActivity extends AppCompatActivity {
     private static final String BEAN_ID = "BEAN ID";
 
     // UI & Controllers
+    private ImageView beanImage;
+    private MenuItem editBtn;
+    private TextView origin;
+    private TextView region;
+    private TextView variety;
+    private TextView altitude;
+    private TextView density;
+    private TextView moisture;
+    private TextView grade;
+    private TextView dealerName;
+    private TextView average;
+
 
     // Data
     private Bean bean;
-    private Session session;
-    ImageView beanImage;
+    private Dealer dealer;
+    private boolean editMode = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +56,17 @@ public class BeanActivity extends AppCompatActivity {
         // Init View
         setContentView(R.layout.activity_bean);
         Toolbar toolbar = findViewById(R.id.bean_toolbar);
-        beanImage = findViewById((R.id.add_bean_new_image));
+        beanImage = findViewById((R.id.bean_image));
         Intent intent = getIntent();
+        origin = findViewById(R.id.bean_origin_input);
+        altitude = findViewById(R.id.bean_altitude_input);
+        variety = findViewById(R.id.bean_variety_input);
+        region = findViewById(R.id.bean_region_input);
+        density = findViewById(R.id.bean_density_input);
+        moisture = findViewById(R.id.bean_moisture_input);
+        grade = findViewById(R.id.bean_grade_input);
+        dealerName = findViewById(R.id.bean_dealer_input);
+        average = findViewById(R.id.bean_average);
 
         // Fetch Data
         if (intent != null && intent.hasExtra(BEAN_ID)) {
@@ -57,7 +76,14 @@ public class BeanActivity extends AppCompatActivity {
                     match -> {
                         if (match.hasNext()) {
                             bean = match.next();
-                            handler.post(updateView);
+                            Amplify.DataStore.query(Dealer.class, Where.id(bean.getDealer()),
+                                    matchDealer -> {
+                                        if (matchDealer.hasNext()) {
+                                            dealer = matchDealer.next();
+                                            handler.post(updateView);
+                                        }
+                                    },
+                                    failure -> Log.e(TAG, "Query failed.", failure));
                         }
                     },
                     failure -> Log.e(TAG, "Query failed.", failure)
@@ -71,23 +97,44 @@ public class BeanActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         // Listener
- }
+    }
 
-    // TODO: make this edit bean handler
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (menu != null) {
+            getMenuInflater().inflate(R.menu.toolbar_with_edit, menu);
+            editBtn = menu.findItem(R.id.toolbar_edit_btn);
+        }
+        return true;
+    }
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.add_bean_menu_save_button) {
-            Intent startNewBeamIntent = new Intent(this, NewBeanActivity.class);
-            startActivity(startNewBeamIntent);
+        if (item.getItemId() == R.id.toolbar_edit_btn) {
+
+
             return true;
         }
         // default handler
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    private void changeMode() {
+        int layout = editMode ? R.layout.activity_bean : R.layout.activity_new_bean;
+
+//        View C = findViewById(R.id.C);
+//        ViewGroup parent = (ViewGroup) C.getParent();
+//        int index = parent.indexOfChild(C);
+//        parent.removeView(C);
+//        C = getLayoutInflater().inflate(optionId, parent, false);
+//        parent.addView(C, index);
     }
 
     private final Handler handler = new Handler();
@@ -96,18 +143,23 @@ public class BeanActivity extends AppCompatActivity {
         @Override
         public void run() {
             // Populate data
-            // TODO: create new UI for this page
-            ((EditText) findViewById(R.id.new_bean_name_input)).setText(bean.getName());
-            ((EditText) findViewById(R.id.new_bean_name_input)).setInputType(InputType.TYPE_NULL);
-            ((EditText) findViewById(R.id.new_bean_name_input)).setBackgroundResource(android.R.color.transparent);
-            ((EditText) findViewById(R.id.new_bean_origin_input)).setText(bean.getOrigin());
-            ((EditText) findViewById(R.id.new_bean_altitude_low)).setText(bean.getAltitudeLow());
-            ((EditText) findViewById(R.id.new_bean_altitude_high)).setText(bean.getAltitudeHigh());
-            ((EditText) findViewById(R.id.new_bean_variety_input)).setText(bean.getVariety());
-            ((EditText) findViewById(R.id.new_bean_region_input)).setText(bean.getRegion());
-            ((EditText) findViewById(R.id.new_bean_density_input)).setText(bean.getDensity());
-            ((EditText) findViewById(R.id.new_bean_moisture_input)).setText(bean.getMoisture());
-            ((EditText) findViewById(R.id.new_bean_grade_input)).setText(bean.getGrade());
+            origin.setText(bean.getOrigin());
+            region.setText(bean.getRegion());
+            variety.setText(bean.getVariety());
+            density.setText(bean.getDensity());
+            moisture.setText(bean.getMoisture());
+            grade.setText(bean.getGrade());
+            dealerName.setText(dealer.getName());
+
+            if (!bean.getAltitudeLow().isEmpty() && !bean.getAltitudeHigh().isEmpty()) {
+                altitude.setText(String.format(bean.getAltitudeLow() + " - " + bean.getAltitudeHigh()));
+            } else if (!bean.getAltitudeLow().isEmpty()) {
+                altitude.setText(bean.getAltitudeLow());
+            } else if (!bean.getAltitudeHigh().isEmpty()) {
+                altitude.setText(bean.getAltitudeHigh());
+            }
+
+
             // Decode image string
             if (bean.getImage() != null) {
                 byte[] imageBytes = Base64.decode(bean.getImage(), Base64.DEFAULT);

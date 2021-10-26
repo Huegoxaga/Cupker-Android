@@ -38,7 +38,6 @@ import java.util.TimerTask;
  */
 public class CuppingActivity extends AppCompatActivity {
 
-    // TODO: Auto hide back buttons
     // Keys
     private static final String TAG = "===CUPPING ACTIVITY===";
     private static final int DONE_CUPPING = 1;
@@ -117,6 +116,7 @@ public class CuppingActivity extends AppCompatActivity {
                 Sample newSample = Sample.builder()
                         .sessionId(newSession.getId())
                         .beanId("00000000-0000-0000-0000-000000000000")
+                        .sampleOrder(i)
                         .aroma(6.0)
                         .flavor(6.0)
                         .acidity(6.0)
@@ -337,9 +337,9 @@ public class CuppingActivity extends AppCompatActivity {
             default:
                 editedSample = sample.copyOfBuilder().build();
         }
-        Log.i(TAG, "Score selected: " + newScore);
+        Log.i(TAG, "Score set: " + newScore);
         samples.set(listPosition, editedSample);
-        cuppingListView.setAdapter(cuppingListAdapter);
+        cuppingListAdapter.notifyDataSetChanged();
     }
 
     public void setNote(int listPosition, String newNote) {

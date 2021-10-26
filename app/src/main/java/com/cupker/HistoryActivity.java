@@ -25,6 +25,8 @@ import com.amplifyframework.datastore.generated.model.Session;
 import com.amplifyframework.datastore.generated.model.Status;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -98,6 +100,13 @@ public class HistoryActivity extends AppCompatActivity {
                                             Log.d(TAG, s.toString());
                                         }
                                         editMode = false;
+                                        // sort samples by sample order
+                                        Collections.sort(samples, new Comparator<Sample>() {
+                                            @Override
+                                            public int compare(Sample s1, Sample s2) {
+                                                return s1.getSampleOrder().compareTo(s2.getSampleOrder());
+                                            }
+                                        });
                                         Amplify.DataStore.query(Bean.class,
                                                 Where.matches(Bean.STATUS.eq(Status.ACTIVE)),
                                                 queryRoaster -> {
@@ -124,6 +133,7 @@ public class HistoryActivity extends AppCompatActivity {
         setSupportActionBar(toolBar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setHomeAsUpIndicator(R.drawable.back);
 //        Objects.requireNonNull(getSupportActionBar()).setHomeAsUpIndicator(R.drawable);
 
         // Listener

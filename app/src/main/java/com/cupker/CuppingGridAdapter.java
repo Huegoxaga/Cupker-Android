@@ -22,7 +22,7 @@ public class CuppingGridAdapter extends BaseAdapter {
     // Keys
     private static final String TAG = "===Cup Grid Adapter===";
 
-    // UI
+    // UI & Controller
     private final FragmentActivity context;
 
     // Data
@@ -33,9 +33,8 @@ public class CuppingGridAdapter extends BaseAdapter {
     private final boolean editable;
 
     public CuppingGridAdapter(Context context, Sample sample, int listPosition, Boolean editable) {
-        // Init UI
+        // Init UI & Controller
         this.context = (FragmentActivity) context;
-
         // Init Data
         this.listPosition = listPosition;
         this.sample = sample;
@@ -154,7 +153,6 @@ public class CuppingGridAdapter extends BaseAdapter {
                         intensityDialog.show(context.getSupportFragmentManager(), null);
                         break;
                 }
-
             }
         });
 

@@ -51,7 +51,6 @@ public class CuppingListAdapter extends BaseAdapter {
      */
     public CuppingListAdapter(Context context, List<Sample> samples, Boolean editable) {
 
-        // TODO: Read only flag for this list
         // Init Data
         this.editable = editable;
 

@@ -231,18 +231,8 @@ public final class Bean implements Model {
    * in a relationship.
    * @param id the id of the existing item this instance will represent
    * @return an instance of this model with only ID populated
-   * @throws IllegalArgumentException Checks that ID is in the proper format
    */
   public static Bean justId(String id) {
-    try {
-      UUID.fromString(id); // Check that ID is in the UUID format - if not an exception is thrown
-    } catch (Exception exception) {
-      throw new IllegalArgumentException(
-              "Model IDs must be unique in the format of UUID. This method is for creating instances " +
-              "of an existing object with only its ID field for sending as a mutation parameter. When " +
-              "creating a new object, use the standard builder method and leave the ID field blank."
-      );
-    }
     return new Bean(
       id,
       null,
@@ -286,7 +276,7 @@ public final class Bean implements Model {
 
   public interface BuildStep {
     Bean build();
-    BuildStep id(String id) throws IllegalArgumentException;
+    BuildStep id(String id);
     BuildStep flavors(List<String> flavors);
     BuildStep name(String name);
     BuildStep process(String process);

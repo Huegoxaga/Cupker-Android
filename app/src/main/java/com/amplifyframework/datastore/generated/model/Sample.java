@@ -29,6 +29,7 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 public final class Sample implements Model {
   public static final QueryField ID = field("Sample", "id");
   public static final QueryField SESSION_ID = field("Sample", "sessionID");
+  public static final QueryField SAMPLE_ORDER = field("Sample", "sampleOrder");
   public static final QueryField BEAN_ID = field("Sample", "beanID");
   public static final QueryField ROAST_LEVEL = field("Sample", "roast_level");
   public static final QueryField AROMA = field("Sample", "aroma");
@@ -46,6 +47,7 @@ public final class Sample implements Model {
   public static final QueryField NOTES = field("Sample", "notes");
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="ID", isRequired = true) String sessionID;
+  private final @ModelField(targetType="Int") Integer sampleOrder;
   private final @ModelField(targetType="ID") String beanID;
   private final @ModelField(targetType="Float") Double roast_level;
   private final @ModelField(targetType="Float") Double aroma;
@@ -69,6 +71,10 @@ public final class Sample implements Model {
   
   public String getSessionId() {
       return sessionID;
+  }
+  
+  public Integer getSampleOrder() {
+      return sampleOrder;
   }
   
   public String getBeanId() {
@@ -139,9 +145,10 @@ public final class Sample implements Model {
       return updatedAt;
   }
   
-  private Sample(String id, String sessionID, String beanID, Double roast_level, Double aroma, Double flavor, Double acidity, Double overall, Double body, Double balance, Double uniformity, Double clean_cup, Double after_taste, Double sweetness, Double defect_type, Double defect_count, String notes) {
+  private Sample(String id, String sessionID, Integer sampleOrder, String beanID, Double roast_level, Double aroma, Double flavor, Double acidity, Double overall, Double body, Double balance, Double uniformity, Double clean_cup, Double after_taste, Double sweetness, Double defect_type, Double defect_count, String notes) {
     this.id = id;
     this.sessionID = sessionID;
+    this.sampleOrder = sampleOrder;
     this.beanID = beanID;
     this.roast_level = roast_level;
     this.aroma = aroma;
@@ -169,6 +176,7 @@ public final class Sample implements Model {
       Sample sample = (Sample) obj;
       return ObjectsCompat.equals(getId(), sample.getId()) &&
               ObjectsCompat.equals(getSessionId(), sample.getSessionId()) &&
+              ObjectsCompat.equals(getSampleOrder(), sample.getSampleOrder()) &&
               ObjectsCompat.equals(getBeanId(), sample.getBeanId()) &&
               ObjectsCompat.equals(getRoastLevel(), sample.getRoastLevel()) &&
               ObjectsCompat.equals(getAroma(), sample.getAroma()) &&
@@ -194,6 +202,7 @@ public final class Sample implements Model {
     return new StringBuilder()
       .append(getId())
       .append(getSessionId())
+      .append(getSampleOrder())
       .append(getBeanId())
       .append(getRoastLevel())
       .append(getAroma())
@@ -221,6 +230,7 @@ public final class Sample implements Model {
       .append("Sample {")
       .append("id=" + String.valueOf(getId()) + ", ")
       .append("sessionID=" + String.valueOf(getSessionId()) + ", ")
+      .append("sampleOrder=" + String.valueOf(getSampleOrder()) + ", ")
       .append("beanID=" + String.valueOf(getBeanId()) + ", ")
       .append("roast_level=" + String.valueOf(getRoastLevel()) + ", ")
       .append("aroma=" + String.valueOf(getAroma()) + ", ")
@@ -253,20 +263,11 @@ public final class Sample implements Model {
    * in a relationship.
    * @param id the id of the existing item this instance will represent
    * @return an instance of this model with only ID populated
-   * @throws IllegalArgumentException Checks that ID is in the proper format
    */
   public static Sample justId(String id) {
-    try {
-      UUID.fromString(id); // Check that ID is in the UUID format - if not an exception is thrown
-    } catch (Exception exception) {
-      throw new IllegalArgumentException(
-              "Model IDs must be unique in the format of UUID. This method is for creating instances " +
-              "of an existing object with only its ID field for sending as a mutation parameter. When " +
-              "creating a new object, use the standard builder method and leave the ID field blank."
-      );
-    }
     return new Sample(
       id,
+      null,
       null,
       null,
       null,
@@ -289,6 +290,7 @@ public final class Sample implements Model {
   public CopyOfBuilder copyOfBuilder() {
     return new CopyOfBuilder(id,
       sessionID,
+      sampleOrder,
       beanID,
       roast_level,
       aroma,
@@ -312,7 +314,8 @@ public final class Sample implements Model {
 
   public interface BuildStep {
     Sample build();
-    BuildStep id(String id) throws IllegalArgumentException;
+    BuildStep id(String id);
+    BuildStep sampleOrder(Integer sampleOrder);
     BuildStep beanId(String beanId);
     BuildStep roastLevel(Double roastLevel);
     BuildStep aroma(Double aroma);
@@ -334,6 +337,7 @@ public final class Sample implements Model {
   public static class Builder implements SessionIdStep, BuildStep {
     private String id;
     private String sessionID;
+    private Integer sampleOrder;
     private String beanID;
     private Double roast_level;
     private Double aroma;
@@ -356,6 +360,7 @@ public final class Sample implements Model {
         return new Sample(
           id,
           sessionID,
+          sampleOrder,
           beanID,
           roast_level,
           aroma,
@@ -377,6 +382,12 @@ public final class Sample implements Model {
      public BuildStep sessionId(String sessionId) {
         Objects.requireNonNull(sessionId);
         this.sessionID = sessionId;
+        return this;
+    }
+    
+    @Override
+     public BuildStep sampleOrder(Integer sampleOrder) {
+        this.sampleOrder = sampleOrder;
         return this;
     }
     
@@ -482,9 +493,10 @@ public final class Sample implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String sessionId, String beanId, Double roastLevel, Double aroma, Double flavor, Double acidity, Double overall, Double body, Double balance, Double uniformity, Double cleanCup, Double afterTaste, Double sweetness, Double defectType, Double defectCount, String notes) {
+    private CopyOfBuilder(String id, String sessionId, Integer sampleOrder, String beanId, Double roastLevel, Double aroma, Double flavor, Double acidity, Double overall, Double body, Double balance, Double uniformity, Double cleanCup, Double afterTaste, Double sweetness, Double defectType, Double defectCount, String notes) {
       super.id(id);
       super.sessionId(sessionId)
+        .sampleOrder(sampleOrder)
         .beanId(beanId)
         .roastLevel(roastLevel)
         .aroma(aroma)
@@ -505,6 +517,11 @@ public final class Sample implements Model {
     @Override
      public CopyOfBuilder sessionId(String sessionId) {
       return (CopyOfBuilder) super.sessionId(sessionId);
+    }
+    
+    @Override
+     public CopyOfBuilder sampleOrder(Integer sampleOrder) {
+      return (CopyOfBuilder) super.sampleOrder(sampleOrder);
     }
     
     @Override

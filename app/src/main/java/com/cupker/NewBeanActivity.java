@@ -60,7 +60,6 @@ public class NewBeanActivity extends AppCompatActivity {
     private ArrayList<Dealer> dealerObjs = new ArrayList<>();
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +85,7 @@ public class NewBeanActivity extends AppCompatActivity {
                         Log.i(TAG, "Get Bean Name: " + dealer.getName());
                     }
                 },
-                error -> Log.e(TAG,  "Error retrieving beans", error)
+                error -> Log.e(TAG, "Error retrieving beans", error)
         );
 
         // Setup
@@ -222,7 +221,7 @@ public class NewBeanActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.add_bean_menu_save_button:
                 setResult(DONE_ADD_BEAN);
-
+                String dealerID = dealerSpinner.getSelectedItemPosition() == 0 ? "" : dealerObjs.get(dealerSpinner.getSelectedItemPosition()).getId();
                 Bean bean = Bean.builder()
                         .status(Status.ACTIVE)
                         .name(((EditText) findViewById(R.id.new_bean_name_input)).getText().toString())
@@ -234,7 +233,7 @@ public class NewBeanActivity extends AppCompatActivity {
                         .density(((EditText) findViewById(R.id.new_bean_density_input)).getText().toString())
                         .moisture(((EditText) findViewById(R.id.new_bean_moisture_input)).getText().toString())
                         .grade(((EditText) findViewById(R.id.new_bean_grade_input)).getText().toString())
-                        .dealer(dealerObjs.get(dealerSpinner.getSelectedItemPosition()).getId())
+                        .dealer(dealerID)
                         .image(imageStr)
                         .build();
                 Amplify.DataStore.save(bean,

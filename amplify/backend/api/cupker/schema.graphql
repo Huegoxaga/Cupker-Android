@@ -21,6 +21,7 @@ type Sample @model @auth(rules: [{ allow: owner }])
   @key(name: "byBean", fields: ["beanID"]){
   id: ID!
   sessionID: ID!
+  sampleOrder: Int
   beanID: ID
   roast_level: Float
   aroma: Float
