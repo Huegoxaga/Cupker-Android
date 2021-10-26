@@ -40,8 +40,8 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:horizontalSpacing="0dp"
-        android:numColumns="4"
         android:listSelector="@null"
+        android:numColumns="4"
         android:verticalSpacing="0dp" />
 
     <LinearLayout
@@ -51,14 +51,14 @@
         android:layout_gravity="center_horizontal"
         android:orientation="horizontal">
 
-        <EditText
+        <MultiAutoCompleteTextView
             android:id="@+id/cupping_list_note_input"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:autofillHints=""
-            android:ems="10"
+            android:completionThreshold="1"
             android:hint="@string/cupping_list_note_input"
-            android:inputType="textPersonName" />
+            android:inputType="textCapWords" />
+
     </LinearLayout>
 </LinearLayout>

@@ -20,18 +20,24 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 
 import com.amplifyframework.core.Amplify;
+import com.amplifyframework.core.model.query.Where;
 import com.amplifyframework.datastore.generated.model.Bean;
+import com.amplifyframework.datastore.generated.model.Dealer;
 import com.amplifyframework.datastore.generated.model.Status;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -46,9 +52,14 @@ public class NewBeanActivity extends AppCompatActivity {
     // UI & Controllers
     private ImageButton newImageButton;
     private String currentPhotoPath;
+    private Spinner dealerSpinner;
 
     // Data
     private String imageStr = null;
+    private ArrayList<String> dealerString = new ArrayList<>();
+    private ArrayList<Dealer> dealerObjs = new ArrayList<>();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,30 +69,55 @@ public class NewBeanActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_bean);
         Toolbar toolbar = findViewById(R.id.new_bean_toolbar);
         newImageButton = findViewById((R.id.add_bean_new_image));
+        dealerSpinner = findViewById(R.id.new_bean_dealer_input);
+        ArrayAdapter<String> dealerArray = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, dealerString);
+
+
+        // Query & populate Bean data
+        dealerString.add("Select...");
+        dealerObjs.add(null);
+        Amplify.DataStore.query(Dealer.class,
+                Where.matches(Dealer.STATUS.eq(Status.ACTIVE)),
+                queryRoaster -> {
+                    while (queryRoaster.hasNext()) {
+                        Dealer dealer = queryRoaster.next();
+                        dealerString.add(dealer.getName());
+                        dealerObjs.add(dealer);
+                        Log.i(TAG, "Get Bean Name: " + dealer.getName());
+                    }
+                },
+                error -> Log.e(TAG,  "Error retrieving beans", error)
+        );
 
         // Setup
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        dealerSpinner.setAdapter(dealerArray);
+        dealerSpinner.setSelection(0, false);
 
         // Listener
-        newImageButton.setOnTouchListener((arg0, event) -> {
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN: {
-                    newImageButton.setBackgroundColor(Color.parseColor("#bdbdbd"));
-                    break;
-                }
-                case MotionEvent.ACTION_BUTTON_RELEASE: {
-                    dispatchTakePictureIntent();
-                }
-                default: {
-                    newImageButton.setBackgroundColor(Color.parseColor("#D8D8D8"));
+        newImageButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View arg0, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        newImageButton.setBackgroundColor(Color.parseColor("#bdbdbd"));
+                        break;
+                    }
+                    case MotionEvent.ACTION_BUTTON_RELEASE: {
+                        NewBeanActivity.this.dispatchTakePictureIntent();
+                    }
+                    default: {
+                        newImageButton.setBackgroundColor(Color.parseColor("#D8D8D8"));
 
+                    }
                 }
+                return true;
             }
-            return true;
         });
+
     }
 
     @Override
@@ -191,13 +227,14 @@ public class NewBeanActivity extends AppCompatActivity {
                         .status(Status.ACTIVE)
                         .name(((EditText) findViewById(R.id.new_bean_name_input)).getText().toString())
                         .origin(((EditText) findViewById(R.id.new_bean_origin_input)).getText().toString())
-//                        .altitudeHigh(((EditText) findViewById(R.id.new_bean_altitude_high)).getText().toString())
+                        .altitudeHigh(((EditText) findViewById(R.id.new_bean_altitude_high)).getText().toString())
                         .altitudeLow(((EditText) findViewById(R.id.new_bean_altitude_low)).getText().toString())
                         .variety(((EditText) findViewById(R.id.new_bean_variety_input)).getText().toString())
                         .region(((EditText) findViewById(R.id.new_bean_region_input)).getText().toString())
                         .density(((EditText) findViewById(R.id.new_bean_density_input)).getText().toString())
                         .moisture(((EditText) findViewById(R.id.new_bean_moisture_input)).getText().toString())
                         .grade(((EditText) findViewById(R.id.new_bean_grade_input)).getText().toString())
+                        .dealer(dealerObjs.get(dealerSpinner.getSelectedItemPosition()).getId())
                         .image(imageStr)
                         .build();
                 Amplify.DataStore.save(bean,

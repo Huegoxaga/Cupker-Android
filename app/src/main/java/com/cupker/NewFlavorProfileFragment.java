@@ -24,7 +24,7 @@ public class NewFlavorProfileFragment extends DialogFragment {
     private static final String TAG = "===New Roaster Frag===";
 
     // Init UI objects
-    private View addRoasterView;
+    private View addFlavorView;
     private Button addButton;
     private Button cancelButton;
 
@@ -36,18 +36,19 @@ public class NewFlavorProfileFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         // Init
-        addRoasterView = inflater.inflate(R.layout.fragment_new_roaster, container, false);
-        addButton = addRoasterView.findViewById(R.id.new_roaster_add_button);
-        cancelButton = addRoasterView.findViewById(R.id.new_roaster_cancel_button);
+        addFlavorView = inflater.inflate(R.layout.fragment_new_flavor, container, false);
+        addButton = addFlavorView.findViewById(R.id.new_flavor_add_button);
+        cancelButton = addFlavorView.findViewById(R.id.new_flavor_cancel_button);
 
         // Listeners
         addButton.setOnClickListener(v -> {
-            EditText newRoasterInput = getView().findViewById(R.id.new_roaster_name_input);
+            EditText newRoasterInput = getView().findViewById(R.id.new_flavor_name_input);
             String newFlavorName = newRoasterInput.getText().toString();
 
             Flavor newFlavor = Flavor.builder()
                     .status(Status.ACTIVE)
                     .name(newFlavorName)
+                    .type("Default")
                     .build();
 
             FlavorActivity flavorActivity = (FlavorActivity) getActivity();
@@ -64,6 +65,6 @@ public class NewFlavorProfileFragment extends DialogFragment {
 
         cancelButton.setOnClickListener(v -> dismiss());
 
-        return addRoasterView;
+        return addFlavorView;
     }
 }

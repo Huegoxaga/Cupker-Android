@@ -188,10 +188,10 @@
             app:layout_constraintTop_toTopOf="@+id/new_bean_density"
             tools:layout_editor_absoluteY="228dp" />
 
-        <EditText
+        <Spinner
             android:id="@+id/new_bean_dealer_input"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="40dp"
             android:ems="10"
@@ -225,14 +225,15 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:ems="10"
+            android:hint="@string/add_bean_variety"
             android:importantForAutofill="no"
             android:inputType="textPersonName"
-            android:hint="@string/add_bean_variety"
             app:layout_constraintBottom_toBottomOf="@+id/new_bean_variety"
             app:layout_constraintEnd_toEndOf="@+id/new_bean_origin_input"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/new_bean_variety"
-            app:layout_constraintTop_toTopOf="@+id/new_bean_variety" />
+            app:layout_constraintTop_toTopOf="@+id/new_bean_variety"
+            app:layout_constraintVertical_bias="0.466" />
 
         <EditText
             android:id="@+id/new_bean_grade_input"
@@ -253,15 +254,39 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:layout_marginEnd="40dp"
-            android:ems="10"
-            android:hint="@string/add_bean_altitude"
+            android:hint="Alt. Low"
             android:importantForAutofill="no"
-            android:inputType="textPersonName"
+            android:inputType="number"
             app:layout_constraintBottom_toBottomOf="@+id/new_bean_variety"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/new_bean_altitude"
             app:layout_constraintTop_toTopOf="@+id/new_bean_variety" />
+
+
+        <TextView
+            android:id="@+id/new_bean_altitude_dash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@+id/new_bean_variety"
+            app:layout_constraintStart_toEndOf="@+id/new_bean_altitude_low"
+            app:layout_constraintTop_toTopOf="@+id/new_bean_variety" />
+
+        <EditText
+            android:id="@+id/new_bean_altitude_high"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="40dp"
+            android:freezesText="false"
+            android:hint="High"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            app:layout_constraintBottom_toBottomOf="@+id/new_bean_variety"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/new_bean_altitude_dash"
+            app:layout_constraintTop_toTopOf="@+id/new_bean_variety" />
+
+
 
         <TextView
             android:id="@+id/new_bean_name"
@@ -292,6 +317,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.5" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

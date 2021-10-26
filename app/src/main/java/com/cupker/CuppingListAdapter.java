@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.core.model.query.Where;
 import com.amplifyframework.datastore.generated.model.Bean;
+import com.amplifyframework.datastore.generated.model.Flavor;
 import com.amplifyframework.datastore.generated.model.Sample;
 import com.amplifyframework.datastore.generated.model.Status;
 
@@ -36,6 +38,7 @@ public class CuppingListAdapter extends BaseAdapter {
     // Data
     private final ArrayList<Bean> beanObjs;
     private final ArrayList<String> beansString; // related array to store names for dropdown
+    private ArrayList<String> flavorString;
     private final double[] roastLevel = { 95, 85, 75, 65, 55, 45, 35, 25};
     private final String[] roastLevelStr = { "# 95", "# 85", "# 75", "# 65", "# 55", "# 45", "# 35", "# 25"};
     private final List<Sample> samples;
@@ -55,6 +58,7 @@ public class CuppingListAdapter extends BaseAdapter {
         // Assign data
         this.beanObjs = new ArrayList<>();
         this.beansString = new ArrayList<>();
+        this.flavorString = new ArrayList<>();
         this.context = context;
         this.sampleNum = samples.size();
         this.samples = samples;
@@ -78,6 +82,19 @@ public class CuppingListAdapter extends BaseAdapter {
                     }
                 },
                 error -> Log.e(TAG,  "Error retrieving beans", error)
+        );
+
+        // Query my flavors
+        Amplify.DataStore.query(Flavor.class,
+                Where.matches(Flavor.STATUS.eq(Status.ACTIVE)),
+                queryRoaster -> {
+                    while (queryRoaster.hasNext()) {
+                        Flavor flavor = queryRoaster.next();
+                        flavorString.add(flavor.getName());
+                        Log.i(TAG, "Get Flavor Name: " + flavor.getName());
+                    }
+                },
+                error -> Log.e(TAG,  "Error retrieving flavor", error)
         );
     }
 
@@ -107,7 +124,7 @@ public class CuppingListAdapter extends BaseAdapter {
         TextView sampleName = cuppingListView.findViewById(R.id.cupping_list_title_label);
         Spinner beanSpinner = cuppingListView.findViewById(R.id.cupping_list_bean_spinner);
         Spinner roastLevelSpinner = cuppingListView.findViewById(R.id.cupping_list_roast_level_spinner);
-        EditText notesInput = cuppingListView.findViewById(R.id.cupping_list_note_input);
+        MultiAutoCompleteTextView notesInput = cuppingListView.findViewById(R.id.cupping_list_note_input);
         ArrayAdapter<String> beanArray = new ArrayAdapter<>(cuppingListView.getContext(), android.R.layout.simple_spinner_item, beansString);
         ArrayAdapter<String> rosterLevelArray = new ArrayAdapter<>(cuppingListView.getContext(), android.R.layout.simple_spinner_item, roastLevelStr);
         CuppingGridView cuppingGridView = cuppingListView.findViewById(R.id.cupping_grid);
@@ -123,6 +140,10 @@ public class CuppingListAdapter extends BaseAdapter {
         CuppingGridAdapter cuppingGridAdapter = new CuppingGridAdapter(cuppingListView.getContext(), samples.get(position), position, editable);
         cuppingGridView.setAdapter(cuppingGridAdapter);
         sampleName.setText(context.getResources().getString(R.string.cupping_list_title_label, position + 1));
+
+        ArrayAdapter<String> notesAdapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, flavorString);
+        notesInput.setAdapter(notesAdapter);
+        notesInput.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 
         // Listener
         beanSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -156,7 +177,7 @@ public class CuppingListAdapter extends BaseAdapter {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
         });
-        cuppingListView.setOnClickListener(view -> Toast.makeText(context, "The name of the Sample is " + sampleName.getText(), Toast.LENGTH_SHORT).show());
+//        cuppingListView.setOnClickListener(view -> Toast.makeText(context, "The name of the Sample is " + sampleName.getText(), Toast.LENGTH_SHORT).show());
 
         return cuppingListView;
     }

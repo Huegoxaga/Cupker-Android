@@ -25,7 +25,7 @@ public class NewDealerProfileFragment extends DialogFragment {
     private static final String TAG = "===New Roaster Frag===";
 
     // Init UI objects
-    private View addRoasterView;
+    private View addDealerView;
     private Button addButton;
     private Button cancelButton;
 
@@ -37,15 +37,17 @@ public class NewDealerProfileFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         // Init
-        addRoasterView = inflater.inflate(R.layout.fragment_new_roaster, container, false);
-        addButton = addRoasterView.findViewById(R.id.new_roaster_add_button);
-        cancelButton = addRoasterView.findViewById(R.id.new_roaster_cancel_button);
+        addDealerView = inflater.inflate(R.layout.fragment_new_dealer, container, false);
+        addButton = addDealerView.findViewById(R.id.new_dealer_add_button);
+        cancelButton = addDealerView.findViewById(R.id.new_dealer_cancel_button);
 
         // Listeners
         addButton.setOnClickListener(v -> {
-            EditText newRoasterInput = getView().findViewById(R.id.new_roaster_name_input);
-            String newDealerName = newRoasterInput.getText().toString();
-            String newDealerEmail = "example@gamil.com";
+            EditText newDealerInput = getView().findViewById(R.id.new_dealer_name_input);
+            EditText newDealerEmailInput = getView().findViewById(R.id.new_dealer_email_input);
+
+            String newDealerName = newDealerInput.getText().toString();
+            String newDealerEmail = newDealerEmailInput.getText().toString();;
 
             Dealer newDealer = Dealer.builder()
                     .name(newDealerName)
@@ -67,6 +69,6 @@ public class NewDealerProfileFragment extends DialogFragment {
 
         cancelButton.setOnClickListener(v -> dismiss());
 
-        return addRoasterView;
+        return addDealerView;
     }
 }

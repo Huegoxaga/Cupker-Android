@@ -103,4 +103,7 @@
     <string name="cup_four">Cup Four</string>
     <string name="cup_five">Cup Five</string>
     <string name="ok">OK</string>
+    <string name="flavor_name">Flavor Name</string>
+    <string name="dealer_name">Dealer Name</string>
+    <string name="dealer_email">Dealer Email</string>
 </resources>
