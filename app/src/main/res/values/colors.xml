@@ -9,7 +9,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="grey_background">#FFD8D8D8</color>
     <color name="main_brown_dark">#774A23</color>
-    <color name="main_brown_light">#A37A47</color>
+    <color name="main_brown_light">#A37A47</color>c19e71
+    <color name="secondary_brown_light">#c19e71</color>
     <color name="light_blue_600">#FF039BE5</color>
     <color name="light_blue_900">#FF01579B</color>
     <color name="light_blue_A200">#FF40C4FF</color>

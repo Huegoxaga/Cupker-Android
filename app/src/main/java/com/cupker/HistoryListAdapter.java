@@ -1,6 +1,7 @@
 package com.cupker;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,9 @@ import com.amplifyframework.datastore.generated.model.Sample;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
+
+import static java.lang.String.*;
 
 public class HistoryListAdapter extends BaseAdapter {
 
@@ -82,9 +86,10 @@ public class HistoryListAdapter extends BaseAdapter {
         // Init
         if (cuppingListView == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(context);
-            cuppingListView = layoutInflater.inflate(R.layout.activity_cupping_list, parent, false);
+            cuppingListView = layoutInflater.inflate(R.layout.activity_history_list, parent, false);
         }
         TextView sampleName = cuppingListView.findViewById(R.id.cupping_list_title_label);
+        TextView totalScore = cuppingListView.findViewById(R.id.history_session_list_total);
         Spinner beanSpinner = cuppingListView.findViewById(R.id.cupping_list_bean_spinner);
         Spinner roastLevelSpinner = cuppingListView.findViewById(R.id.cupping_list_roast_level_spinner);
         EditText notesInput = cuppingListView.findViewById(R.id.cupping_list_note_input);
@@ -114,6 +119,7 @@ public class HistoryListAdapter extends BaseAdapter {
         CuppingGridAdapter cuppingGridAdapter = new CuppingGridAdapter(cuppingListView.getContext(), samples.get(position), position, editable);
         cuppingGridView.setAdapter(cuppingGridAdapter);
         sampleName.setText(context.getResources().getString(R.string.cupping_list_title_label, position + 1));
+        totalScore.setText(String.format(Locale.getDefault(), "%.2f", getScore(position)));
 
         // Listener
         beanSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -142,6 +148,25 @@ public class HistoryListAdapter extends BaseAdapter {
 //        cuppingListView.setOnClickListener(view -> Toast.makeText(context, "The name of the Sample is " + sampleName.getText(), Toast.LENGTH_SHORT).show());
 
         return cuppingListView;
+    }
+
+    private double getScore(int listPosition) {
+        Sample sample = samples.get(listPosition);
+        double total = sample.getAroma() + sample.getFlavor() + sample.getAfterTaste() + sample.getAcidity() + sample.getBody() + sample.getOverall() + sample.getBalance();
+        Log.d(TAG, listPosition + " " + total);
+
+        total += 30 - 2 * (positionToCup(sample.getUniformity()) + positionToCup(sample.getCleanCup()) + positionToCup(sample.getSweetness()));
+        Log.d(TAG, listPosition + " " + total);
+
+        total -= positionToCup(sample.getDefectCount()) * sample.getDefectType();
+        Log.d(TAG, listPosition + " " + total);
+        return total;
+    }
+
+    private double positionToCup(Double positionCode) {
+        String scorePosition = Integer.toBinaryString(positionCode.intValue());
+        return scorePosition.length() - scorePosition.replace("1", "").length();
+
     }
 
 }

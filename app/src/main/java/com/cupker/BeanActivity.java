@@ -102,8 +102,8 @@ public class BeanActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (menu != null) {
-            getMenuInflater().inflate(R.menu.toolbar_with_edit, menu);
-            editBtn = menu.findItem(R.id.toolbar_edit_btn);
+//            getMenuInflater().inflate(R.menu.toolbar_with_edit, menu);
+//            editBtn = menu.findItem(R.id.toolbar_edit_btn);
         }
         return true;
     }
