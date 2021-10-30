@@ -106,7 +106,6 @@ public class NewBeanActivity extends AppCompatActivity {
                         break;
                     }
                     case MotionEvent.ACTION_UP: {
-                        Log.d(TAG, "Image Clicked");
                         dispatchTakePictureIntent();
                     }
                     default: {

@@ -68,7 +68,7 @@ public class BeansFragment extends Fragment {
                     while (queryBean.hasNext()) {
                         Bean bean = queryBean.next();
                         beanObjs.add(bean);
-                        Log.i(TAG, "Get Bean Name: " + bean.toString());
+//                        Log.i(TAG, "Get Bean Name: " + bean.toString());
                     }
                     handler.post(updateList);
                 },
