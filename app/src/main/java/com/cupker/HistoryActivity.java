@@ -20,13 +20,17 @@ import androidx.core.app.NavUtils;
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.core.model.query.Where;
 import com.amplifyframework.datastore.generated.model.Bean;
+import com.amplifyframework.datastore.generated.model.Roaster;
 import com.amplifyframework.datastore.generated.model.Sample;
 import com.amplifyframework.datastore.generated.model.Session;
 import com.amplifyframework.datastore.generated.model.Status;
 
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -43,9 +47,11 @@ public class HistoryActivity extends AppCompatActivity {
     private Context context;
     private ListView cuppingListView;
     private TextView titleText;
+    private TextView infoText;
 
     // Data
     private Session session;
+    private Roaster roaster;
     private List<Sample> samples;
     private Boolean editMode;
     private final ArrayList<Bean> beanObjs = new ArrayList<>();
@@ -64,12 +70,17 @@ public class HistoryActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_history);
+
         LinearLayout mainFrame = findViewById(R.id.history_activity_main_frame);
         cuppingListView = findViewById(R.id.history_activity_list);
         Intent intent = getIntent();
 //        LayoutInflater layoutInflater = getLayoutInflater();
         Toolbar toolBar = findViewById(R.id.history_activity_toolbar);
         titleText = findViewById(R.id.history_toolbar_title);
+        View cuppingListViewFooter = getLayoutInflater().inflate(R.layout.activity_history_list_footer, cuppingListView, false);
+//        cuppingListView.addHeaderView(cuppingListViewHeader);
+        cuppingListView.addFooterView(cuppingListViewFooter);
+        infoText = findViewById(R.id.history_activity_session_info);
 
 //        View cuppingListViewHeader = layoutInflater.inflate(R.layout.activity_cupping_list_header, cuppingListView, false);
 //        cuppingListView.addHeaderView(cuppingListViewHeader);
@@ -97,7 +108,7 @@ public class HistoryActivity extends AppCompatActivity {
                                         while (matches.hasNext()) {
                                             Sample s = matches.next();
                                             samples.add(s);
-                                            Log.d(TAG, s.toString());
+//                                            Log.d(TAG, s.toString());
                                         }
                                         editMode = false;
                                         // sort samples by sample order
@@ -122,10 +133,20 @@ public class HistoryActivity extends AppCompatActivity {
                                     },
                                     failure -> Log.e(TAG, "Query failed.", failure)
                             );
+                            Amplify.DataStore.query(Roaster.class, Where.id(session.getRoasterId()),
+                                    matchRoaster -> {
+                                        if (matchRoaster.hasNext()) {
+                                            roaster = matchRoaster.next();
+                                            handler.post(updateInfo);
+                                        }
+                                    },
+                                    failure -> Log.e(TAG, "Query failed.", failure)
+                            );
                         }
                     },
                     failure -> Log.e(TAG, "Query failed.", failure)
             );
+
         }
 
         // Setup
@@ -153,6 +174,17 @@ public class HistoryActivity extends AppCompatActivity {
                 HistoryListAdapter cuppingListAdapter = new HistoryListAdapter(context, samples, editMode, beanObjs);
                 cuppingListView.setAdapter(cuppingListAdapter);
                 titleText.setText(session.getName());
+            }
+        }
+    };
+
+    private final Runnable updateInfo = new Runnable() {
+        @Override
+        public void run() {
+            if (cuppingListView != null && infoText != null) {
+                String roasterDateStr = new SimpleDateFormat("yyyy-MM-dd").format(session.getRoastTime().toDate());
+                String cuppingDateStr = new SimpleDateFormat("yyyy-MM-dd").format(session.getCreatedAt().toDate());
+                infoText.setText(String.format("Created on %s\nRoasted by %s on %s", cuppingDateStr, roaster.getName(), roasterDateStr));
             }
         }
     };

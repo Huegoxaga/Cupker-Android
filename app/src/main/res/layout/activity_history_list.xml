@@ -17,7 +17,6 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/cupping_list_title_label"
-            android:textAppearance="?android:attr/textAppearanceLarge"
             android:textSize="24sp" />
 
         <Spinner
@@ -30,7 +29,7 @@
             android:id="@+id/cupping_list_roast_level_spinner"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2" />
+            android:layout_weight="1.5" />
 
         <TextView
             android:id="@+id/history_session_list_total"

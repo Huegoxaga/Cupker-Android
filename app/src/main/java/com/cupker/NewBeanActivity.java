@@ -105,8 +105,9 @@ public class NewBeanActivity extends AppCompatActivity {
                         newImageButton.setBackgroundColor(Color.parseColor("#bdbdbd"));
                         break;
                     }
-                    case MotionEvent.ACTION_BUTTON_RELEASE: {
-                        NewBeanActivity.this.dispatchTakePictureIntent();
+                    case MotionEvent.ACTION_UP: {
+                        Log.d(TAG, "Image Clicked");
+                        dispatchTakePictureIntent();
                     }
                     default: {
                         newImageButton.setBackgroundColor(Color.parseColor("#D8D8D8"));
@@ -225,6 +226,7 @@ public class NewBeanActivity extends AppCompatActivity {
                 Bean bean = Bean.builder()
                         .status(Status.ACTIVE)
                         .name(((EditText) findViewById(R.id.new_bean_name_input)).getText().toString())
+                        .process(((EditText) findViewById(R.id.new_bean_process_input)).getText().toString())
                         .origin(((EditText) findViewById(R.id.new_bean_origin_input)).getText().toString())
                         .altitudeHigh(((EditText) findViewById(R.id.new_bean_altitude_high)).getText().toString())
                         .altitudeLow(((EditText) findViewById(R.id.new_bean_altitude_low)).getText().toString())

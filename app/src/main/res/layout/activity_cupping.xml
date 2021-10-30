@@ -5,7 +5,7 @@
     android:id="@+id/cupping_activity_main_frame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/fullscreenBackgroundColor"
+    android:background="@color/grey_background"
     android:orientation="vertical"
     android:theme="@style/ThemeOverlay.Cupker.FullscreenContainer"
     tools:context=".CuppingActivity">

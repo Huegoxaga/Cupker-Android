@@ -39,17 +39,30 @@
             android:scaleType="center"
             app:layout_constraintTop_toTopOf="parent"/>
 
+
+        <ImageView
+            android:id="@+id/bean_name"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="50dp"
+            android:labelFor="@id/bean_name_input"
+            android:text="@string/name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bean_image"
+            app:srcCompat="@drawable/bean_outline" />
+
         <ImageView
             android:id="@+id/bean_origin"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginStart="40dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="50dp"
             android:labelFor="@id/bean_origin_input"
             android:scaleType="fitCenter"
             android:text="@string/add_bean_origin"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/bean_image"
+            app:layout_constraintTop_toBottomOf="@+id/bean_name"
             app:srcCompat="@drawable/origin" />
 
         <ImageView
@@ -138,6 +151,42 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/bean_variety"
             app:srcCompat="@drawable/density" />
+
+        <ImageView
+            android:id="@+id/bean_process"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:labelFor="@id/bean_process_input"
+            android:scaleType="fitCenter"
+            android:text="@string/add_bean_region"
+            app:layout_constraintBottom_toBottomOf="@+id/bean_name"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
+            app:layout_constraintTop_toTopOf="@+id/bean_name"
+            app:srcCompat="@drawable/sun" />
+
+        <TextView
+            android:id="@+id/bean_name_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:hint="@string/name"
+            app:layout_constraintBottom_toBottomOf="@+id/bean_name"
+            app:layout_constraintEnd_toStartOf="@id/guideline"
+            app:layout_constraintStart_toEndOf="@+id/bean_name"
+            app:layout_constraintTop_toTopOf="@id/bean_name" />
+
+        <TextView
+            android:id="@+id/bean_process_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="40dp"
+            android:hint="@string/process"
+            app:layout_constraintBottom_toBottomOf="@+id/bean_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/bean_process"
+            app:layout_constraintTop_toTopOf="@+id/bean_name" />
 
         <TextView
             android:id="@+id/bean_origin_input"
@@ -247,7 +296,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="40dp"
-            android:hint="Altitude"
+            android:hint="@string/altitude"
             android:importantForAutofill="no"
             app:layout_constraintBottom_toBottomOf="@+id/bean_variety"
             app:layout_constraintStart_toEndOf="@+id/bean_altitude"

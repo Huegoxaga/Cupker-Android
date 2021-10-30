@@ -1,6 +1,7 @@
 package com.cupker;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -103,6 +105,14 @@ public class CuppingFragment extends Fragment {
         Log.d(TAG, String.format("Sample Number: %d in onCreateView", sampleNum));
 
         // Listener
+        cuppingFragView.setOnTouchListener((v, event) -> {
+
+            InputMethodManager imm = (InputMethodManager) cuppingFragView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(cuppingFragView.getWindowToken(), 0);
+
+            return false;
+        });
+
         roasterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
@@ -171,6 +181,8 @@ public class CuppingFragment extends Fragment {
     }
 
     public void updateSampleNum(View view){
+        InputMethodManager imm = (InputMethodManager) cuppingFragView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(cuppingFragView.getWindowToken(), 0);
         if (view.getId() == R.id.cupping_sample_add_button){
             if (sampleNum + 1 > 12) {
                 Toast.makeText(requireActivity().getApplicationContext(),"Too many samples" , Toast.LENGTH_LONG).show();

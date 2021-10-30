@@ -31,9 +31,11 @@ public class BeanActivity extends AppCompatActivity {
 
     // UI & Controllers
     private ImageView beanImage;
+    private TextView titleText;
     private MenuItem editBtn;
     private TextView origin;
     private TextView region;
+    private TextView name;
     private TextView variety;
     private TextView altitude;
     private TextView density;
@@ -41,6 +43,7 @@ public class BeanActivity extends AppCompatActivity {
     private TextView grade;
     private TextView dealerName;
     private TextView average;
+    private TextView process;
 
 
     // Data
@@ -67,6 +70,9 @@ public class BeanActivity extends AppCompatActivity {
         grade = findViewById(R.id.bean_grade_input);
         dealerName = findViewById(R.id.bean_dealer_input);
         average = findViewById(R.id.bean_average);
+        process = findViewById(R.id.bean_process_input);
+        name = findViewById(R.id.bean_name_input);
+        titleText = findViewById(R.id.bean_toolbar_title);
 
         // Fetch Data
         if (intent != null && intent.hasExtra(BEAN_ID)) {
@@ -102,8 +108,8 @@ public class BeanActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (menu != null) {
-//            getMenuInflater().inflate(R.menu.toolbar_with_edit, menu);
-//            editBtn = menu.findItem(R.id.toolbar_edit_btn);
+            getMenuInflater().inflate(R.menu.toolbar_with_edit, menu);
+            editBtn = menu.findItem(R.id.toolbar_edit_btn);
         }
         return true;
     }
@@ -112,8 +118,6 @@ public class BeanActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.toolbar_edit_btn) {
-
-
             return true;
         }
         // default handler
@@ -143,6 +147,8 @@ public class BeanActivity extends AppCompatActivity {
         @Override
         public void run() {
             // Populate data
+            titleText.setText(bean.getName());
+            name.setText(bean.getName());
             origin.setText(bean.getOrigin());
             region.setText(bean.getRegion());
             variety.setText(bean.getVariety());
@@ -150,6 +156,7 @@ public class BeanActivity extends AppCompatActivity {
             moisture.setText(bean.getMoisture());
             grade.setText(bean.getGrade());
             dealerName.setText(dealer.getName());
+            process.setText(bean.getProcess());
 
             if (!bean.getAltitudeLow().isEmpty() && !bean.getAltitudeHigh().isEmpty()) {
                 altitude.setText(String.format(bean.getAltitudeLow() + " - " + bean.getAltitudeHigh()));

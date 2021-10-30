@@ -63,7 +63,9 @@ public class CuppingGridAdapter extends BaseAdapter {
         if (gradingView == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(context);
             gradingView = layoutInflater.inflate(R.layout.activity_cupping_grading_grid, parent, false);
-            gradingView.setLayoutParams(new GridView.LayoutParams(140, 140));
+//            DisplayMetrics metrics = this.getResources().getDisplayMetrics();
+//            int screenWidth = metrics.widthPixels;
+            gradingView.setLayoutParams(new GridView.LayoutParams(240, 140));
 
         }
         TextView gradingTitleText = gradingView.findViewById(R.id.cupping_grid_grading_title);

@@ -5,6 +5,8 @@
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusable="true"
     tools:context=".CuppingFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -144,8 +146,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:textSize="18sp"
         android:text="@string/cupping_sample_label"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/cupping_frag_sample_count"
         app:layout_constraintStart_toEndOf="@+id/cupping_frag_sample_count"
         app:layout_constraintTop_toTopOf="@+id/cupping_frag_sample_count" />

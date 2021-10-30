@@ -11,14 +11,13 @@
         android:id="@+id/cupping_grid_grading_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:height="20dp"
-        android:gravity="center" />
+        android:gravity="center"
+        android:lines="1" />
 
     <TextView
         android:id="@+id/cupping_grid_grading_score"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:height="30dp"
         android:gravity="center"
         android:textSize="24sp" />
 </LinearLayout>
