@@ -30,9 +30,9 @@
     <string name="prompt_email">邮箱</string>
     <string name="prompt_password">密码</string>
     <string name="action_sign_in_short">登录</string>
-    <string name="dealer_activity_title">自定义供货商</string>
-    <string name="roaster_activity_title">自定义烘培师</string>
-    <string name="flavor_activity_title">自定义风味</string>
+    <string name="dealer_activity_title">我的供应商</string>
+    <string name="roaster_activity_title">我的烘焙师</string>
+    <string name="flavor_activity_title">我的风味表</string>
     <string name="cupping_activity_reset">重置</string>
     <string name="cupping_activity_start">开始</string>
     <string name="toolbar_search">搜索</string>
