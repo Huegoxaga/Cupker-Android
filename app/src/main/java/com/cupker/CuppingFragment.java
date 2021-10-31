@@ -68,7 +68,7 @@ public class CuppingFragment extends Fragment {
         // Init data
         // Add first roaster record
         roastersObj.add(null);
-        roastersString.add("Select...");
+        roastersString.add(getString(R.string.select));
 
         // Query and assign rest roaster records
         Amplify.DataStore.query(Roaster.class,
@@ -135,6 +135,7 @@ public class CuppingFragment extends Fragment {
             if (roastInput.getText().toString().isEmpty() || sessionInput.getText().toString().isEmpty()
                     || roastersObj.get(roasterSpinner.getSelectedItemPosition()) == null) {
                 Toast.makeText(getContext(), "Please complete all fields", Toast.LENGTH_LONG).show();
+
             }
             else{
 //                Session newSession = Session.builder()
@@ -185,13 +186,13 @@ public class CuppingFragment extends Fragment {
         imm.hideSoftInputFromWindow(cuppingFragView.getWindowToken(), 0);
         if (view.getId() == R.id.cupping_sample_add_button){
             if (sampleNum + 1 > 12) {
-                Toast.makeText(requireActivity().getApplicationContext(),"Too many samples" , Toast.LENGTH_LONG).show();
+//                Toast.makeText(requireActivity().getApplicationContext(),"Too many samples" , Toast.LENGTH_LONG).show();
             }else {
                 sampleNum++;
             }
         } else{
             if (sampleNum - 1 < 1) {
-                Toast.makeText(requireActivity().getApplicationContext(),"At least one sample is required" , Toast.LENGTH_LONG).show();
+//                Toast.makeText(requireActivity().getApplicationContext(),"At least one sample is required" , Toast.LENGTH_LONG).show();
             }else {
                 sampleNum--;
             }

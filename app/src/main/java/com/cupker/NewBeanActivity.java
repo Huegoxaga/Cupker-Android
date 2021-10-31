@@ -73,7 +73,7 @@ public class NewBeanActivity extends AppCompatActivity {
 
 
         // Query & populate Bean data
-        dealerString.add("Select...");
+        dealerString.add(this.getString(R.string.select));
         dealerObjs.add(null);
         Amplify.DataStore.query(Dealer.class,
                 Where.matches(Dealer.STATUS.eq(Status.ACTIVE)),

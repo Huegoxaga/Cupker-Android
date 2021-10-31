@@ -94,7 +94,7 @@ public class HistoryActivity extends AppCompatActivity {
         beanObjs.add(Bean.builder()
                 .status(Status.INACTIVE)
                 .id("00000000-0000-0000-0000-000000000000")
-                .name("Blind Taste")
+                .name(context.getString(R.string.blind_taste))
                 .build());
 
         if (intent != null && intent.hasExtra(SESSION_ID)) {

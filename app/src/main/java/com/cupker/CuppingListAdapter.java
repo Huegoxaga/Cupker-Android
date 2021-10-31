@@ -67,7 +67,7 @@ public class CuppingListAdapter extends BaseAdapter {
                 .status(Status.INACTIVE)
                 .id("00000000-0000-0000-0000-000000000000")
                 .build());
-        beansString.add("Blind Taste");
+        beansString.add(context.getString(R.string.blind_taste));
 
         // Query & populate Bean data
         Amplify.DataStore.query(Bean.class,

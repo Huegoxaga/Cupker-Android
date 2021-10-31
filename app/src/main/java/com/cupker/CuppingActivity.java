@@ -191,9 +191,9 @@ public class CuppingActivity extends AppCompatActivity {
         findViewById(R.id.cupping_activity_timer_reset_btn).setOnClickListener(v -> {
 
             AlertDialog.Builder resetAlert = new AlertDialog.Builder(this);
-            resetAlert.setTitle("Reset Timer");
-            resetAlert.setMessage("Are you sure you want to reset the timer?");
-            resetAlert.setPositiveButton("Reset", new DialogInterface.OnClickListener() {
+            resetAlert.setTitle(this.getString(R.string.reset_timer));
+            resetAlert.setMessage(this.getString(R.string.timer_prompt));
+            resetAlert.setPositiveButton(this.getString(R.string.reset), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     if (timerTask != null) {
@@ -206,7 +206,7 @@ public class CuppingActivity extends AppCompatActivity {
                 }
             });
 
-            resetAlert.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+            resetAlert.setNeutralButton(this.getString(R.string.cancel_button), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     //do nothing

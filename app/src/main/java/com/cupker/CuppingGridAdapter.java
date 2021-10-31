@@ -27,8 +27,7 @@ public class CuppingGridAdapter extends BaseAdapter {
 
     // Data
     private final Sample sample;
-    public static final String[] gradingTitles = {"Aroma", "Flavor", "Aftertaste", "Acidity", "Body",
-            "Uniformity", "Clean Cup", "Overall", "Balance", "Sweetness", "Defect Cups", "Intensity"};
+    public static String[] gradingTitles;
     private final int listPosition;
     private final boolean editable;
 
@@ -39,6 +38,7 @@ public class CuppingGridAdapter extends BaseAdapter {
         this.listPosition = listPosition;
         this.sample = sample;
         this.editable = editable;
+        this.gradingTitles = context.getResources().getStringArray(R.array.grading);
     }
 
     @Override

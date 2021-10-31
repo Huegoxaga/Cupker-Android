@@ -48,7 +48,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        settingsTitles = new ArrayList<>(Arrays.asList("My Dealers", "My Roasters", "My Flavors", "Logout"));
+        settingsTitles = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.profile_list)));
         Amplify.Auth.fetchAuthSession(
                 result -> {
                     Log.d(TAG, "SIGN IN STATUS: " + result.toString());
@@ -61,7 +61,8 @@ public class ProfileFragment extends Fragment {
                                         if (attribute.getKey().equals(AuthUserAttributeKey.email()))
                                             email = attribute.getValue();
                                     }
-                                    setGuestMode(false, "Account ID: " + email);
+                                    setGuestMode(false, self.getResources().getString(R.string.account_id, email));
+
                                 },
                                 error -> Log.e(TAG, "Failed to fetch user attributes.", error)
                         );

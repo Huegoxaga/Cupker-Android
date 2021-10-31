@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">Cupker</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="cupping_start_button">Start Cupping</string>
     <string name="cupping_roast_date_button">Calendar</string>
     <string name="cupping_roast_date_input">YYYY/MM/DD</string>
@@ -11,31 +9,31 @@
     <string name="cupping_sample_minus_button">Remove a Sample</string>
     <string name="add_button">Add</string>
     <string name="cancel_button">Cancel</string>
-    <string name="title_activity_cupping">FullscreenActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_cupping" translatable="false">FullscreenActivity</string>
+    <string name="dummy_button" translatable="false">Dummy Button</string>
+    <string name="dummy_content" translatable="false">DUMMY\nCONTENT</string>
     <string name="cupping_list_note_label">Notes:</string>
-    <string name="cupping_list_title_label"># %d</string>
+    <string name="cupping_list_title_label" translatable="false"># %d</string>
     <string name="cupping_list_note_input">Notes</string>
     <string name="cupping_activity_save_button">Save</string>
-    <string name="cupping_sample_label">6</string>
-    <string name="grading_dialog_score_6_0">6.00</string>
-    <string name="grading_dialog_score_6_25">6.25</string>
-    <string name="grading_dialog_score_6_5">6.50</string>
-    <string name="grading_dialog_score_6_75">6.75</string>
-    <string name="grading_dialog_score_7_0">7.00</string>
-    <string name="grading_dialog_score_7_25">7.25</string>
-    <string name="grading_dialog_score_7_5">7.50</string>
-    <string name="grading_dialog_score_7_75">7.75</string>
-    <string name="grading_dialog_score_8_0">8.00</string>
-    <string name="grading_dialog_score_8_25">8.25</string>
-    <string name="grading_dialog_score_8_5">8.50</string>
-    <string name="grading_dialog_score_8_75">8.75</string>
-    <string name="grading_dialog_score_9_0">9.00</string>
-    <string name="grading_dialog_score_9_25">9.25</string>
-    <string name="grading_dialog_score_9_5">9.50</string>
-    <string name="grading_dialog_score_9_75">9.75</string>
-    <string name="menu_item_add">Add</string>
+    <string name="cupping_sample_label" translatable="false">6</string>
+    <string name="grading_dialog_score_6_0" translatable="false">6.00</string>
+    <string name="grading_dialog_score_6_25" translatable="false">6.25</string>
+    <string name="grading_dialog_score_6_5" translatable="false">6.50</string>
+    <string name="grading_dialog_score_6_75" translatable="false">6.75</string>
+    <string name="grading_dialog_score_7_0" translatable="false">7.00</string>
+    <string name="grading_dialog_score_7_25" translatable="false">7.25</string>
+    <string name="grading_dialog_score_7_5" translatable="false">7.50</string>
+    <string name="grading_dialog_score_7_75" translatable="false">7.75</string>
+    <string name="grading_dialog_score_8_0" translatable="false">8.00</string>
+    <string name="grading_dialog_score_8_25" translatable="false">8.25</string>
+    <string name="grading_dialog_score_8_5" translatable="false">8.50</string>
+    <string name="grading_dialog_score_8_75" translatable="false">8.75</string>
+    <string name="grading_dialog_score_9_0" translatable="false">9.00</string>
+    <string name="grading_dialog_score_9_25" translatable="false">9.25</string>
+    <string name="grading_dialog_score_9_5" translatable="false">9.50</string>
+    <string name="grading_dialog_score_9_75" translatable="false">9.75</string>
+    <string name="menu_item_add" translatable="false">Add</string>
     <string name="bean_frag_action_title">My Beans</string>
     <string name="activity_new_bean_title">New Bean</string>
     <string name="new_bean_activity_add_image">Add Image</string>
@@ -49,35 +47,34 @@
     <string name="add_bean_density">Density</string>
     <string name="history_frag_action_title">Cupping History</string>
     <string name="activity_my_bean_title">My Bean</string>
-    <string name="title_activity_history_activityy">FullscreenActivity</string>
+    <string name="title_activity_history_activityy" translatable="false">FullscreenActivity</string>
     <string name="menu_item_delete">Delete</string>
-    <string name="title_activity_fullscreen">FullscreenActivity</string>
+    <string name="title_activity_fullscreen" translatable="false">FullscreenActivity</string>
     <!-- Preference Titles -->
-    <string name="messages_header">Messages</string>
-    <string name="sync_header">Sync</string>
+    <string name="messages_header" translatable="false">Messages</string>
+    <string name="sync_header" translatable="false">Sync</string>
 
     <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
+    <string name="signature_title" translatable="false">Your signature</string>
+    <string name="reply_title" translatable="false">Default reply action</string>
 
     <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    <string name="sync_title" translatable="false">Sync email periodically</string>
+    <string name="attachment_title" translatable="false">Download incoming attachments</string>
+    <string name="attachment_summary_on" translatable="false">Automatically download attachments for incoming emails
     </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
-    <string name="profile_frag_guest_user">Guest User</string>
+    <string name="attachment_summary_off" translatable="false">Only download attachments when manually requested</string>
     <string name="profile_frag_log_in">Log in</string>
-    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_login" translatable="false">LoginActivity</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in" translatable="false">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
-    <string name="title_activity_example_login">LoginExampleActivity</string>
+    <string name="welcome" translatable="false">"Welcome !"</string>
+    <string name="invalid_username" translatable="false">Not a valid username</string>
+    <string name="invalid_password" translatable="false">Password must be >5 characters</string>
+    <string name="login_failed" translatable="false">"Login failed"</string>
+    <string name="title_activity_example_login" translatable="false">LoginExampleActivity</string>
     <string name="dealer_activity_title">My Dealers</string>
     <string name="roaster_activity_title">My Roasters</string>
     <string name="flavor_activity_title">My Flavors</string>
@@ -97,17 +94,64 @@
     <string name="navi_profile">Profile</string>
     <string name="dialog_intensity_taint">Taint = 2</string>
     <string name="dialog_intensity_fault">Fault = 4</string>
-    <string name="cup_one">Cup One</string>
-    <string name="cup_two">Cup Two</string>
-    <string name="cup_three">Cup Three</string>
-    <string name="cup_four">Cup Four</string>
-    <string name="cup_five">Cup Five</string>
-    <string name="ok">OK</string>
+    <string name="cup_one" translatable="false">Cup One</string>
+    <string name="cup_two" translatable="false">Cup Two</string>
+    <string name="cup_three" translatable="false">Cup Three</string>
+    <string name="cup_four" translatable="false">Cup Four</string>
+    <string name="cup_five" translatable="false">Cup Five</string>
+    <string name="ok" translatable="false">OK</string>
     <string name="flavor_name">Flavor Name</string>
     <string name="dealer_name">Dealer Name</string>
     <string name="dealer_email">Dealer Email</string>
-    <string name="total_score">Total:</string>
+    <string name="total_score" translatable="false">Total:</string>
     <string name="altitude">Altitude</string>
     <string name="name">Name</string>
     <string name="process">Process</string>
+    <string name="profile_title_login_hint">Login to Sync Data to the Cloud</string>
+    <string name="alt_low">Alt. Low</string>
+    <string name="dash" translatable="false">-</string>
+    <string name="high">High</string>
+    <string name="account_id">Account ID: %s</string>
+    <string name="my_dealers">My Dealers</string>
+    <string name="my_roasters">My Roasters</string>
+    <string name="my_flavors">My Flavors</string>
+    <string name="logout">Logout</string>
+    <string name="aroma">Aroma</string>
+    <string name="flavor">Flavor</string>
+    <string name="aftertaste">Aftertaste</string>
+    <string name="acidity">Acidity</string>
+    <string name="body">Body</string>
+    <string name="uniformity">Uniformity</string>
+    <string name="clean_cup">Clean Cup</string>
+    <string name="overall">Overall</string>
+    <string name="balance">Balance</string>
+    <string name="sweetness">Sweetness</string>
+    <string name="defect_cups">Defect Cups</string>
+    <string name="intensity">Intensity</string>
+    <string name="blind_taste">Blind Taste</string>
+    <string name="reset_timer">Reset Timer</string>
+    <string name="reset">Reset</string>
+    <string name="timer_prompt">Are you sure you want to reset the timer?</string>
+    <string-array name="grading">
+        <item>@string/aroma</item>
+        <item>@string/flavor</item>
+        <item>@string/aftertaste</item>
+        <item>@string/acidity</item>
+        <item>@string/body</item>
+        <item>@string/uniformity</item>
+        <item>@string/clean_cup</item>
+        <item>@string/overall</item>
+        <item>@string/balance</item>
+        <item>@string/sweetness</item>
+        <item>@string/defect_cups</item>
+        <item>@string/intensity</item>
+    </string-array>
+    <string name="complete_cupping_form_hint">Please complete all fields</string>
+    <string-array name="profile_list">
+        <item>@string/my_dealers</item>
+        <item>@string/my_roasters</item>
+        <item>@string/my_flavors</item>
+        <item>@string/logout</item>
+    </string-array>
+    <string name="select">select...</string>
 </resources>
