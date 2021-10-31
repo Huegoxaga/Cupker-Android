@@ -87,7 +87,7 @@ public class HistorySessionListAdapter extends BaseAdapter{
             } else {
                 selectedSessions.add(sessions.get(position));
                 selectedRows.add(view);
-                view.setBackgroundResource(R.color.light_blue_600);
+                view.setBackgroundResource(R.color.secondary_brown_light);
             }
             if (selectedSessions.size() > 0) {
                 historyFragment.showDeleteMenu(true);

@@ -74,7 +74,7 @@ public class DealerListAdapter extends BaseAdapter {
             }else{
                 selectedDealers.add(dealerObjs.get(position));
                 selectedRows.add(view);
-                view.setBackgroundResource(R.color.light_blue_600);
+                view.setBackgroundResource(R.color.secondary_brown_light);
             }
             if(selectedDealers.size() > 0){
                 dealerActivity.showDeleteMenu(true);

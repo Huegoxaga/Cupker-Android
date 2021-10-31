@@ -73,7 +73,7 @@ public class FlavorListAdapter extends BaseAdapter {
             }else{
                 selectedFlavors.add(flavorObjs.get(position));
                 selectedRows.add(view);
-                view.setBackgroundResource(R.color.light_blue_600);
+                view.setBackgroundResource(R.color.secondary_brown_light);
             }
             if(selectedFlavors.size() > 0){
                 flavorActivity.showDeleteMenu(true);
