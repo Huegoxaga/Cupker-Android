@@ -1,5 +1,7 @@
 package com.cupker;
-
+/**
+ * Ye Qi, 000792058
+ */
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +24,9 @@ import java.util.Locale;
 
 import static java.lang.String.*;
 
+/**
+ * The history session list controller
+ */
 public class HistoryListAdapter extends BaseAdapter {
 
     // Keys
@@ -150,6 +155,11 @@ public class HistoryListAdapter extends BaseAdapter {
         return cuppingListView;
     }
 
+    /**
+     * Calculate total score
+     * @param listPosition
+     * @return
+     */
     private double getScore(int listPosition) {
         Sample sample = samples.get(listPosition);
         double total = sample.getAroma() + sample.getFlavor() + sample.getAfterTaste() + sample.getAcidity() + sample.getBody() + sample.getOverall() + sample.getBalance();
@@ -163,6 +173,11 @@ public class HistoryListAdapter extends BaseAdapter {
         return total;
     }
 
+    /**
+     * Generate position value from binary value
+     * @param positionCode
+     * @return
+     */
     private double positionToCup(Double positionCode) {
         String scorePosition = Integer.toBinaryString(positionCode.intValue());
         return scorePosition.length() - scorePosition.replace("1", "").length();

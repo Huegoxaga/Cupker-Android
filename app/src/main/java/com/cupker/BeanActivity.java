@@ -1,5 +1,7 @@
 package com.cupker;
-
+/**
+ * Ye Qi, 000792058
+ */
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -105,6 +107,11 @@ public class BeanActivity extends AppCompatActivity {
         // Listener
     }
 
+    /**
+     * Create edit menu btn
+     * @param menu existing menu btn
+     * @return
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (menu != null) {
@@ -115,6 +122,11 @@ public class BeanActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Menu btm listener
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.toolbar_edit_btn) {
@@ -124,6 +136,10 @@ public class BeanActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Back buttom listener
+     * @return
+     */
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
@@ -143,6 +159,9 @@ public class BeanActivity extends AppCompatActivity {
 
     private final Handler handler = new Handler();
 
+    /**
+     * Update view
+     */
     private final Runnable updateView = new Runnable() {
         @Override
         public void run() {

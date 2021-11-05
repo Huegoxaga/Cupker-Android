@@ -1,5 +1,7 @@
 package com.cupker;
-
+/**
+ * Ye Qi, 000792058
+ */
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +18,7 @@ import com.amplifyframework.datastore.generated.model.Roaster;
 import com.amplifyframework.datastore.generated.model.Status;
 
 /**
- * This is the add roaster fragment for the roaster drop down in create new cupping session page
+ * This is the add flavor fragment for the roaster drop down in create new cupping session page
  */
 public class NewFlavorProfileFragment extends DialogFragment {
 

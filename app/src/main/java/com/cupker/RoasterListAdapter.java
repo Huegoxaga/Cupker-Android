@@ -1,5 +1,7 @@
 package com.cupker;
-
+/**
+ * Ye Qi, 000792058
+ */
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;

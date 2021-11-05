@@ -1,5 +1,7 @@
 package com.cupker;
-
+/**
+ * Ye Qi, 000792058
+ */
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -25,6 +27,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * This defines the dealer list page
+ */
 public class DealerActivity extends AppCompatActivity {
 
     // Keys
@@ -127,6 +132,10 @@ public class DealerActivity extends AppCompatActivity {
         menuItemAdd.setVisible(!show);
     }
 
+    /**
+     * Set selected dealer into inactive from the list adapter
+     * @param selectedDealers
+     */
     public void removeSelectedDealers(List<Dealer> selectedDealers) {
         dealerObjs.removeAll(selectedDealers);
 

@@ -1,5 +1,7 @@
 package com.cupker;
-
+/**
+ * Ye Qi, 000792058
+ */
 import android.content.Context;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -26,6 +28,9 @@ import com.amplifyframework.datastore.generated.model.Status;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This defines the cupping session list
+ */
 public class CuppingListAdapter extends BaseAdapter {
 
     // Keys

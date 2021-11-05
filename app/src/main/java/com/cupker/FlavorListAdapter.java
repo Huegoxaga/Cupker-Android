@@ -1,5 +1,7 @@
 package com.cupker;
-
+/**
+ * Ye Qi, 000792058
+ */
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +14,7 @@ import com.amplifyframework.datastore.generated.model.Flavor;
 import java.util.ArrayList;
 
 /**
- * This defines the settings list in profile page
+ * This defines the flavor list in profile page
  */
 public class FlavorListAdapter extends BaseAdapter {
 
@@ -86,6 +88,10 @@ public class FlavorListAdapter extends BaseAdapter {
 
         return settingsListView;
     }
+
+    /**
+     * Remove & update selected flavor and call frag method to inactivate
+     */
     public void removeSelectedFlavors() {
         flavorActivity.removeSelectedFlavor(selectedFlavors);
         selectedFlavors.clear();

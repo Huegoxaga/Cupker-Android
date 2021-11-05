@@ -1,5 +1,7 @@
 package com.cupker;
-
+/**
+ * Ye Qi, 000792058
+ */
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This defines the settings list in profile page
+ * This defines the dealer list in profile page
  */
 public class DealerListAdapter extends BaseAdapter {
 
@@ -88,6 +90,9 @@ public class DealerListAdapter extends BaseAdapter {
         return settingsListView;
     }
 
+    /**
+     * remove selected dealer from list and call frag method to make it inactive
+     */
     public void removeSelectedDealers(){
         dealerActivity.removeSelectedDealers(selectedDealers);
         selectedDealers.clear();

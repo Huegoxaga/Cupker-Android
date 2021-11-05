@@ -1,4 +1,7 @@
 package com.cupker;
+/**
+ * A reference class
+ */
 
 import android.annotation.SuppressLint;
 

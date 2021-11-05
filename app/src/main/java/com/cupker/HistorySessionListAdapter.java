@@ -1,5 +1,7 @@
 package com.cupker;
-
+/**
+ * Ye Qi, 000792058
+ */
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -101,6 +103,9 @@ public class HistorySessionListAdapter extends BaseAdapter{
         return sessionsListView;
     }
 
+    /**
+     * Remove and update selected session, call frag method to make it inactive
+     */
     public void removeSelectedSessions() {
         historyFragment.removeSelectedSessions(selectedSessions);
         selectedSessions.clear();

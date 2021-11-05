@@ -1,17 +1,16 @@
 package com.cupker;
-
+/**
+ * Ye Qi, 000792058
+ */
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.amplifyframework.datastore.generated.model.Bean;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,6 +99,10 @@ public class BeanListAdapter extends BaseAdapter {
 
     }
 
+    /**
+     * Call frag remove bean method
+     * Remove bean from the list
+     */
     public void removeSelectedBeans(){
         beansFragment.removeSelectedBeans(selectedBeans);
         selectedBeans.clear();

@@ -1,5 +1,7 @@
 package com.cupker;
-
+/**
+ * Ye Qi, 000792058
+ */
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -19,6 +21,9 @@ import com.amplifyframework.datastore.generated.model.Status;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This defines the roaster profile list page
+ */
 public class RoasterActivity extends AppCompatActivity {
 
     // Keys

@@ -1,10 +1,15 @@
 package com.cupker.task;
-
+/**
+ * Ye Qi, 000792058
+ */
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.cupker.MainActivity;
 
+/**
+ * An async task class to add roaster (not in use)
+ */
 public class AddRoasterAsyncTask extends AsyncTask<String, Void, String> {
     public static final String TAG = "==AddRoasterAsyncTask==";
 

@@ -1,5 +1,7 @@
 package com.cupker;
-
+/**
+ * Ye Qi, 000792058
+ */
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -277,6 +279,12 @@ public class CuppingActivity extends AppCompatActivity {
         return String.format("%02d",minutes) + " : " + String.format("%02d",seconds);
     }
 
+    /**
+     * Update the score, called from the grid adapter
+     * @param listPosition
+     * @param gridPosition
+     * @param newScore
+     */
     public void setScore(int listPosition, int gridPosition, double newScore) {
 //        Log.d(TAG, samples.toString());
         Sample sample = samples.get(listPosition);
@@ -351,6 +359,11 @@ public class CuppingActivity extends AppCompatActivity {
         cuppingListAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * Set note data called from list adapter
+     * @param listPosition
+     * @param newNote
+     */
     public void setNote(int listPosition, String newNote) {
         Sample sample = samples.get(listPosition);
         Sample editedSample = sample.copyOfBuilder()
@@ -360,6 +373,11 @@ public class CuppingActivity extends AppCompatActivity {
         Log.d(TAG, newNote);
     }
 
+    /**
+     * Set roast level data called from list adapter
+     * @param listPosition
+     * @param newRoastLevel
+     */
     public void setRoastLevel(int listPosition, double newRoastLevel) {
         Sample sample = samples.get(listPosition);
         Sample editedSample = sample.copyOfBuilder()
@@ -369,6 +387,11 @@ public class CuppingActivity extends AppCompatActivity {
         Log.d(TAG, newRoastLevel + "");
     }
 
+    /**
+     * Set bean selection called from list adapter
+     * @param listPosition
+     * @param bean
+     */
     public void setBean(int listPosition, Bean bean) {
         Sample sample = samples.get(listPosition);
         Sample editedSample = sample.copyOfBuilder()

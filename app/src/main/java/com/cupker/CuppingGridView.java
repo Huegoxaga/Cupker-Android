@@ -1,5 +1,7 @@
 package com.cupker;
-
+/**
+ * Ye Qi, 000792058
+ */
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.GridView;

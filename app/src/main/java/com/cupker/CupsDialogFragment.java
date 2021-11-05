@@ -1,5 +1,7 @@
 package com.cupker;
-
+/**
+ * Ye Qi, 000792058
+ */
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,7 +14,7 @@ import android.widget.TextView;
 import androidx.fragment.app.DialogFragment;
 
 /**
- * The grading popup
+ * The cupping selection popup
  */
 public class CupsDialogFragment extends DialogFragment {
 
@@ -89,6 +91,10 @@ public class CupsDialogFragment extends DialogFragment {
         dismiss();
     }
 
+    /**
+     * Set cupping check box binary code in a string
+     * @param v
+     */
     public void changePosition(View v) {
         StringBuilder newPosition = new StringBuilder(scorePosition);
         switch (v.getId()) {

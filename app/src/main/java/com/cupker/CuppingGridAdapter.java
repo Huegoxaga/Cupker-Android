@@ -1,5 +1,7 @@
 package com.cupker;
-
+/**
+ * Ye Qi, 000792058
+ */
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -161,6 +163,11 @@ public class CuppingGridAdapter extends BaseAdapter {
         return gradingView;
     }
 
+    /**
+     * Convert decimal position to actual cupping score
+     * @param scoreCode
+     * @return
+     */
     private double getCupsScore(Double scoreCode) {
         String scorePosition = Integer.toBinaryString(scoreCode.intValue());
         return 10 - (scorePosition.length() - scorePosition.replace("1", "").length()) * 2;

@@ -1,5 +1,7 @@
 package com.cupker;
-
+/**
+ * Ye Qi, 000792058
+ */
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -181,6 +183,10 @@ public class CuppingFragment extends Fragment {
         datePickerDialog.show();
     }
 
+    /**
+     * Incre and Decre the sample num input counter
+     * @param view
+     */
     public void updateSampleNum(View view){
         InputMethodManager imm = (InputMethodManager) cuppingFragView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(cuppingFragView.getWindowToken(), 0);

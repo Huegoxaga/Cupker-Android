@@ -1,5 +1,7 @@
 package com.cupker;
-
+/**
+ * Ye Qi, 000792058
+ */
 import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
@@ -56,6 +58,10 @@ public class GradingDialogFragment extends DialogFragment {
         return gradingDialogView;
     }
 
+    /**
+     * Get the score and call the activity set score method
+     * @param v
+     */
     public void saveScore(View v) {
         if (main == null) main = (CuppingActivity) getActivity();
         TextView scoreTextView = (TextView) v;

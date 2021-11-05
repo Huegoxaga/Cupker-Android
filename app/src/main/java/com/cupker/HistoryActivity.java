@@ -1,5 +1,7 @@
 package com.cupker;
-
+/**
+ * Ye Qi, 000792058
+ */
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -225,6 +227,11 @@ public class HistoryActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Set the bean name, called from list adapter
+     * @param listPosition
+     * @param bean
+     */
     public void setBean(int listPosition, Bean bean) {
         Sample sample = samples.get(listPosition);
         if (!sample.getBeanId().equals(bean.getId())) {

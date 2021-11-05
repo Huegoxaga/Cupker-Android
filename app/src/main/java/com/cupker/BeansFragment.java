@@ -1,5 +1,7 @@
 package com.cupker;
-
+/**
+ * Ye Qi, 000792058
+ */
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -132,11 +134,19 @@ public class BeansFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Make delete btm visiable
+     * @param show
+     */
     public void showDeleteMenu(boolean show) {
         menuItemDelete.setVisible(show);
         menuItemAdd.setVisible(!show);
     }
 
+    /**
+     * Set selected bean inactive in the data store
+     * @param selectedBeans
+     */
     public void removeSelectedBeans(List<Bean> selectedBeans) {
         beanObjs.removeAll(selectedBeans);
 

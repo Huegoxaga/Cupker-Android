@@ -1,5 +1,7 @@
 package com.cupker;
-
+/**
+ * Ye Qi, 000792058
+ */
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +11,7 @@ import android.widget.TextView;
 import androidx.fragment.app.DialogFragment;
 
 /**
- * The grading popup
+ * The intensity selection popup
  */
 public class IntensityDialogFragment extends DialogFragment {
 
@@ -40,6 +42,10 @@ public class IntensityDialogFragment extends DialogFragment {
         return gradingDialogView;
     }
 
+    /**
+     * Save the intensity score
+     * @param v
+     */
     public void saveScore(View v) {
         if (main == null) main = (CuppingActivity) getActivity();
         if (v.getId() == R.id.intensity_dialog_taint) main.setScore(listPosition, gridPosition, 2);

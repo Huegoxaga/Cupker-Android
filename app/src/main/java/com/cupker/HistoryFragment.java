@@ -1,5 +1,7 @@
 package com.cupker;
-
+/**
+ * Ye Qi, 000792058
+ */
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +32,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This defines the history page
+ */
 public class HistoryFragment extends Fragment {
 
     // Keys
@@ -158,6 +163,10 @@ public class HistoryFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Make selected session inactive, called from list adapter
+     * @param selectedSessions
+     */
     public void removeSelectedSessions(List<Session> selectedSessions) {
         sessionObjs.removeAll(selectedSessions);
 

@@ -1,5 +1,7 @@
 package com.cupker;
-
+/**
+ * Ye Qi, 000792058
+ */
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -20,6 +22,9 @@ import com.amplifyframework.datastore.generated.model.Status;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This defines the flavor list page
+ */
 public class FlavorActivity extends AppCompatActivity {
 
     // Keys
@@ -123,6 +128,10 @@ public class FlavorActivity extends AppCompatActivity {
         menuItemAdd.setVisible(!show);
     }
 
+    /**
+     * Set selected flavor inactive
+     * @param selectedFlavors
+     */
     public void removeSelectedFlavor(List<Flavor> selectedFlavors) {
         flavorObjs.removeAll(selectedFlavors);
 
