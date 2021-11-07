@@ -2,6 +2,7 @@ package com.cupker;
 /**
  * Ye Qi, 000792058
  */
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
@@ -190,7 +191,7 @@ public class NewBeanActivity extends AppCompatActivity {
             // Continue only if the File was successfully created
             if (photoFile != null) {
                 Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.example.android.fileprovider",
+                        BuildConfig.APPLICATION_ID + ".provider",
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, 3);
@@ -220,6 +221,7 @@ public class NewBeanActivity extends AppCompatActivity {
 
     /**
      * Handle save bean btn
+     *
      * @param item
      * @return
      */

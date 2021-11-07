@@ -163,13 +163,9 @@ public class HistoryListAdapter extends BaseAdapter {
     private double getScore(int listPosition) {
         Sample sample = samples.get(listPosition);
         double total = sample.getAroma() + sample.getFlavor() + sample.getAfterTaste() + sample.getAcidity() + sample.getBody() + sample.getOverall() + sample.getBalance();
-        Log.d(TAG, listPosition + " " + total);
-
         total += 30 - 2 * (positionToCup(sample.getUniformity()) + positionToCup(sample.getCleanCup()) + positionToCup(sample.getSweetness()));
-        Log.d(TAG, listPosition + " " + total);
-
         total -= positionToCup(sample.getDefectCount()) * sample.getDefectType();
-        Log.d(TAG, listPosition + " " + total);
+
         return total;
     }
 

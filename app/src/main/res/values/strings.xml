@@ -130,8 +130,11 @@
     <string name="intensity">Intensity</string>
     <string name="blind_taste">Blind Taste</string>
     <string name="reset_timer">Reset Timer</string>
+    <string name="share_session">Share My Cupping Records</string>
     <string name="reset">Reset</string>
+    <string name="confirm_share">Share</string>
     <string name="timer_prompt">Are you sure you want to reset the timer?</string>
+    <string name="share_prompt">A screenshot has been saved to the Gallery. Do you want to continue sharing it through other apps?</string>
     <string-array name="grading">
         <item>@string/aroma</item>
         <item>@string/flavor</item>
@@ -154,4 +157,5 @@
         <item>@string/logout</item>
     </string-array>
     <string name="select">select...</string>
+    <string name="share">Share</string>
 </resources>

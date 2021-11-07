@@ -2,22 +2,46 @@ package com.cupker;
 /**
  * Ye Qi, 000792058
  */
+
+import android.Manifest;
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.LabeledIntent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
+import android.service.chooser.ChooserTarget;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NavUtils;
+import androidx.core.content.FileProvider;
 
 import com.amplifyframework.core.Amplify;
 import com.amplifyframework.core.model.query.Where;
@@ -27,6 +51,9 @@ import com.amplifyframework.datastore.generated.model.Sample;
 import com.amplifyframework.datastore.generated.model.Session;
 import com.amplifyframework.datastore.generated.model.Status;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -50,6 +77,11 @@ public class HistoryActivity extends AppCompatActivity {
     private ListView cuppingListView;
     private TextView titleText;
     private TextView infoText;
+    private TextView headerText;
+    private HistoryListAdapter cuppingListAdapter;
+    private View cuppingListViewHeader;
+
+    private View cuppingListViewFooter;
 
     // Data
     private Session session;
@@ -76,17 +108,16 @@ public class HistoryActivity extends AppCompatActivity {
         LinearLayout mainFrame = findViewById(R.id.history_activity_main_frame);
         cuppingListView = findViewById(R.id.history_activity_list);
         Intent intent = getIntent();
-//        LayoutInflater layoutInflater = getLayoutInflater();
         Toolbar toolBar = findViewById(R.id.history_activity_toolbar);
         titleText = findViewById(R.id.history_toolbar_title);
-        View cuppingListViewFooter = getLayoutInflater().inflate(R.layout.activity_history_list_footer, cuppingListView, false);
-//        cuppingListView.addHeaderView(cuppingListViewHeader);
+        cuppingListViewFooter = getLayoutInflater().inflate(R.layout.activity_history_list_footer, cuppingListView, false);
         cuppingListView.addFooterView(cuppingListViewFooter);
         infoText = findViewById(R.id.history_activity_session_info);
+        // header is only created for screenshot, remove after setText
+        cuppingListViewHeader = getLayoutInflater().inflate(R.layout.activity_history_list_header, cuppingListView, false);
+        cuppingListView.addHeaderView(cuppingListViewHeader);
+        headerText = findViewById(R.id.cupping_history_list_title);
 
-//        View cuppingListViewHeader = layoutInflater.inflate(R.layout.activity_cupping_list_header, cuppingListView, false);
-//        cuppingListView.addHeaderView(cuppingListViewHeader);
-//        titleText = findViewById(R.id.cupping_activity_title_date); // View exists only after adding header
         final View decorView = getWindow().getDecorView();
 
         // Init Data
@@ -173,9 +204,12 @@ public class HistoryActivity extends AppCompatActivity {
         @Override
         public void run() {
             if (cuppingListView != null && titleText != null) {
-                HistoryListAdapter cuppingListAdapter = new HistoryListAdapter(context, samples, editMode, beanObjs);
+                cuppingListAdapter = new HistoryListAdapter(context, samples, editMode, beanObjs);
                 cuppingListView.setAdapter(cuppingListAdapter);
                 titleText.setText(session.getName());
+                headerText.setText(session.getName());
+                cuppingListView.removeHeaderView(cuppingListViewHeader);
+
             }
         }
     };
@@ -184,16 +218,25 @@ public class HistoryActivity extends AppCompatActivity {
         @Override
         public void run() {
             if (cuppingListView != null && infoText != null) {
-                String roasterDateStr = new SimpleDateFormat("yyyy-MM-dd").format(session.getRoastTime().toDate());
-                String cuppingDateStr = new SimpleDateFormat("yyyy-MM-dd").format(session.getCreatedAt().toDate());
-                infoText.setText(String.format("Created on %s\nRoasted by %s on %s", cuppingDateStr, roaster.getName(), roasterDateStr));
+                infoText.setText(getSessionInfoStr(session, roaster));
             }
         }
     };
 
+    private String getSessionInfoStr(Session session, Roaster roaster) {
+        String info = "My History Cupping Session";
+        if (session != null && roaster != null) {
+            String roasterDateStr = new SimpleDateFormat("yyyy-MM-dd").format(session.getRoastTime().toDate());
+            String cuppingDateStr = new SimpleDateFormat("yyyy-MM-dd").format(session.getCreatedAt().toDate());
+            info = String.format("Created on %s\nRoasted by %s on %s", cuppingDateStr, roaster.getName(), roasterDateStr);
+        }
+
+        return info;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.toolbar_with_edit, menu);
+        getMenuInflater().inflate(R.menu.toolbar_with_share, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -207,6 +250,9 @@ public class HistoryActivity extends AppCompatActivity {
 //            finish();
             onBackPressed();
             return true;
+        } else if (item.getItemId() == R.id.menu_btn_share) {
+            verifyStoragePermission(HistoryActivity.this);
+            takeScreenShot(getWindow().getDecorView());
         }
         return super.onOptionsItemSelected(item);
     }
@@ -229,6 +275,7 @@ public class HistoryActivity extends AppCompatActivity {
 
     /**
      * Set the bean name, called from list adapter
+     *
      * @param listPosition
      * @param bean
      */
@@ -244,6 +291,185 @@ public class HistoryActivity extends AppCompatActivity {
             );
             Log.d(TAG, editedSample + "Edited in list index" + listPosition);
             samples.set(listPosition, editedSample);
+        }
+    }
+
+    /**
+     * @param view
+     */
+    private void takeScreenShot(View view) {
+
+        //This is used to provide file name with Date a format
+        Date date = new Date();
+        CharSequence format = DateFormat.format("MM-dd-yyyy_hh:mm:ss", date);
+
+        //It will make sure to store file to given below Directory and If the file Directory doesn't exist then it will create it.
+        try {
+            File mainDir = new File(
+                    this.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "FilShare");
+            if (!mainDir.exists()) {
+                boolean mkdir = mainDir.mkdir();
+            }
+
+            //Providing file name along with Bitmap to capture screenview
+            String path = mainDir + "/" + "Session" + "-" + format + ".jpeg";
+//            view.setDrawingCacheEnabled(true);
+//            Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache());
+//            view.setDrawingCacheEnabled(false);
+
+            // Get bitmap
+            ListView listview = cuppingListView;
+            ListAdapter adapter = cuppingListAdapter;
+            int itemscount = adapter.getCount();
+            int totalHeight = 0;
+            List<Bitmap> bmps = new ArrayList<Bitmap>();
+
+
+            // Add Header
+            cuppingListViewHeader.measure(View.MeasureSpec.makeMeasureSpec(listview.getWidth(), View.MeasureSpec.EXACTLY),
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+
+            cuppingListViewHeader.layout(0, 0, cuppingListViewHeader.getMeasuredWidth(), cuppingListViewHeader.getMeasuredHeight());
+            cuppingListViewHeader.setDrawingCacheEnabled(true);
+            cuppingListViewHeader.buildDrawingCache();
+            bmps.add(cuppingListViewHeader.getDrawingCache());
+            totalHeight += cuppingListViewHeader.getMeasuredHeight();
+
+            // Add List
+            for (int i = 0; i < itemscount; i++) {
+
+                View childView = adapter.getView(i, null, listview);
+                childView.measure(View.MeasureSpec.makeMeasureSpec(listview.getWidth(), View.MeasureSpec.EXACTLY),
+                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+
+                childView.layout(0, 0, childView.getMeasuredWidth(), childView.getMeasuredHeight());
+                childView.setDrawingCacheEnabled(true);
+                childView.buildDrawingCache();
+                bmps.add(childView.getDrawingCache());
+                totalHeight += childView.getMeasuredHeight();
+            }
+
+            // Add Footer
+            cuppingListViewFooter.measure(View.MeasureSpec.makeMeasureSpec(listview.getWidth(), View.MeasureSpec.EXACTLY),
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+
+            cuppingListViewFooter.layout(0, 0, cuppingListViewFooter.getMeasuredWidth(), cuppingListViewFooter.getMeasuredHeight());
+            cuppingListViewFooter.setDrawingCacheEnabled(true);
+            cuppingListViewFooter.buildDrawingCache();
+            bmps.add(cuppingListViewFooter.getDrawingCache());
+            totalHeight += cuppingListViewFooter.getMeasuredHeight();
+
+
+            Bitmap longBitmap = Bitmap.createBitmap(listview.getMeasuredWidth(), totalHeight, Bitmap.Config.ARGB_8888);
+            Canvas bigCanvas = new Canvas(longBitmap);
+
+            Paint paint = new Paint();
+            int iHeight = 0;
+
+            for (int i = 0; i < bmps.size(); i++) {
+                Bitmap bmp = bmps.get(i);
+                bigCanvas.drawBitmap(bmp, 0, iHeight, paint);
+                iHeight += bmp.getHeight();
+
+//                bmp.recycle();
+//                bmp = null;
+            }
+
+            //This logic is used to save file at given location with the given filename and compress the Image Quality.
+            File imageFile = new File(path);
+            FileOutputStream fileOutputStream = new FileOutputStream(imageFile);
+            longBitmap.compress(Bitmap.CompressFormat.PNG, 90, fileOutputStream);
+            fileOutputStream.flush();
+            fileOutputStream.close();
+
+
+            // Save to gallery
+            MediaStore.Images.Media.insertImage(getContentResolver(), longBitmap, "Session Record - " + session.getName(), getSessionInfoStr(session, roaster));
+
+            // Show Alert
+            AlertDialog.Builder resetAlert = new AlertDialog.Builder(this);
+            resetAlert.setTitle(this.getString(R.string.share_session));
+            resetAlert.setMessage(this.getString(R.string.share_prompt));
+            resetAlert.setPositiveButton(this.getString(R.string.confirm_share), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    shareScreenShot(imageFile);
+                }
+            });
+
+            resetAlert.setNeutralButton(this.getString(R.string.cancel_button), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    //do nothing
+                }
+            });
+
+            resetAlert.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Share Screenshot
+     *
+     * @param imageFile
+     */
+    private void shareScreenShot(File imageFile) {
+
+        //Using sub-class of Content provider
+        Uri uri = FileProvider.getUriForFile(
+                this,
+                BuildConfig.APPLICATION_ID + ".provider",
+                imageFile);
+
+        //Explicit intent
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_SEND);
+        intent.setType("image/*");
+        intent.putExtra(android.content.Intent.EXTRA_TEXT, "Share my cupping history");
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+
+        // Setup chooser
+        Intent chooser = Intent.createChooser(intent, "Share File");
+
+        // Add permission to all share options
+        List<ResolveInfo> resInfoList = this.getPackageManager().queryIntentActivities(chooser, PackageManager.MATCH_DEFAULT_ONLY);
+
+        for (ResolveInfo resolveInfo : resInfoList) {
+            String packageName = resolveInfo.activityInfo.packageName;
+            this.grantUriPermission(packageName, uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        }
+
+        //It will show the application which are available to share Image; else Toast message will throw.
+        try {
+            this.startActivity(chooser);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(this, "No App Available", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static final String[] PERMISSION_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+    };
+
+
+    /**
+     * Verifies the permission
+     *
+     * @param activity
+     */
+    public static void verifyStoragePermission(Activity activity) {
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSION_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE);
         }
     }
 }

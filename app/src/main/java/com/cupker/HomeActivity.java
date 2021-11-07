@@ -11,10 +11,10 @@ import android.util.Log;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
 
     // Keys
-    private static final String TAG = "===MAIN ACTIVITY===";
+    private static final String TAG = "===HOME ACTIVITY===";
     // Activity return codes
     private static final int DONE_CUPPING = 1;
     private static final int DONE_ADD_BEAN = 2;

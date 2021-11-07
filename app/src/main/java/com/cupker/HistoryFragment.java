@@ -9,8 +9,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,7 +16,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
 
@@ -152,8 +149,8 @@ public class HistoryFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.add_bean_menu_save_button) {
-            MainActivity mainActivity = (MainActivity) getActivity();
-            mainActivity.setBottomNav(R.id.nav_cupping);
+            HomeActivity homeActivity = (HomeActivity) getActivity();
+            homeActivity.setBottomNav(R.id.nav_cupping);
         } else {
             historySessionListAdapter.notifyDataSetChanged();
             historySessionListAdapter.removeSelectedSessions();

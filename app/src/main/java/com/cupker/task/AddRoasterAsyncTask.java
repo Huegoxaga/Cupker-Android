@@ -5,8 +5,6 @@ package com.cupker.task;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.cupker.MainActivity;
-
 /**
  * An async task class to add roaster (not in use)
  */

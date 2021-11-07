@@ -2,6 +2,7 @@ package com.cupker;
 /**
  * Ye Qi, 000792058
  */
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -21,6 +22,11 @@ import com.amplifyframework.core.Amplify;
 import com.amplifyframework.core.model.query.Where;
 import com.amplifyframework.datastore.generated.model.Bean;
 import com.amplifyframework.datastore.generated.model.Dealer;
+import com.amplifyframework.datastore.generated.model.Sample;
+import com.amplifyframework.datastore.generated.model.Status;
+
+import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * This defines bean detail page
@@ -52,6 +58,7 @@ public class BeanActivity extends AppCompatActivity {
     private Bean bean;
     private Dealer dealer;
     private boolean editMode = false;
+    private ArrayList<Double> scores = new ArrayList<>();
 
 
     @Override
@@ -79,7 +86,7 @@ public class BeanActivity extends AppCompatActivity {
         // Fetch Data
         if (intent != null && intent.hasExtra(BEAN_ID)) {
             String beanID = intent.getStringExtra(BEAN_ID);
-            Log.d(TAG, beanID);
+
             Amplify.DataStore.query(Bean.class, Where.id(beanID),
                     match -> {
                         if (match.hasNext()) {
@@ -96,6 +103,18 @@ public class BeanActivity extends AppCompatActivity {
                     },
                     failure -> Log.e(TAG, "Query failed.", failure)
             );
+
+            Amplify.DataStore.query(Sample.class, Where.matches(Sample.BEAN_ID.eq(beanID)),
+                    match -> {
+                        while (match.hasNext()) {
+                            Sample sample = match.next();
+                            scores.add(getScore(sample));
+                            Log.d(TAG, scores.toString());
+                        }
+                        handler.post(updateScore);
+                    },
+                    failure -> Log.e(TAG, "Query Samples failed.", failure)
+            );
         }
 
         // Setup
@@ -108,7 +127,35 @@ public class BeanActivity extends AppCompatActivity {
     }
 
     /**
+     * Get total score of a type of bean
+     *
+     * @param sample
+     * @return
+     */
+    private Double getScore(Sample sample) {
+        Double total = sample.getAroma() + sample.getFlavor() + sample.getAfterTaste() + sample.getAcidity() + sample.getBody() + sample.getOverall() + sample.getBalance();
+        total += 30 - 2 * (positionToCup(sample.getUniformity()) + positionToCup(sample.getCleanCup()) + positionToCup(sample.getSweetness()));
+        total -= positionToCup(sample.getDefectCount()) * sample.getDefectType();
+
+        return total;
+
+    }
+
+    /**
+     * Generate position value from binary value
+     *
+     * @param positionCode
+     * @return
+     */
+    private double positionToCup(Double positionCode) {
+        String scorePosition = Integer.toBinaryString(positionCode.intValue());
+        return scorePosition.length() - scorePosition.replace("1", "").length();
+
+    }
+
+    /**
      * Create edit menu btn
+     *
      * @param menu existing menu btn
      * @return
      */
@@ -124,6 +171,7 @@ public class BeanActivity extends AppCompatActivity {
 
     /**
      * Menu btm listener
+     *
      * @param item
      * @return
      */
@@ -138,6 +186,7 @@ public class BeanActivity extends AppCompatActivity {
 
     /**
      * Back buttom listener
+     *
      * @return
      */
     @Override
@@ -193,6 +242,16 @@ public class BeanActivity extends AppCompatActivity {
                 beanImage.setImageBitmap(decodedImage);
             }
 
+        }
+    };
+
+    /**
+     * Update view
+     */
+    private final Runnable updateScore = new Runnable() {
+        @Override
+        public void run() {
+            average.setText(String.format(Locale.getDefault(), "%.2f", scores.stream().mapToDouble(i -> i).average().orElse(0)));
         }
     };
 }
