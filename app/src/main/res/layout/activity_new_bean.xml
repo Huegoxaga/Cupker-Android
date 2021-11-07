@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:backgroundTint="#D8D8D8"
     android:orientation="vertical"
-    tools:context=".NewBeanActivity">
+    tools:context=".bean.NewBeanActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/new_bean_toolbar"

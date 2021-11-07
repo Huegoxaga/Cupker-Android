@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:backgroundTint="@color/grey_background"
     android:orientation="vertical"
-    tools:context=".BeanActivity">
+    tools:context=".bean.BeanActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/bean_toolbar"

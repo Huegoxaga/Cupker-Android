@@ -5,7 +5,7 @@
     android:id="@+id/new_roaster_layout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    tools:context=".NewRoasterFragment">
+    tools:context=".cupping.NewRoasterFragment">
 
     <TextView
         android:id="@+id/new_roaster_name_label"

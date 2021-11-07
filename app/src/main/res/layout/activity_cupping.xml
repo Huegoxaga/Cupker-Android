@@ -8,7 +8,7 @@
     android:background="@color/grey_background"
     android:orientation="vertical"
     android:theme="@style/ThemeOverlay.Cupker.FullscreenContainer"
-    tools:context=".CuppingActivity">
+    tools:context=".cupping.CuppingActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/cupping_activity_toolbar"

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:clickable="true"
     android:focusable="true"
-    tools:context=".CuppingFragment">
+    tools:context=".home.CuppingFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

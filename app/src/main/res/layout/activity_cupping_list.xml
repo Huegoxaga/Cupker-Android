@@ -33,7 +33,7 @@
 
     </LinearLayout>
 
-    <com.cupker.CuppingGridView
+    <com.cupker.cupping.CuppingGridView
         android:id="@+id/cupping_grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

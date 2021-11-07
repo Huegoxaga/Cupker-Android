@@ -33,33 +33,25 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Cupker">
 
-        <activity android:name=".FlavorActivity" />
-        <activity android:name=".RoasterActivity" />
-        <activity android:name=".DealerActivity" />
+        <activity android:name=".profile.FlavorActivity" />
+        <activity android:name=".profile.RoasterActivity" />
+        <activity android:name=".profile.DealerActivity" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".profile.LoginActivity"
             android:label="@string/title_activity_login" />
+        <activity android:name=".bean.BeanActivity" />
         <activity
-            android:name=".ui.login.LoginExampleActivity"
-            android:label="@string/title_activity_example_login" />
-        <activity
-            android:name=".FullscreenDemo"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_fullscreen"
-            android:theme="@style/Theme.Cupker.Fullscreen" />
-        <activity android:name=".BeanActivity" />
-        <activity
-            android:name=".HistoryActivity"
+            android:name=".history.HistoryActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_history_activityy"
             android:theme="@style/Theme.Cupker.Fullscreen" />
-        <activity android:name=".NewBeanActivity" />
+        <activity android:name=".bean.NewBeanActivity" />
         <activity
-            android:name=".CuppingActivity"
+            android:name=".cupping.CuppingActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_cupping"
             android:theme="@style/Theme.Cupker.Fullscreen" />
-        <activity android:name=".HomeActivity">
+        <activity android:name=".home.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
