@@ -91,14 +91,21 @@ public class BeanActivity extends AppCompatActivity {
                     match -> {
                         if (match.hasNext()) {
                             bean = match.next();
-                            Amplify.DataStore.query(Dealer.class, Where.id(bean.getDealer()),
-                                    matchDealer -> {
-                                        if (matchDealer.hasNext()) {
-                                            dealer = matchDealer.next();
-                                            handler.post(updateView);
-                                        }
-                                    },
-                                    failure -> Log.e(TAG, "Query failed.", failure));
+                            Log.d(TAG, "BEAN: " + bean.getDealer());
+                            Log.d(TAG, "DEALER: " + bean.getDealer());
+
+                            if (!bean.getDealer().isEmpty()) {
+                                Amplify.DataStore.query(Dealer.class, Where.id(bean.getDealer()),
+                                        matchDealer -> {
+                                            if (matchDealer.hasNext()) {
+                                                dealer = matchDealer.next();
+                                                handler.post(updateView);
+                                            }
+                                        },
+                                        failure -> Log.e(TAG, "Query failed.", failure));
+                            } else {
+                                handler.post(updateView);
+                            }
                         }
                     },
                     failure -> Log.e(TAG, "Query failed.", failure)
@@ -109,7 +116,6 @@ public class BeanActivity extends AppCompatActivity {
                         while (match.hasNext()) {
                             Sample sample = match.next();
                             scores.add(getScore(sample));
-                            Log.d(TAG, scores.toString());
                         }
                         handler.post(updateScore);
                     },
@@ -223,7 +229,7 @@ public class BeanActivity extends AppCompatActivity {
             density.setText(bean.getDensity());
             moisture.setText(bean.getMoisture());
             grade.setText(bean.getGrade());
-            dealerName.setText(dealer.getName());
+            if (dealer != null) dealerName.setText(dealer.getName());
             process.setText(bean.getProcess());
 
             if (!bean.getAltitudeLow().isEmpty() && !bean.getAltitudeHigh().isEmpty()) {
