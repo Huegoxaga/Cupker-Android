@@ -95,6 +95,7 @@ public class ProfileSettingsListAdapter extends BaseAdapter {
                                         () -> Log.i(TAG, "DataStore cleared"),
                                         error -> Log.e(TAG, "Error clearing DataStore", error)
                                 );
+                                profileFragment.updateProfile();
                                 Log.i(TAG, "Signed out successfully");
                             },
                             error -> Log.e(TAG, error.toString())

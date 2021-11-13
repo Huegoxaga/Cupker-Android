@@ -246,7 +246,7 @@ public class NewBeanActivity extends AppCompatActivity {
                         .moisture(((EditText) findViewById(R.id.new_bean_moisture_input)).getText().toString())
                         .grade(((EditText) findViewById(R.id.new_bean_grade_input)).getText().toString())
                         .dealer(dealerID)
-                        .image(null)
+                        .image(imageStr)
                         .build();
                 Amplify.DataStore.save(bean,
                         success ->

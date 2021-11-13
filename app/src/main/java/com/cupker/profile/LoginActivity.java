@@ -14,6 +14,9 @@ import com.amplifyframework.core.Amplify;
 import com.amplifyframework.core.model.query.Where;
 import com.amplifyframework.datastore.generated.model.Bean;
 import com.amplifyframework.datastore.generated.model.Status;
+import com.cupker.cupping.CuppingActivity;
+import com.cupker.home.HomeActivity;
+import com.cupker.home.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -70,4 +73,5 @@ public class LoginActivity extends AppCompatActivity {
 //            );
 //        });
     }
+
 }

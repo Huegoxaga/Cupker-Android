@@ -39,6 +39,15 @@ public class HomeActivity extends AppCompatActivity {
     // Data
     private List<AuthUserAttribute> profile = null;
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        updateProfile();
+    }
+
+    public void setProfile(List<AuthUserAttribute> profile) {
+        this.profile = profile;
+    }
 
     private void updateProfile(){
         Amplify.Auth.fetchAuthSession(
@@ -60,6 +69,8 @@ public class HomeActivity extends AppCompatActivity {
                 error -> Log.e(TAG, error.toString())
         );
     }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +78,7 @@ public class HomeActivity extends AppCompatActivity {
 
         // Init
         bottomNav = findViewById(R.id.bottom_navigation);
-        updateProfile();
+
         //Setup
         //Keep the selected fragment when rotating the device
         if (savedInstanceState == null) {

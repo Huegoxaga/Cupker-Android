@@ -2,6 +2,7 @@ package com.cupker.home;
 /**
  * Ye Qi, 000792058
  */
+
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -44,6 +45,7 @@ public class ProfileFragment extends Fragment {
     private String usernameStr;
     private boolean guestMode;
     private List<AuthUserAttribute> profile;
+    private boolean newLogin = false;
 
 
     public ProfileFragment(List<AuthUserAttribute> profile) {
@@ -53,7 +55,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        if(profile != null) {
+        if (profile != null && !newLogin) {
             Log.i(TAG, "User attributes = " + profile.toString());
             String email = "";
             for (AuthUserAttribute attribute : profile) {
@@ -61,7 +63,10 @@ public class ProfileFragment extends Fragment {
                     email = attribute.getValue();
             }
             setGuestMode(false, self.getResources().getString(R.string.account_id, email));
-        }else{
+        } else if (newLogin) {
+            updateProfile();
+            newLogin = false;
+        } else {
             setGuestMode(true, "Guest User");
         }
     }
@@ -130,6 +135,7 @@ public class ProfileFragment extends Fragment {
             Amplify.Auth.signInWithWebUI(getActivity(),
                     result -> {
                         Log.i(TAG, "SIGN IN COMPLETE " + result.toString());
+                        newLogin = true;
                         onStart();
                     },
                     error -> {
@@ -137,6 +143,7 @@ public class ProfileFragment extends Fragment {
                     }
             );
         });
+
 
         // Auth test
 //        AuthSignUpOptions options = AuthSignUpOptions.builder()
@@ -232,5 +239,40 @@ public class ProfileFragment extends Fragment {
 
         // Inflate the layout for this fragment
         return profileView;
+    }
+
+
+    public void updateProfile() {
+        Log.d(TAG, "updateProfile");
+        Amplify.Auth.fetchAuthSession(
+                result -> {
+                    HomeActivity homeActivity = (HomeActivity) getActivity();
+                    Log.d(TAG, "SIGN IN STATUS: " + result.toString());
+                    if (result.isSignedIn()) {
+                        Amplify.Auth.fetchUserAttributes(
+                                attributes -> {
+                                    profile = attributes;
+                                    homeActivity.setProfile(attributes);
+                                    Log.i(TAG, "User attributes = " + profile.toString());
+                                    String email = "";
+                                    for (AuthUserAttribute attribute : profile) {
+                                        if (attribute.getKey().equals(AuthUserAttributeKey.email()))
+                                            email = attribute.getValue();
+                                    }
+                                    setGuestMode(false, self.getResources().getString(R.string.account_id, email));
+                                    Amplify.DataStore.start(
+                                            () -> Log.i(TAG, "DataStore started"),
+                                            error -> Log.e(TAG, "Error starting DataStore", error)
+                                    );
+                                },
+                                error -> Log.e(TAG, "Failed to fetch user attributes.", error)
+                        );
+                    } else {
+                        profile = null;
+                        homeActivity.setProfile(null);
+                    }
+                },
+                error -> Log.e(TAG, error.toString())
+        );
     }
 }
