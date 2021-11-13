@@ -37,6 +37,10 @@ public class LoginActivity extends AppCompatActivity {
                 result -> {
                     Log.i(TAG, result.toString());
                     this.loggedIn = true;
+                    Amplify.DataStore.start(
+                            () -> Log.i(TAG, "DataStore started"),
+                            error -> Log.e(TAG, "Error starting DataStore", error)
+                    );
                 },
                 error -> {
                     Log.e(TAG, error.toString());

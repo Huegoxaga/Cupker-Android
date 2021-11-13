@@ -204,7 +204,6 @@ public class HistoryActivity extends AppCompatActivity {
                 titleText.setText(session.getName());
                 headerText.setText(session.getName());
                 cuppingListView.removeHeaderView(cuppingListViewHeader);
-
             }
         }
     };
@@ -220,9 +219,11 @@ public class HistoryActivity extends AppCompatActivity {
 
     private String getSessionInfoStr(Session session, Roaster roaster) {
         String info = "My History Cupping Session";
+        String cuppingDateStr = "";
+        String roasterDateStr = "";
         if (session != null && roaster != null) {
-            String roasterDateStr = new SimpleDateFormat("yyyy-MM-dd").format(session.getRoastTime().toDate());
-            String cuppingDateStr = new SimpleDateFormat("yyyy-MM-dd").format(session.getCreatedAt().toDate());
+            if (session.getRoastTime() != null) roasterDateStr = new SimpleDateFormat("yyyy-MM-dd").format(session.getRoastTime().toDate());
+            if (session.getCreatedAt() != null) cuppingDateStr = new SimpleDateFormat("yyyy-MM-dd").format(session.getCreatedAt().toDate());
             info = String.format("Created on %s\nRoasted by %s on %s", cuppingDateStr, roaster.getName(), roasterDateStr);
         }
 
@@ -321,6 +322,8 @@ public class HistoryActivity extends AppCompatActivity {
 
 
             // Add Header
+            cuppingListView.addHeaderView(cuppingListViewHeader);
+
             cuppingListViewHeader.measure(View.MeasureSpec.makeMeasureSpec(listview.getWidth(), View.MeasureSpec.EXACTLY),
                     View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
 
@@ -329,6 +332,7 @@ public class HistoryActivity extends AppCompatActivity {
             cuppingListViewHeader.buildDrawingCache();
             bmps.add(cuppingListViewHeader.getDrawingCache());
             totalHeight += cuppingListViewHeader.getMeasuredHeight();
+            cuppingListView.removeHeaderView(cuppingListViewHeader);
 
             // Add List
             for (int i = 0; i < itemscount; i++) {
@@ -376,7 +380,6 @@ public class HistoryActivity extends AppCompatActivity {
             longBitmap.compress(Bitmap.CompressFormat.PNG, 90, fileOutputStream);
             fileOutputStream.flush();
             fileOutputStream.close();
-
 
             // Save to gallery
             MediaStore.Images.Media.insertImage(getContentResolver(), longBitmap, "Session Record - " + session.getName(), getSessionInfoStr(session, roaster));

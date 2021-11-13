@@ -23,6 +23,7 @@ import com.cupker.profile.ProfileSettingsListAdapter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * This defines the profile page
@@ -42,44 +43,34 @@ public class ProfileFragment extends Fragment {
     private TextView usernameLabel;
     private String usernameStr;
     private boolean guestMode;
+    private List<AuthUserAttribute> profile;
 
 
-    public ProfileFragment() {
+    public ProfileFragment(List<AuthUserAttribute> profile) {
+        this.profile = profile;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        settingsTitles = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.profile_list)));
-        Amplify.Auth.fetchAuthSession(
-                result -> {
-                    Log.d(TAG, "SIGN IN STATUS: " + result.toString());
-                    if (result.isSignedIn()) {
-                        Amplify.Auth.fetchUserAttributes(
-                                attributes -> {
-                                    Log.i(TAG, "User attributes = " + attributes.toString());
-                                    String email = "";
-                                    for (AuthUserAttribute attribute : attributes) {
-                                        if (attribute.getKey().equals(AuthUserAttributeKey.email()))
-                                            email = attribute.getValue();
-                                    }
-                                    setGuestMode(false, self.getResources().getString(R.string.account_id, email));
-
-                                },
-                                error -> Log.e(TAG, "Failed to fetch user attributes.", error)
-                        );
-                    } else {
-                        setGuestMode(true, "Guest User");
-                    }
-                },
-                error -> Log.e(TAG, error.toString())
-        );
-//        this.onCreate(null);
+        if(profile != null) {
+            Log.i(TAG, "User attributes = " + profile.toString());
+            String email = "";
+            for (AuthUserAttribute attribute : profile) {
+                if (attribute.getKey().equals(AuthUserAttributeKey.email()))
+                    email = attribute.getValue();
+            }
+            setGuestMode(false, self.getResources().getString(R.string.account_id, email));
+        }else{
+            setGuestMode(true, "Guest User");
+        }
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        settingsTitles = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.profile_list)));
+
 //        Amplify.Auth.signIn(
 //                "qi.ye@live.com",
 //                "Password123",
@@ -113,6 +104,8 @@ public class ProfileFragment extends Fragment {
                     loginBtn.setVisibility(View.VISIBLE);
                     usernameLabel.setText(usernameStr);
                 } else {
+                    int lastIdx = settingsTitles.indexOf("Logout");
+                    if (lastIdx == -1) settingsTitles.add("Logout");
                     usernameLabel.setText(usernameStr);
                     loginBtn.setVisibility(View.INVISIBLE);
                 }
