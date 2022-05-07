@@ -53,7 +53,7 @@ public class CuppingActivity extends AppCompatActivity {
     private ListView cuppingListView;
     private CuppingListAdapter cuppingListAdapter;
     private LinearLayout mainFrame;
-    private ImageButton timerToggleButton;
+    private ImageButton timerToggleButton, resetTimerButton;
     private TextView titleText;
     private Button saveButton;
 
@@ -220,7 +220,9 @@ public class CuppingActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.cupping_activity_timer_reset_btn).setOnClickListener(v -> {
+        resetTimerButton =  findViewById(R.id.cupping_activity_timer_reset_btn);
+        resetTimerButton.setVisibility(View.INVISIBLE);
+        resetTimerButton.setOnClickListener(v -> {
 
             AlertDialog.Builder resetAlert = new AlertDialog.Builder(this);
             resetAlert.setTitle(this.getString(R.string.reset_timer));
@@ -234,6 +236,7 @@ public class CuppingActivity extends AppCompatActivity {
                         time = 0.0;
                         timerStarted = false;
                         titleText.setText(sessionName);
+                        resetTimerButton.setVisibility(View.INVISIBLE);
                     }
                 }
             });
@@ -249,7 +252,7 @@ public class CuppingActivity extends AppCompatActivity {
         });
         findViewById(R.id.cupping_activity_timer_toggle_btn).setOnClickListener(v -> {
 
-            if (timerStarted == false) {
+            if (!timerStarted) {
                 timerStarted = true;
                 timerToggleButton.setImageResource(R.drawable.pause);
 
@@ -271,8 +274,8 @@ public class CuppingActivity extends AppCompatActivity {
     }
 
 
-    private void startTimer()
-    {
+    private void startTimer() {
+        resetTimerButton.setVisibility(View.VISIBLE);
         timerTask = new TimerTask()
         {
             @Override
@@ -294,8 +297,7 @@ public class CuppingActivity extends AppCompatActivity {
     }
 
 
-    private String getTimerText()
-    {
+    private String getTimerText() {
         int rounded = (int) Math.round(time);
 
         int seconds = ((rounded % 86400) % 3600) % 60;
@@ -304,8 +306,7 @@ public class CuppingActivity extends AppCompatActivity {
         return formatTime(seconds, minutes);
     }
 
-    private String formatTime(int seconds, int minutes)
-    {
+    private String formatTime(int seconds, int minutes) {
         return String.format("%02d",minutes) + " : " + String.format("%02d",seconds);
     }
 

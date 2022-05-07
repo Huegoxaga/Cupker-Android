@@ -158,4 +158,5 @@
     </string-array>
     <string name="select">select...</string>
     <string name="share">Share</string>
+    <string name="data_store_initializing">Initializing...</string>
 </resources>

@@ -35,6 +35,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import com.amplifyframework.core.Amplify;
@@ -102,6 +103,7 @@ public class HistoryActivity extends AppCompatActivity {
 
         LinearLayout mainFrame = findViewById(R.id.history_activity_main_frame);
         cuppingListView = findViewById(R.id.history_activity_list);
+        cuppingListView.setDivider(ContextCompat.getDrawable(this, R.drawable.linear_layout_divider_vertical_brown_light));
         Intent intent = getIntent();
         Toolbar toolBar = findViewById(R.id.history_activity_toolbar);
         titleText = findViewById(R.id.history_toolbar_title);

@@ -10,6 +10,8 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -32,7 +35,6 @@ import com.cupker.cupping.NewRoasterFragment;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -53,12 +55,13 @@ public class CuppingFragment extends Fragment {
     private final ArrayList<Roaster> roastersObj;
 
     // Init UI objects
-    private EditText roastInput;
+    private EditText roastDateInput;
     private View cuppingFragView;
     private int sampleNum = 6;
     private TextView sampleLabel;
     private EditText sessionInput;
     private Spinner roasterSpinner;
+    private Button startButton;
     private String dateString;
 
     public CuppingFragment() {
@@ -98,20 +101,24 @@ public class CuppingFragment extends Fragment {
         // Init
         cuppingFragView = inflater.inflate(R.layout.fragment_cupping, container, false);
         roasterSpinner = cuppingFragView.findViewById(R.id.cupping_roaster_spinner);
+        startButton = cuppingFragView.findViewById(R.id.cupping_start_button);
         sessionInput = cuppingFragView.findViewById(R.id.cupping_session_input);
+
+        configSessionInput();
+
         ArrayAdapter<String> rosterArray = new ArrayAdapter<>(cuppingFragView.getContext(), android.R.layout.simple_spinner_item, roastersString);
         sampleLabel = cuppingFragView.findViewById(R.id.cupping_sample_label);
 
 
         /*===================================================================== roast date input setup START =====================================================================*/
-        roastInput = cuppingFragView.findViewById(R.id.cupping_roast_date_input);
+        roastDateInput = cuppingFragView.findViewById(R.id.cupping_roast_date_input);
 
         // update input text and date time string with information of the current date
         updateDateTimeInput(null);
 
 
-        roastInput.setOnClickListener(new View.OnClickListener() {
-            //            in the xml, property focusable = false is set so that default input keyboard would not be shown
+        roastDateInput.setOnClickListener(new View.OnClickListener() {
+            // in the xml, property focusable = false is set so that default input keyboard would not be shown
             @Override
             public void onClick(View view) {
                 showDatePickerDialog(view);
@@ -140,6 +147,7 @@ public class CuppingFragment extends Fragment {
         roasterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
+                toggleStartButton();
                 Log.d(TAG, roastersString.get(position) + " Selected in onItemSelected");
             }
 
@@ -155,8 +163,8 @@ public class CuppingFragment extends Fragment {
         });
         cuppingFragView.findViewById(R.id.cupping_sample_add_button).setOnClickListener(this::updateSampleNum);
         cuppingFragView.findViewById(R.id.cupping_sample_minus_button).setOnClickListener(this::updateSampleNum);
-        cuppingFragView.findViewById(R.id.cupping_start_button).setOnClickListener(v -> {
-            if (roastInput.getText().toString().isEmpty() || sessionInput.getText().toString().isEmpty()
+        startButton.setOnClickListener(v -> {
+            if (roastDateInput.getText().toString().isEmpty() || sessionInput.getText().toString().isEmpty()
                     || roastersObj.get(roasterSpinner.getSelectedItemPosition()) == null) {
                 Toast.makeText(getContext(), "Please complete all fields", Toast.LENGTH_LONG).show();
 
@@ -176,8 +184,39 @@ public class CuppingFragment extends Fragment {
                 startActivityForResult(startCuppingIntent, START_CUPPING_ACTIVITY);
             }
         });
+        toggleStartButton();
 
         return cuppingFragView;
+    }
+
+    /**
+     * add on edit listener to the {@link CuppingFragment#sessionInput}
+     * for better UX only
+     */
+    private void configSessionInput() {
+        sessionInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                toggleStartButton();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+
+    private void toggleStartButton() {
+        boolean hasInvalidInput = roastDateInput.getText().toString().isEmpty() || sessionInput.getText().toString().isEmpty()
+                || roastersObj.get(roasterSpinner.getSelectedItemPosition()) == null;
+
+        startButton.setEnabled(!hasInvalidInput);
     }
 
 
@@ -202,7 +241,7 @@ public class CuppingFragment extends Fragment {
 
 
         dateString = com.amazonaws.util.DateUtils.formatISO8601Date(myCalendar.getTime());
-        roastInput.setText(String.format(Locale.CANADA, "%04d/%02d/%02d", year, month + 1, date));
+        roastDateInput.setText(String.format(Locale.CANADA, "%04d/%02d/%02d", year, month + 1, date));
         Log.d(TAG, String.format("%04d/%02d/%02d selected in onDateSet", year, month + 1, date));
         Log.d(TAG, dateString);
     }

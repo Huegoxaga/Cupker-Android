@@ -3,6 +3,7 @@ package com.cupker.home;
  * Ye Qi, 000792058
  */
 
+import android.app.Dialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -20,6 +21,7 @@ import com.amplifyframework.auth.AuthUserAttribute;
 import com.amplifyframework.auth.AuthUserAttributeKey;
 import com.amplifyframework.auth.cognito.options.AWSCognitoAuthWebUISignInOptions;
 import com.amplifyframework.core.Amplify;
+import com.cupker.Cupker;
 import com.cupker.R;
 import com.cupker.profile.ProfileSettingsListAdapter;
 import com.cupker.utils.AWSUtils;
@@ -27,7 +29,8 @@ import com.cupker.utils.AWSUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * This defines the profile page
@@ -45,10 +48,16 @@ public class ProfileFragment extends Fragment {
     private ProfileSettingsListAdapter profileSettingsListAdapter;
     private Button loginBtn;
     private TextView usernameLabel;
+    private Dialog initialDataStoreDialog;
     private String usernameStr;
     private boolean guestMode;
     private List<AuthUserAttribute> profile;
     private boolean newLogin = false;
+
+    private Timer checkDataStoreTimer;
+    private TimerTask checkDataStoreTimerTask;
+
+    private Cupker appInstance;
 
 
     public ProfileFragment(List<AuthUserAttribute> profile) {
@@ -78,6 +87,23 @@ public class ProfileFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         settingsTitles = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.profile_list)));
+        appInstance = (Cupker) (requireActivity().getApplication());
+
+        checkDataStoreTimerTask = new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    if (appInstance.isDataStoreReady()) {
+                        initialDataStoreDialog.dismiss();
+                        stopTimer();
+                    }
+                } catch (NullPointerException e) {
+                    Log.e(TAG, "run: Error in checking data store readiness, message: " + e.getMessage());
+                    initialDataStoreDialog.dismiss();
+                    stopTimer();
+                }
+            }
+        };
 
 //        Amplify.Auth.signIn(
 //                "qi.ye@live.com",
@@ -130,6 +156,12 @@ public class ProfileFragment extends Fragment {
         settingsList = profileView.findViewById(R.id.profile_frag_listview);
         loginBtn = profileView.findViewById(R.id.profile_frag_login_btn);
         usernameLabel = profileView.findViewById(R.id.profile_frag_username_text);
+
+        initialDataStoreDialog = new Dialog(getContext());
+        initialDataStoreDialog.setContentView(R.layout.dialog_loading);
+        // disabled click outside to dismiss
+        initialDataStoreDialog.setCancelable(false);
+
 
         loginBtn.setOnClickListener(view -> {
 //            Intent startNewBeamIntent = new Intent(getActivity(), LoginActivity.class);
@@ -328,9 +360,25 @@ public class ProfileFragment extends Fragment {
                                     }
                                     setGuestMode(false, self.getResources().getString(R.string.account_id, email));
                                     Amplify.DataStore.start(
-                                            () -> Log.i(TAG, "DataStore started"),
+                                            () -> {
+                                                Log.i(TAG, "DataStore started");
+                                                appInstance.setDataStoreReady(false);
+                                                requireActivity().runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        // as data store takes some time to finish
+                                                        // show dialog before it is ready
+                                                        // there would not be data before it is ready
+                                                        // so UI does not work for user
+                                                        initialDataStoreDialog.show();
+                                                    }
+                                                });
+                                                starTime();
+                                            },
                                             error -> Log.e(TAG, "Error starting DataStore", error)
                                     );
+
+
                                 },
                                 error -> Log.e(TAG, "Failed to fetch user attributes.", error)
                         );
@@ -341,5 +389,25 @@ public class ProfileFragment extends Fragment {
                 },
                 error -> Log.e(TAG, error.toString())
         );
+    }
+
+    private void starTime() {
+        if (checkDataStoreTimer == null) {
+            checkDataStoreTimer = new Timer();
+        }
+        checkDataStoreTimer.scheduleAtFixedRate(checkDataStoreTimerTask, 0, 1000);
+    }
+
+    private void stopTimer() {
+        if (checkDataStoreTimer != null) {
+            checkDataStoreTimer.cancel();
+            checkDataStoreTimer = null;
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        stopTimer();
     }
 }
