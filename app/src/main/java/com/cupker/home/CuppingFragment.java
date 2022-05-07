@@ -2,6 +2,7 @@ package com.cupker.home;
 /**
  * Ye Qi, 000792058
  */
+
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -86,7 +87,7 @@ public class CuppingFragment extends Fragment {
                         Log.i(TAG, "Get Roaster Name: " + roaster.getName());
                     }
                 },
-                error -> Log.e(TAG,  "Error retrieving roasters", error)
+                error -> Log.e(TAG, "Error retrieving roasters", error)
         );
 
     }
@@ -100,7 +101,25 @@ public class CuppingFragment extends Fragment {
         sessionInput = cuppingFragView.findViewById(R.id.cupping_session_input);
         ArrayAdapter<String> rosterArray = new ArrayAdapter<>(cuppingFragView.getContext(), android.R.layout.simple_spinner_item, roastersString);
         sampleLabel = cuppingFragView.findViewById(R.id.cupping_sample_label);
+
+
+        /*===================================================================== roast date input setup START =====================================================================*/
         roastInput = cuppingFragView.findViewById(R.id.cupping_roast_date_input);
+
+        // update input text and date time string with information of the current date
+        updateDateTimeInput(null);
+
+
+        roastInput.setOnClickListener(new View.OnClickListener() {
+            //            in the xml, property focusable = false is set so that default input keyboard would not be shown
+            @Override
+            public void onClick(View view) {
+                showDatePickerDialog(view);
+            }
+        });
+
+        /*===================================================================== roast date input setup END =====================================================================*/
+
 
         // Setup
         roasterSpinner.setSelection(0, false);
@@ -123,6 +142,7 @@ public class CuppingFragment extends Fragment {
             public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
                 Log.d(TAG, roastersString.get(position) + " Selected in onItemSelected");
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
                 Log.d(TAG, "No Selected in onItemSelected");
@@ -136,13 +156,12 @@ public class CuppingFragment extends Fragment {
         cuppingFragView.findViewById(R.id.cupping_sample_add_button).setOnClickListener(this::updateSampleNum);
         cuppingFragView.findViewById(R.id.cupping_sample_minus_button).setOnClickListener(this::updateSampleNum);
         cuppingFragView.findViewById(R.id.cupping_start_button).setOnClickListener(v -> {
-            Intent startCuppingIntent = new Intent(getActivity(), CuppingActivity.class);
             if (roastInput.getText().toString().isEmpty() || sessionInput.getText().toString().isEmpty()
                     || roastersObj.get(roasterSpinner.getSelectedItemPosition()) == null) {
                 Toast.makeText(getContext(), "Please complete all fields", Toast.LENGTH_LONG).show();
 
-            }
-            else{
+            } else {
+                Intent startCuppingIntent = new Intent(getActivity(), CuppingActivity.class);
 //                Session newSession = Session.builder()
 //                        .name(sessionInput.getText().toString())
 //                        .roaster(roastersObj.get(roasterSpinner.getSelectedItemPosition()))
@@ -161,23 +180,61 @@ public class CuppingFragment extends Fragment {
         return cuppingFragView;
     }
 
-    public void updateRoaster(String roasterName, Roaster newRoasterObj){
+
+    /**
+     * method to update the input text of the roastInput UI element, and the
+     * string value of the dateString property
+     * @param calendar calendar instance that contains the selected datetime information.
+     */
+    private void updateDateTimeInput(Calendar calendar) {
+        Calendar myCalendar = calendar;
+        int year, month, date;
+
+        if (myCalendar == null) {
+            // default to current date time
+            myCalendar = Calendar.getInstance();
+        }
+        year = myCalendar.get(Calendar.YEAR);
+        month = myCalendar.get(Calendar.MONTH);
+        date = myCalendar.get(Calendar.DATE);
+        myCalendar.set(year, month, date, 0, 0, 0);
+        myCalendar.set(Calendar.MILLISECOND, 0);
+
+
+        dateString = com.amazonaws.util.DateUtils.formatISO8601Date(myCalendar.getTime());
+        roastInput.setText(String.format(Locale.CANADA, "%04d/%02d/%02d", year, month + 1, date));
+        Log.d(TAG, String.format("%04d/%02d/%02d selected in onDateSet", year, month + 1, date));
+        Log.d(TAG, dateString);
+    }
+    /**
+     * function that called by instance of NewRoasterFragment.
+     * <p>
+     * When new roaster is added, by user, then sent to Amplify with status "success", this function
+     * would be called
+     *
+     * @param roasterName
+     * @param newRoasterObj
+     * @see NewRoasterFragment
+     */
+    public void updateRoaster(String roasterName, Roaster newRoasterObj) {
         roastersString.add(roasterName);
         roastersObj.add(newRoasterObj);
+        // show the added roster name automatically
         roasterSpinner.setSelection(roastersString.size() - 1, false);
     }
 
-    public void showDatePickerDialog(View view){
+    public void showDatePickerDialog(View view) {
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 view.getContext(),
                 (view1, year, month, dayOfMonth) -> {
                     Calendar selectedCalendar = Calendar.getInstance();
                     selectedCalendar.set(year, month, dayOfMonth, 0, 0, 0);
-                    Date selectedDate = selectedCalendar.getTime();
-                    roastInput.setText(String.format(Locale.CANADA ,"%04d/%02d/%02d", year, month + 1, dayOfMonth));
-                    dateString = com.amazonaws.util.DateUtils.formatISO8601Date(selectedDate);
-                    Log.d(TAG, String.format("%04d/%02d/%02d selected in onDateSet", year, month + 1, dayOfMonth));
-                    Log.d(TAG, dateString);
+                    updateDateTimeInput(selectedCalendar);
+//                    Date selectedDate = selectedCalendar.getTime();
+//                    roastInput.setText(String.format(Locale.CANADA, "%04d/%02d/%02d", year, month + 1, dayOfMonth));
+//                    dateString = com.amazonaws.util.DateUtils.formatISO8601Date(selectedDate);
+//                    Log.d(TAG, String.format("%04d/%02d/%02d selected in onDateSet", year, month + 1, dayOfMonth));
+//                    Log.d(TAG, dateString);
                 },
                 Calendar.getInstance().get(Calendar.YEAR),
                 Calendar.getInstance().get(Calendar.MONTH),
@@ -188,21 +245,22 @@ public class CuppingFragment extends Fragment {
 
     /**
      * Incre and Decre the sample num input counter
+     *
      * @param view
      */
-    public void updateSampleNum(View view){
+    public void updateSampleNum(View view) {
         InputMethodManager imm = (InputMethodManager) cuppingFragView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(cuppingFragView.getWindowToken(), 0);
-        if (view.getId() == R.id.cupping_sample_add_button){
+        if (view.getId() == R.id.cupping_sample_add_button) {
             if (sampleNum + 1 > 12) {
 //                Toast.makeText(requireActivity().getApplicationContext(),"Too many samples" , Toast.LENGTH_LONG).show();
-            }else {
+            } else {
                 sampleNum++;
             }
-        } else{
+        } else {
             if (sampleNum - 1 < 1) {
 //                Toast.makeText(requireActivity().getApplicationContext(),"At least one sample is required" , Toast.LENGTH_LONG).show();
-            }else {
+            } else {
                 sampleNum--;
             }
         }

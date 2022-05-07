@@ -18,13 +18,16 @@ import android.widget.TextView;
 
 import com.amplifyframework.auth.AuthUserAttribute;
 import com.amplifyframework.auth.AuthUserAttributeKey;
+import com.amplifyframework.auth.cognito.options.AWSCognitoAuthWebUISignInOptions;
 import com.amplifyframework.core.Amplify;
 import com.cupker.R;
 import com.cupker.profile.ProfileSettingsListAdapter;
+import com.cupker.utils.AWSUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This defines the profile page
@@ -103,13 +106,12 @@ public class ProfileFragment extends Fragment {
         @Override
         public void run() {
             if (profileView != null) {
+                int lastIdx = settingsTitles.indexOf("Logout");
                 if (guestMode) {
-                    int lastIdx = settingsTitles.indexOf("Logout");
                     if (lastIdx != -1) settingsTitles.remove(lastIdx);
                     loginBtn.setVisibility(View.VISIBLE);
                     usernameLabel.setText(usernameStr);
                 } else {
-                    int lastIdx = settingsTitles.indexOf("Logout");
                     if (lastIdx == -1) settingsTitles.add("Logout");
                     usernameLabel.setText(usernameStr);
                     loginBtn.setVisibility(View.INVISIBLE);
@@ -132,7 +134,23 @@ public class ProfileFragment extends Fragment {
         loginBtn.setOnClickListener(view -> {
 //            Intent startNewBeamIntent = new Intent(getActivity(), LoginActivity.class);
 //            startActivity(startNewBeamIntent);
-            Amplify.Auth.signInWithWebUI(getActivity(),
+//            Amplify.Auth.signInWithWebUI(getActivity(),
+//                    result -> {
+//                        Log.i(TAG, "SIGN IN COMPLETE " + result.toString());
+//                        newLogin = true;
+//                        onStart();
+//                    },
+//                    error -> {
+//                        Log.e(TAG, error.toString());
+//                    }
+//            );
+
+            String browserPackageName = AWSUtils.getBrowserPackageName(getContext());
+
+            Amplify.Auth.signInWithWebUI(requireActivity(),
+                    //https://github.com/aws-amplify/amplify-android/issues/678
+                    AWSCognitoAuthWebUISignInOptions.builder().browserPackage(browserPackageName).build(),
+//                    AWSCognitoAuthWebUISignInOptions.builder().browserPackage("org.mozilla.firefox").build(),
                     result -> {
                         Log.i(TAG, "SIGN IN COMPLETE " + result.toString());
                         newLogin = true;
@@ -241,6 +259,55 @@ public class ProfileFragment extends Fragment {
         return profileView;
     }
 
+
+//    /**
+//     *
+//     * helper method to determined whether an app is installed on the device.
+//     *
+//     * @param packageName ie "org.mozilla.firefox", "come.android.chrome"
+//     * @param packageManager
+//     *
+//     * @see {https://stackoverflow.com/questions/18752202/check-if-application-is-installed-android}
+//     * @return true if app corresponds to the given package name is installed, else otherwise
+//     */
+//    // https://stackoverflow.com/questions/18752202/check-if-application-is-installed-android
+//    private boolean isPackageInstalled(String packageName, PackageManager packageManager) {
+//        try {
+//            packageManager.getPackageInfo(packageName, 0);
+//            return true;
+//        } catch (PackageManager.NameNotFoundException e) {
+//            return false;
+//        }
+//    }
+//
+//
+//    /**
+//     * get an installed browser's package name that is used by Amplify login web ui.
+//     *
+//     * @return a package name which represents an installed browser app
+//     */
+//    private String getBrowserPackageName() {
+////        get device's default browser's package name
+////        https://stackoverflow.com/questions/23611548/how-to-find-default-browser-set-on-android-device
+//        Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://"));
+//        ResolveInfo resolveInfo = requireContext().getPackageManager().resolveActivity(browserIntent, PackageManager.MATCH_DEFAULT_ONLY);
+//        String defaultBrowserPackageName = resolveInfo.activityInfo.packageName;
+//
+//
+//        String chromePackageName = "com.android.chrome";
+//        String firefoxPackageName = "org.mozilla.firefox";
+//
+//        PackageManager pm = requireContext().getPackageManager();
+//        boolean isFireFoxInstalled = isPackageInstalled(firefoxPackageName, pm);
+//        boolean isChromeInstalled = isPackageInstalled(chromePackageName, pm);
+//
+//        if(isChromeInstalled) { // chrome first
+//            defaultBrowserPackageName = chromePackageName;
+//        }else if(isFireFoxInstalled) { // firefox for alternative
+//            defaultBrowserPackageName = firefoxPackageName;
+//        }
+//        return defaultBrowserPackageName;
+//    }
 
     public void updateProfile() {
         Log.d(TAG, "updateProfile");

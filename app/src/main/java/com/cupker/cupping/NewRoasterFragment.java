@@ -54,11 +54,14 @@ public class NewRoasterFragment extends DialogFragment {
                     .status(Status.ACTIVE)
                     .build();
 
-            CuppingFragment parentFrag = ((CuppingFragment) this.getParentFragment());
-            parentFrag.updateRoaster(newRoasterName, newRoaster);
 
+            // save new roaster locally
             Amplify.DataStore.save(newRoaster,
                     success -> {
+                        // update UI on parent fragment when success
+                        CuppingFragment parentFrag = ((CuppingFragment) this.getParentFragment());
+                        parentFrag.updateRoaster(newRoasterName, newRoaster);
+
                         Log.i(TAG, "Saved item: " + success.item().getName());
                         dismiss();
                     },

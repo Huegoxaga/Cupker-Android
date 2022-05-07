@@ -83,12 +83,12 @@
     <EditText
         android:id="@+id/cupping_roast_date_input"
         android:layout_width="0dp"
+        android:focusable="false"
         android:layout_height="wrap_content"
         android:autofillHints=""
         android:ems="6"
         android:hint="@string/cupping_roast_date_input"
         android:inputType="date"
-
         app:layout_constraintBottom_toBottomOf="@+id/cupping_frag_roast_date"
         app:layout_constraintEnd_toEndOf="@+id/cupping_roaster_spinner"
         app:layout_constraintStart_toStartOf="@+id/cupping_roaster_spinner"

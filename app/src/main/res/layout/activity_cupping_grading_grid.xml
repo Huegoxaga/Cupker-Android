@@ -3,21 +3,20 @@
     android:id="@+id/cupping_grid_grading_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipToPadding="true"
     android:orientation="vertical"
     android:padding="0dp">
 
     <TextView
+        android:background="@color/white"
         android:id="@+id/cupping_grid_grading_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
+        android:textSize="18sp"
         android:lines="1" />
 
     <TextView
         android:id="@+id/cupping_grid_grading_score"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:textSize="24sp" />
 </LinearLayout>

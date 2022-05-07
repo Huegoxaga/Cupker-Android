@@ -127,9 +127,13 @@ public class CuppingListAdapter extends BaseAdapter {
         TextView sampleName = cuppingListView.findViewById(R.id.cupping_list_title_label);
         Spinner beanSpinner = cuppingListView.findViewById(R.id.cupping_list_bean_spinner);
         Spinner roastLevelSpinner = cuppingListView.findViewById(R.id.cupping_list_roast_level_spinner);
+
+        // note view
         MultiAutoCompleteTextView notesInput = cuppingListView.findViewById(R.id.cupping_list_note_input);
-        ArrayAdapter<String> beanArray = new ArrayAdapter<>(cuppingListView.getContext(), android.R.layout.simple_spinner_item, beansString);
-        ArrayAdapter<String> rosterLevelArray = new ArrayAdapter<>(cuppingListView.getContext(), android.R.layout.simple_spinner_item, roastLevelStr);
+//        ArrayAdapter<String> beanArray = new ArrayAdapter<>(cuppingListView.getContext(), android.R.layout.simple_spinner_item, beansString);
+        ArrayAdapter<String> beanArray = new ArrayAdapter<>(cuppingListView.getContext(),  R.layout.spinner_item, beansString);
+//        ArrayAdapter<String> rosterLevelArray = new ArrayAdapter<>(cuppingListView.getContext(), android.R.layout.simple_spinner_item, roastLevelStr);
+        ArrayAdapter<String> rosterLevelArray = new ArrayAdapter<>(cuppingListView.getContext(), R.layout.spinner_item, roastLevelStr);
         CuppingGridView cuppingGridView = cuppingListView.findViewById(R.id.cupping_grid);
 
         // Setup

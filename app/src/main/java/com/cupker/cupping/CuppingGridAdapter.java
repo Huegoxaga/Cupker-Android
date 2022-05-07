@@ -68,7 +68,7 @@ public class CuppingGridAdapter extends BaseAdapter {
             gradingView = layoutInflater.inflate(R.layout.activity_cupping_grading_grid, parent, false);
 //            DisplayMetrics metrics = this.getResources().getDisplayMetrics();
 //            int screenWidth = metrics.widthPixels;
-            gradingView.setLayoutParams(new GridView.LayoutParams(240, 140));
+            gradingView.setLayoutParams(new GridView.LayoutParams(240, 180));
 
         }
         TextView gradingTitleText = gradingView.findViewById(R.id.cupping_grid_grading_title);
@@ -78,43 +78,43 @@ public class CuppingGridAdapter extends BaseAdapter {
         gradingTitleText.setText(gradingTitles[position]);
         switch (position) {
             case 0:
-                gradingScoreText.setText(String.format(Locale.getDefault(), "%.2f", sample.getAroma()));
+                gradingScoreText.setText(String.format(Locale.getDefault(), "%.2f ▼", sample.getAroma()));
                 break;
             case 1:
-                gradingScoreText.setText(String.format(Locale.getDefault(), "%.2f", sample.getFlavor()));
+                gradingScoreText.setText(String.format(Locale.getDefault(), "%.2f ▼", sample.getFlavor()));
                 break;
             case 2:
-                gradingScoreText.setText(String.format(Locale.getDefault(), "%.2f", sample.getAfterTaste()));
+                gradingScoreText.setText(String.format(Locale.getDefault(), "%.2f ▼", sample.getAfterTaste()));
                 break;
             case 3:
-                gradingScoreText.setText(String.format(Locale.getDefault(), "%.2f", sample.getAcidity()));
+                gradingScoreText.setText(String.format(Locale.getDefault(), "%.2f ▼", sample.getAcidity()));
                 break;
             case 4:
-                gradingScoreText.setText(String.format(Locale.getDefault(), "%.2f", sample.getBody()));
+                gradingScoreText.setText(String.format(Locale.getDefault(), "%.2f ▼", sample.getBody()));
                 break;
             case 5:
-                gradingScoreText.setText(String.format(Locale.getDefault(), "%.0f", getCupsScore(sample.getUniformity())));
+                gradingScoreText.setText(String.format(Locale.getDefault(), "%.0f ▼", getCupsScore(sample.getUniformity())));
                 break;
             case 6:
-                gradingScoreText.setText(String.format(Locale.getDefault(), "%.0f", getCupsScore(sample.getCleanCup())));
+                gradingScoreText.setText(String.format(Locale.getDefault(), "%.0f ▼", getCupsScore(sample.getCleanCup())));
                 break;
             case 7:
-                gradingScoreText.setText(String.format(Locale.getDefault(), "%.2f", sample.getOverall()));
+                gradingScoreText.setText(String.format(Locale.getDefault(), "%.2f ▼", sample.getOverall()));
                 break;
             case 8:
-                gradingScoreText.setText(String.format(Locale.getDefault(), "%.2f", sample.getBalance()));
+                gradingScoreText.setText(String.format(Locale.getDefault(), "%.2f ▼", sample.getBalance()));
                 break;
             case 9:
-                gradingScoreText.setText(String.format(Locale.getDefault(), "%.0f", getCupsScore(sample.getSweetness())));
+                gradingScoreText.setText(String.format(Locale.getDefault(), "%.0f ▼", getCupsScore(sample.getSweetness())));
                 break;
             case 10:
                 String scorePosition = Integer.toBinaryString(sample.getDefectCount().intValue());
                 double count = (scorePosition.length() - scorePosition.replace("1", "").length()) * -1;
                 gradingScoreText.setTextColor(context.getResources().getColor(R.color.design_default_color_error));
-                gradingScoreText.setText(String.format(Locale.getDefault(), "%.0f", count));
+                gradingScoreText.setText(String.format(Locale.getDefault(), "%.0f ▼", count));
                 break;
             case 11:
-                gradingScoreText.setText(String.format(Locale.getDefault(), "%.0f", sample.getDefectType()));
+                gradingScoreText.setText(String.format(Locale.getDefault(), "%.0f ▼", sample.getDefectType()));
                 break;
         }
 

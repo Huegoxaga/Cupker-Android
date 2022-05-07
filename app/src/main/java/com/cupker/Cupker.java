@@ -23,7 +23,9 @@ public class Cupker extends Application {
         super.onCreate();
         // Init
         try {
+            // persist data locally on a device
             Amplify.addPlugin(new AWSDataStorePlugin());
+            // amplify login and logout
             Amplify.addPlugin(new AWSCognitoAuthPlugin());
             Amplify.addPlugin(new AWSApiPlugin());
             Amplify.configure(getApplicationContext());

@@ -5,6 +5,7 @@ package com.cupker.cupping;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,6 +16,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -27,7 +30,6 @@ import com.amplifyframework.datastore.generated.model.Sample;
 import com.amplifyframework.datastore.generated.model.Session;
 import com.amplifyframework.datastore.generated.model.Status;
 import com.cupker.R;
-import com.cupker.cupping.CuppingListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +55,7 @@ public class CuppingActivity extends AppCompatActivity {
     private LinearLayout mainFrame;
     private ImageButton timerToggleButton;
     private TextView titleText;
+    private Button saveButton;
 
     // Data
     private List<Sample> samples;
@@ -86,9 +89,9 @@ public class CuppingActivity extends AppCompatActivity {
         Toolbar toolBar = findViewById(R.id.cupping_activity_toolbar);
         titleText = findViewById(R.id.cupping_toolbar_title);
 //        View cuppingListViewHeader = layoutInflater.inflate(R.layout.activity_cupping_list_header, cuppingListView, false);
-        View cuppingListViewFooter = layoutInflater.inflate(R.layout.activity_cupping_list_footer, cuppingListView, false);
+//        View cuppingListViewFooter = layoutInflater.inflate(R.layout.activity_cupping_list_footer, cuppingListView, false);
 //        cuppingListView.addHeaderView(cuppingListViewHeader);
-        cuppingListView.addFooterView(cuppingListViewFooter);
+//        cuppingListView.addFooterView(cuppingListViewFooter);
 //        TextView titleDate = findViewById(R.id.cupping_activity_title_date); // View exists only after adding header
 //        TextView titleRoaster = findViewById(R.id.cupping_activity_title_roaster); // View exists only after adding header
         final View decorView = getWindow().getDecorView();
@@ -144,14 +147,18 @@ public class CuppingActivity extends AppCompatActivity {
         // Setup
         mainFrame.setSystemUiVisibility(flags);
         cuppingListView.setAdapter(cuppingListAdapter);
+        cuppingListView.setDivider(ContextCompat.getDrawable(this, R.drawable.linear_layout_divider_vertical_brown_light));
         setSupportActionBar(toolBar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         timer = new Timer();
         titleText.setText(sessionName);
 //        titleDate.setText(roastTimeString);
 
-        // Listener
-        findViewById(R.id.cupping_activity_save_button).setOnClickListener(v -> {
+        // onClick listener for the "SAVE" button
+
+        saveButton = findViewById(R.id.cupping_activity_save_button);
+        saveButton.setEnabled(false);
+        saveButton.setOnClickListener(v -> {
             // Set result code for redirect
             setResult(DONE_CUPPING);
 
@@ -185,6 +192,32 @@ public class CuppingActivity extends AppCompatActivity {
             imm.hideSoftInputFromWindow(mainFrame.getWindowToken(), 0);
 
             return false;
+        });
+
+//        https://stackoverflow.com/questions/25350137/check-if-android-listview-is-scrolled-down-to-the-last-item
+        cuppingListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                if (cuppingListView.getAdapter() == null)
+                    return ;
+
+                if (cuppingListView.getAdapter().getCount() == 0)
+                    return ;
+
+                int l = visibleItemCount + firstVisibleItem;
+                if (l >= totalItemCount && !saveButton.isEnabled()) {
+                    saveButton.setEnabled(true);
+                    // It is time to add new data. We call the listener
+//                    Log.i(TAG, "onScroll: last one");
+
+                }
+            }
         });
 
         findViewById(R.id.cupping_activity_timer_reset_btn).setOnClickListener(v -> {
@@ -354,6 +387,50 @@ public class CuppingActivity extends AppCompatActivity {
         Log.i(TAG, "Score set: " + newScore);
         samples.set(listPosition, editedSample);
         cuppingListAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * get a sample's particular field's score
+     *
+     * method is designed for highlighting GradingDialogFragment's text view, for better UX only
+     * @param listPosition
+     * @param gridPosition
+     * @return
+     */
+    public double getScore(int listPosition, int gridPosition) {
+        Sample target = samples.get(listPosition);
+
+        if(target != null) {
+            switch (gridPosition) {
+                case 0:
+                    return target.getAroma();
+                case 1:
+                    return target.getFlavor();
+                case 2:
+                    return target.getAfterTaste();
+                case 3:
+                    return target.getAcidity();
+                case 4:
+                    return target.getBody();
+                case 5:
+                    return target.getUniformity();
+                case 6:
+                    return target.getCleanCup();
+                case 7:
+                    return target.getOverall();
+                case 8:
+                    return target.getBalance();
+                case 9:
+                    return target.getSweetness();
+                case 10:
+                    return target.getDefectCount();
+                case 11:
+                    return target.getDefectType();
+                default:
+                    return 0;
+            }
+        }
+        return 0;
     }
 
     /**
