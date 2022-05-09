@@ -6,6 +6,7 @@
     android:showDividers="middle"
     android:background="@color/white"
     android:paddingVertical="10dp"
+    android:gravity="center_vertical"
     android:orientation="vertical">
 
     <LinearLayout
