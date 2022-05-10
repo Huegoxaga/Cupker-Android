@@ -3,6 +3,7 @@ package com.cupker.home;
  * Ye Qi, 000792058
  */
 
+import android.app.Dialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -18,13 +19,18 @@ import android.widget.TextView;
 
 import com.amplifyframework.auth.AuthUserAttribute;
 import com.amplifyframework.auth.AuthUserAttributeKey;
+import com.amplifyframework.auth.cognito.options.AWSCognitoAuthWebUISignInOptions;
 import com.amplifyframework.core.Amplify;
+import com.cupker.Cupker;
 import com.cupker.R;
 import com.cupker.profile.ProfileSettingsListAdapter;
+import com.cupker.utils.AWSUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * This defines the profile page
@@ -42,10 +48,16 @@ public class ProfileFragment extends Fragment {
     private ProfileSettingsListAdapter profileSettingsListAdapter;
     private Button loginBtn;
     private TextView usernameLabel;
+    private Dialog initialDataStoreDialog;
     private String usernameStr;
     private boolean guestMode;
     private List<AuthUserAttribute> profile;
     private boolean newLogin = false;
+
+    private Timer checkDataStoreTimer;
+    private TimerTask checkDataStoreTimerTask;
+
+    private Cupker appInstance;
 
 
     public ProfileFragment(List<AuthUserAttribute> profile) {
@@ -75,6 +87,23 @@ public class ProfileFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         settingsTitles = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.profile_list)));
+        appInstance = (Cupker) (requireActivity().getApplication());
+
+        checkDataStoreTimerTask = new TimerTask() {
+            @Override
+            public void run() {
+                try {
+                    if (appInstance.isDataStoreReady()) {
+                        initialDataStoreDialog.dismiss();
+                        stopTimer();
+                    }
+                } catch (NullPointerException e) {
+                    Log.e(TAG, "run: Error in checking data store readiness, message: " + e.getMessage());
+                    initialDataStoreDialog.dismiss();
+                    stopTimer();
+                }
+            }
+        };
 
 //        Amplify.Auth.signIn(
 //                "qi.ye@live.com",
@@ -103,13 +132,12 @@ public class ProfileFragment extends Fragment {
         @Override
         public void run() {
             if (profileView != null) {
+                int lastIdx = settingsTitles.indexOf("Logout");
                 if (guestMode) {
-                    int lastIdx = settingsTitles.indexOf("Logout");
                     if (lastIdx != -1) settingsTitles.remove(lastIdx);
                     loginBtn.setVisibility(View.VISIBLE);
                     usernameLabel.setText(usernameStr);
                 } else {
-                    int lastIdx = settingsTitles.indexOf("Logout");
                     if (lastIdx == -1) settingsTitles.add("Logout");
                     usernameLabel.setText(usernameStr);
                     loginBtn.setVisibility(View.INVISIBLE);
@@ -129,10 +157,32 @@ public class ProfileFragment extends Fragment {
         loginBtn = profileView.findViewById(R.id.profile_frag_login_btn);
         usernameLabel = profileView.findViewById(R.id.profile_frag_username_text);
 
+        initialDataStoreDialog = new Dialog(getContext());
+        initialDataStoreDialog.setContentView(R.layout.dialog_loading);
+        // disabled click outside to dismiss
+        initialDataStoreDialog.setCancelable(false);
+
+
         loginBtn.setOnClickListener(view -> {
 //            Intent startNewBeamIntent = new Intent(getActivity(), LoginActivity.class);
 //            startActivity(startNewBeamIntent);
-            Amplify.Auth.signInWithWebUI(getActivity(),
+//            Amplify.Auth.signInWithWebUI(getActivity(),
+//                    result -> {
+//                        Log.i(TAG, "SIGN IN COMPLETE " + result.toString());
+//                        newLogin = true;
+//                        onStart();
+//                    },
+//                    error -> {
+//                        Log.e(TAG, error.toString());
+//                    }
+//            );
+
+            String browserPackageName = AWSUtils.getBrowserPackageName(getContext());
+
+            Amplify.Auth.signInWithWebUI(requireActivity(),
+                    //https://github.com/aws-amplify/amplify-android/issues/678
+                    AWSCognitoAuthWebUISignInOptions.builder().browserPackage(browserPackageName).build(),
+//                    AWSCognitoAuthWebUISignInOptions.builder().browserPackage("org.mozilla.firefox").build(),
                     result -> {
                         Log.i(TAG, "SIGN IN COMPLETE " + result.toString());
                         newLogin = true;
@@ -242,6 +292,55 @@ public class ProfileFragment extends Fragment {
     }
 
 
+//    /**
+//     *
+//     * helper method to determined whether an app is installed on the device.
+//     *
+//     * @param packageName ie "org.mozilla.firefox", "come.android.chrome"
+//     * @param packageManager
+//     *
+//     * @see {https://stackoverflow.com/questions/18752202/check-if-application-is-installed-android}
+//     * @return true if app corresponds to the given package name is installed, else otherwise
+//     */
+//    // https://stackoverflow.com/questions/18752202/check-if-application-is-installed-android
+//    private boolean isPackageInstalled(String packageName, PackageManager packageManager) {
+//        try {
+//            packageManager.getPackageInfo(packageName, 0);
+//            return true;
+//        } catch (PackageManager.NameNotFoundException e) {
+//            return false;
+//        }
+//    }
+//
+//
+//    /**
+//     * get an installed browser's package name that is used by Amplify login web ui.
+//     *
+//     * @return a package name which represents an installed browser app
+//     */
+//    private String getBrowserPackageName() {
+////        get device's default browser's package name
+////        https://stackoverflow.com/questions/23611548/how-to-find-default-browser-set-on-android-device
+//        Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://"));
+//        ResolveInfo resolveInfo = requireContext().getPackageManager().resolveActivity(browserIntent, PackageManager.MATCH_DEFAULT_ONLY);
+//        String defaultBrowserPackageName = resolveInfo.activityInfo.packageName;
+//
+//
+//        String chromePackageName = "com.android.chrome";
+//        String firefoxPackageName = "org.mozilla.firefox";
+//
+//        PackageManager pm = requireContext().getPackageManager();
+//        boolean isFireFoxInstalled = isPackageInstalled(firefoxPackageName, pm);
+//        boolean isChromeInstalled = isPackageInstalled(chromePackageName, pm);
+//
+//        if(isChromeInstalled) { // chrome first
+//            defaultBrowserPackageName = chromePackageName;
+//        }else if(isFireFoxInstalled) { // firefox for alternative
+//            defaultBrowserPackageName = firefoxPackageName;
+//        }
+//        return defaultBrowserPackageName;
+//    }
+
     public void updateProfile() {
         Log.d(TAG, "updateProfile");
         Amplify.Auth.fetchAuthSession(
@@ -261,9 +360,25 @@ public class ProfileFragment extends Fragment {
                                     }
                                     setGuestMode(false, self.getResources().getString(R.string.account_id, email));
                                     Amplify.DataStore.start(
-                                            () -> Log.i(TAG, "DataStore started"),
+                                            () -> {
+                                                Log.i(TAG, "DataStore started");
+                                                appInstance.setDataStoreReady(false);
+                                                requireActivity().runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        // as data store takes some time to finish
+                                                        // show dialog before it is ready
+                                                        // there would not be data before it is ready
+                                                        // so UI does not work for user
+                                                        initialDataStoreDialog.show();
+                                                    }
+                                                });
+                                                starTime();
+                                            },
                                             error -> Log.e(TAG, "Error starting DataStore", error)
                                     );
+
+
                                 },
                                 error -> Log.e(TAG, "Failed to fetch user attributes.", error)
                         );
@@ -274,5 +389,25 @@ public class ProfileFragment extends Fragment {
                 },
                 error -> Log.e(TAG, error.toString())
         );
+    }
+
+    private void starTime() {
+        if (checkDataStoreTimer == null) {
+            checkDataStoreTimer = new Timer();
+        }
+        checkDataStoreTimer.scheduleAtFixedRate(checkDataStoreTimerTask, 0, 1000);
+    }
+
+    private void stopTimer() {
+        if (checkDataStoreTimer != null) {
+            checkDataStoreTimer.cancel();
+            checkDataStoreTimer = null;
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        stopTimer();
     }
 }

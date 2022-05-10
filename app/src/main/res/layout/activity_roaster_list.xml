@@ -8,6 +8,7 @@
         android:id="@+id/roaster_list_name"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:textColor="@color/black"
         android:layout_margin="10dp"
         android:textSize="24sp" />
 </LinearLayout>

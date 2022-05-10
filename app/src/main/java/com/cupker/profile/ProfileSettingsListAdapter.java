@@ -2,6 +2,7 @@ package com.cupker.profile;
 /**
  * Ye Qi, 000792058
  */
+
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,9 +11,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.amplifyframework.auth.cognito.options.AWSCognitoAuthSignOutOptions;
 import com.amplifyframework.core.Amplify;
 import com.cupker.home.ProfileFragment;
 import com.cupker.R;
+import com.cupker.utils.AWSUtils;
 
 import java.util.ArrayList;
 
@@ -87,8 +90,21 @@ public class ProfileSettingsListAdapter extends BaseAdapter {
                 });
                 break;
             case 3:
+                String browserPackageName = AWSUtils.getBrowserPackageName(profileFragment.getContext());
                 settingsListView.setOnClickListener(view -> {
-                    Amplify.Auth.signOut(
+//                    Amplify.Auth.signOut(
+//                            () -> {
+//                                profileFragment.setGuestMode(true, "Guest User");
+//                                Amplify.DataStore.clear(
+//                                        () -> Log.i(TAG, "DataStore cleared"),
+//                                        error -> Log.e(TAG, "Error clearing DataStore", error)
+//                                );
+//                                profileFragment.updateProfile();
+//                                Log.i(TAG, "Signed out successfully");
+//                            },
+//                            error -> Log.e(TAG, error.toString())
+//                    );
+                    Amplify.Auth.signOut(AWSCognitoAuthSignOutOptions.builder().browserPackage(browserPackageName).build(),
                             () -> {
                                 profileFragment.setGuestMode(true, "Guest User");
                                 Amplify.DataStore.clear(
@@ -98,7 +114,9 @@ public class ProfileSettingsListAdapter extends BaseAdapter {
                                 profileFragment.updateProfile();
                                 Log.i(TAG, "Signed out successfully");
                             },
-                            error -> Log.e(TAG, error.toString())
+                            error -> {
+                                Log.e(TAG, error.toString());
+                            }
                     );
                 });
                 break;

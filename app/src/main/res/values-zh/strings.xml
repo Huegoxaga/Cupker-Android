@@ -82,4 +82,5 @@
     <string name="reset_timer">重置计时器</string>
     <string name="reset">重置</string>
     <string name="timer_prompt">您确定要重置计时器吗？</string>
+    <string name="data_store_initializing">请稍候...</string>
 </resources>

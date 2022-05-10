@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/cupping_activity_save_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/cupping_activity_save_button" />
+<!--    <Button-->
+<!--        android:id="@+id/cupping_activity_save_button"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="@string/cupping_activity_save_button" />-->
 
 </LinearLayout>
