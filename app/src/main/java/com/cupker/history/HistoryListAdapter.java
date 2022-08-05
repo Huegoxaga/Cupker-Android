@@ -3,6 +3,7 @@ package com.cupker.history;
  * Ye Qi, 000792058
  */
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import com.cupker.cupping.CuppingGridAdapter;
 import com.cupker.cupping.CuppingGridView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -40,7 +42,7 @@ public class HistoryListAdapter extends BaseAdapter {
     private final ArrayList<Bean> beanObjs;
     private final ArrayList<String> beansString; // related array to store names for dropdown
     private final ArrayList<String> beanIds; // related array to match sample's bean selection
-    private final double[] roastLevel = {95, 85, 75, 65, 55, 45, 35, 25};
+    private final Double[] roastLevel = {95.0, 85.0, 75.0, 65.0, 55.0, 45.0, 35.0, 25.0};
     private final String[] roastLevelStr = {"# 95", "# 85", "# 75", "# 65", "# 55", "# 45", "# 35", "# 25"};
     private final List<Sample> samples;
     private final Boolean editable;
@@ -106,7 +108,8 @@ public class HistoryListAdapter extends BaseAdapter {
         // Init Data
         Sample sample = samples.get(position);
         int selectedBeanIdx = beanIds.indexOf(sample.getBeanId());
-        int selectedRoastLevelIdx = Collections.singletonList(roastLevel).indexOf(sample.getBeanId());
+        int selectedRoastLevelIdx = Arrays.asList(roastLevel).indexOf(sample.getRoastLevel());
+        Log.d(TAG, selectedRoastLevelIdx + "!!!");
 
         // Setup
         notesInput.setText(sample.getNotes());

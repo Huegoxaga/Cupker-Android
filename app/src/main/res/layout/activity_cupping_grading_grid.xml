@@ -7,7 +7,6 @@
     android:padding="0dp">
 
     <TextView
-        android:background="@color/white"
         android:id="@+id/cupping_grid_grading_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
