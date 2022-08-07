@@ -92,18 +92,6 @@ public class ProfileSettingsListAdapter extends BaseAdapter {
             case 3:
                 String browserPackageName = AWSUtils.getBrowserPackageName(profileFragment.getContext());
                 settingsListView.setOnClickListener(view -> {
-//                    Amplify.Auth.signOut(
-//                            () -> {
-//                                profileFragment.setGuestMode(true, "Guest User");
-//                                Amplify.DataStore.clear(
-//                                        () -> Log.i(TAG, "DataStore cleared"),
-//                                        error -> Log.e(TAG, "Error clearing DataStore", error)
-//                                );
-//                                profileFragment.updateProfile();
-//                                Log.i(TAG, "Signed out successfully");
-//                            },
-//                            error -> Log.e(TAG, error.toString())
-//                    );
                     Amplify.Auth.signOut(AWSCognitoAuthSignOutOptions.builder().browserPackage(browserPackageName).build(),
                             () -> {
                                 profileFragment.setGuestMode(true, "Guest User");

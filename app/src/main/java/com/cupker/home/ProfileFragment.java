@@ -105,19 +105,6 @@ public class ProfileFragment extends Fragment {
             }
         };
 
-//        Amplify.Auth.signIn(
-//                "qi.ye@live.com",
-//                "Password123",
-//                result -> {
-//                    if (result.isSignInComplete()) {
-//                        Log.i(TAG, "Sign in succeeded");
-//                    } else {
-//                        Log.i(TAG, "Sign in not complete");
-//                    }
-//                },
-//                error -> Log.e(TAG, error.toString())
-//        );
-
     }
 
     private final Handler handler = new Handler();
@@ -164,18 +151,6 @@ public class ProfileFragment extends Fragment {
 
 
         loginBtn.setOnClickListener(view -> {
-//            Intent startNewBeamIntent = new Intent(getActivity(), LoginActivity.class);
-//            startActivity(startNewBeamIntent);
-//            Amplify.Auth.signInWithWebUI(getActivity(),
-//                    result -> {
-//                        Log.i(TAG, "SIGN IN COMPLETE " + result.toString());
-//                        newLogin = true;
-//                        onStart();
-//                    },
-//                    error -> {
-//                        Log.e(TAG, error.toString());
-//                    }
-//            );
 
             String browserPackageName = AWSUtils.getBrowserPackageName(getContext());
 

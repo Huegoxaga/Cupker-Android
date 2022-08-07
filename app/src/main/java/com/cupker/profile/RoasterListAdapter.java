@@ -1,7 +1,6 @@
 package com.cupker.profile;
-/**
- * Ye Qi, 000792058
- */
+import android.content.res.TypedArray;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +28,9 @@ public class RoasterListAdapter extends BaseAdapter {
     private final ArrayList<Roaster> roasterObjs;
     private ArrayList<Roaster> selectedRoasters;
     private ArrayList<View> selectedRows;
+    private int themeBgColor;
+    private TypedValue typedValue;
+
 
     public RoasterListAdapter(RoasterActivity roasterActivity, ArrayList<Roaster> roasterObjs) {
         // Init data
@@ -58,13 +60,17 @@ public class RoasterListAdapter extends BaseAdapter {
 
         // Init
         if (settingsListView == null) {
-            LayoutInflater layoutInflater = LayoutInflater.from(roasterActivity.getApplicationContext());
+            LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
             settingsListView = layoutInflater.inflate(R.layout.activity_roaster_list, parent, false);
         }
         TextView roasterName = settingsListView.findViewById(R.id.roaster_list_name);
 
         // Setup
         roasterName.setText(roasterObjs.get(position).getName());
+        typedValue = new TypedValue();
+        TypedArray a = roasterActivity.obtainStyledAttributes(typedValue.data, new int[] { R.attr.colorOnPrimary });
+        themeBgColor = a.getColor(0, 0);
+        a.recycle();
 
         // Listener
         settingsListView.setOnLongClickListener(view -> {
@@ -72,7 +78,7 @@ public class RoasterListAdapter extends BaseAdapter {
             if(selectedRows.contains(view)){
                 selectedRows.remove(view);
                 selectedRoasters.remove(roasterObjs.get(position));
-                view.setBackgroundResource(R.color.white);
+                view.setBackgroundColor(themeBgColor);
             }else{
                 selectedRoasters.add(roasterObjs.get(position));
                 selectedRows.add(view);
@@ -94,7 +100,7 @@ public class RoasterListAdapter extends BaseAdapter {
         roasterActivity.removeSelectedRoaster(selectedRoasters);
         selectedRoasters.clear();
         for (View view : selectedRows)
-            view.setBackgroundResource(R.color.white);
+            view.setBackgroundColor(themeBgColor);
         selectedRows.clear();
     }
 }

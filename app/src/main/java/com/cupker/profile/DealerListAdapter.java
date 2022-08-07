@@ -2,6 +2,8 @@ package com.cupker.profile;
 /**
  * Ye Qi, 000792058
  */
+import android.content.res.TypedArray;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +31,8 @@ public class DealerListAdapter extends BaseAdapter {
     private final ArrayList<Dealer> dealerObjs;
     private ArrayList<Dealer> selectedDealers;
     private ArrayList<View> selectedRows;
+    private int themeBgColor;
+    private TypedValue typedValue;
 
     public DealerListAdapter(DealerActivity dealerActivity, ArrayList<Dealer> dealerObjs) {
         // Init data
@@ -58,13 +62,17 @@ public class DealerListAdapter extends BaseAdapter {
 
         // Init
         if (settingsListView == null) {
-            LayoutInflater layoutInflater = LayoutInflater.from(dealerActivity.getApplicationContext());
+            LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
             settingsListView = layoutInflater.inflate(R.layout.activity_dealer_list, parent, false);
         }
         TextView dealerName = settingsListView.findViewById(R.id.dealer_list_name);
 
         // Setup
         dealerName.setText(dealerObjs.get(position).getName());
+        typedValue = new TypedValue();
+        TypedArray a = dealerActivity.obtainStyledAttributes(typedValue.data, new int[] { R.attr.colorOnPrimary });
+        themeBgColor = a.getColor(0, 0);
+        a.recycle();
 
         // Listener
         settingsListView.setOnLongClickListener(view -> {
@@ -72,7 +80,7 @@ public class DealerListAdapter extends BaseAdapter {
             if(selectedRows.contains(view)){
                 selectedRows.remove(view);
                 selectedDealers.remove(dealerObjs.get(position));
-                view.setBackgroundResource(R.color.white);
+                view.setBackgroundColor(themeBgColor);
             }else{
                 selectedDealers.add(dealerObjs.get(position));
                 selectedRows.add(view);
@@ -97,7 +105,7 @@ public class DealerListAdapter extends BaseAdapter {
         dealerActivity.removeSelectedDealers(selectedDealers);
         selectedDealers.clear();
         for(View view : selectedRows)
-            view.setBackgroundResource(R.color.white);
+            view.setBackgroundColor(themeBgColor);
         selectedRows.clear();
     }
 }

@@ -3,6 +3,8 @@ package com.cupker.bean;
  * Ye Qi, 000792058
  */
 import android.content.Intent;
+import android.content.res.TypedArray;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +35,8 @@ public class BeanListAdapter extends BaseAdapter {
     private List<Bean> beans;
     private List<Bean> selectedBeans;
     private List<View> selectedRows;
+    private int themeBgColor;
+    private TypedValue typedValue;
 
     public BeanListAdapter(BeansFragment fragment, List<Bean> beans) {
         // Init Data
@@ -69,6 +73,10 @@ public class BeanListAdapter extends BaseAdapter {
 
         // Setup
         beanName.setText(beans.get(position).getName());
+        typedValue = new TypedValue();
+        TypedArray a = beansFragment.getContext().obtainStyledAttributes(typedValue.data, new int[] { R.attr.colorOnPrimary });
+        themeBgColor = a.getColor(0, 0);
+        a.recycle();
 
         // Listener
         beansListView.setOnClickListener(view -> {
@@ -81,7 +89,7 @@ public class BeanListAdapter extends BaseAdapter {
             if(selectedRows.contains(view)){
                 selectedRows.remove(view);
                 selectedBeans.remove(beans.get(position));
-                view.setBackgroundResource(R.color.white);
+                view.setBackgroundColor(themeBgColor);
             }else{
                 selectedBeans.add(beans.get(position));
                 selectedRows.add(view);
@@ -108,7 +116,7 @@ public class BeanListAdapter extends BaseAdapter {
         beansFragment.removeSelectedBeans(selectedBeans);
         selectedBeans.clear();
         for(View view : selectedRows)
-            view.setBackgroundResource(R.color.white);
+            view.setBackgroundColor(themeBgColor);
         selectedRows.clear();
     }
 

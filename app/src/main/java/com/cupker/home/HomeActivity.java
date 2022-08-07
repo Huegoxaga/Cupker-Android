@@ -64,7 +64,7 @@ public class HomeActivity extends AppCompatActivity {
                                             () -> Log.i(TAG, "DataStore started"),
                                             error -> Log.e(TAG, "Error starting DataStore", error)
                                     );
-                                    updateProfile();
+//                                    updateProfile();
                                 },
                                 error -> {
                                     Log.e(TAG, error.toString());

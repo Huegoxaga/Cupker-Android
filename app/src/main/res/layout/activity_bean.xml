@@ -34,7 +34,7 @@
             android:id="@+id/bean_image"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:background="@color/black_overlay"
+            android:background="?attr/colorBackgroundFloating"
             android:scaleType="centerCrop"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -146,6 +146,7 @@
             android:labelFor="@id/bean_density_input"
             android:scaleType="fitCenter"
             android:text="@string/add_bean_density"
+            app:tint="?attr/colorPrimaryDark"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/bean_variety"
             app:srcCompat="@drawable/density" />
@@ -205,7 +206,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="40dp"
             android:layout_marginBottom="20dp"
-            android:background="@color/trans_white"
+            android:background="@drawable/round_boarder"
             android:paddingStart="6dp"
             android:paddingTop="1dp"
             android:paddingEnd="6dp"

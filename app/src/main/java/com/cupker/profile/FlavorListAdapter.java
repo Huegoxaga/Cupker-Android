@@ -2,6 +2,8 @@ package com.cupker.profile;
 /**
  * Ye Qi, 000792058
  */
+import android.content.res.TypedArray;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +31,8 @@ public class FlavorListAdapter extends BaseAdapter {
     private final ArrayList<Flavor> flavorObjs;
     private ArrayList<Flavor> selectedFlavors;
     private ArrayList<View> selectedRows;
+    private int themeBgColor;
+    private TypedValue typedValue;
 
     public FlavorListAdapter(FlavorActivity flavorActivity, ArrayList<Flavor> flavorObjs) {
         // Init data
@@ -58,13 +62,17 @@ public class FlavorListAdapter extends BaseAdapter {
 
         // Init
         if (settingsListView == null) {
-            LayoutInflater layoutInflater = LayoutInflater.from(flavorActivity.getApplicationContext());
+            LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
             settingsListView = layoutInflater.inflate(R.layout.activity_flavor_list, parent, false);
         }
         TextView flavorName = settingsListView.findViewById(R.id.flavor_list_name);
 
         // Setup
         flavorName.setText(flavorObjs.get(position).getName());
+        typedValue = new TypedValue();
+        TypedArray a = flavorActivity.obtainStyledAttributes(typedValue.data, new int[] { R.attr.colorOnPrimary });
+        themeBgColor = a.getColor(0, 0);
+        a.recycle();
 
         // Listener
         settingsListView.setOnLongClickListener(view -> {
@@ -72,7 +80,7 @@ public class FlavorListAdapter extends BaseAdapter {
             if(selectedRows.contains(view)){
                 selectedRows.remove(view);
                 selectedFlavors.remove(flavorObjs.get(position));
-                view.setBackgroundResource(R.color.white);
+                view.setBackgroundColor(themeBgColor);
             }else{
                 selectedFlavors.add(flavorObjs.get(position));
                 selectedRows.add(view);
@@ -97,7 +105,7 @@ public class FlavorListAdapter extends BaseAdapter {
         flavorActivity.removeSelectedFlavor(selectedFlavors);
         selectedFlavors.clear();
         for (View view : selectedRows)
-            view.setBackgroundResource(R.color.white);
+            view.setBackgroundColor(themeBgColor);
         selectedRows.clear();
     }
 }

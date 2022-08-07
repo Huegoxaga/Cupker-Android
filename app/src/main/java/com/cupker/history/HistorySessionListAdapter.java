@@ -1,8 +1,8 @@
 package com.cupker.history;
-/**
- * Ye Qi, 000792058
- */
+
 import android.content.Intent;
+import android.content.res.TypedArray;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +32,8 @@ public class HistorySessionListAdapter extends BaseAdapter{
     private ArrayList<Session> sessions;
     private ArrayList<Session> selectedSessions;
     private ArrayList<View> selectedRows;
+    private int themeBgColor;
+    private TypedValue typedValue;
 
     public HistorySessionListAdapter(HistoryFragment fragment, ArrayList<Session> sessions) {
         // Init data
@@ -68,6 +70,10 @@ public class HistorySessionListAdapter extends BaseAdapter{
 
         // Setup
         beanName.setText(sessions.get(position).getName());
+        typedValue = new TypedValue();
+        TypedArray a = historyFragment.getContext().obtainStyledAttributes(typedValue.data, new int[] { R.attr.colorOnPrimary });
+        themeBgColor = a.getColor(0, 0);
+        a.recycle();
 
         // Listener
         sessionsListView.setOnClickListener(view -> {
@@ -81,7 +87,7 @@ public class HistorySessionListAdapter extends BaseAdapter{
             if (selectedRows.contains(view)) {
                 selectedRows.remove(view);
                 selectedSessions.remove(sessions.get(position));
-                view.setBackgroundResource(R.color.white);
+                view.setBackgroundColor(themeBgColor);
             } else {
                 selectedSessions.add(sessions.get(position));
                 selectedRows.add(view);
@@ -106,7 +112,7 @@ public class HistorySessionListAdapter extends BaseAdapter{
         historyFragment.removeSelectedSessions(selectedSessions);
         selectedSessions.clear();
         for (View view : selectedRows)
-            view.setBackgroundResource(R.color.white);
+            view.setBackgroundColor(themeBgColor);
         selectedRows.clear();
     }
 
