@@ -51,7 +51,7 @@ public class NewFlavorProfileFragment extends DialogFragment {
             Flavor newFlavor = Flavor.builder()
                     .status(Status.ACTIVE)
                     .name(newFlavorName)
-                    .type("Default")
+                    .category("Default")
                     .build();
 
             FlavorActivity flavorActivity = (FlavorActivity) getActivity();

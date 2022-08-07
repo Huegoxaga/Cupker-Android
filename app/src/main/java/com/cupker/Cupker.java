@@ -1,13 +1,13 @@
 package com.cupker;
-/**
- * Ye Qi, 000792058
- */
+
 import android.util.Log;
 import android.app.Application;
 import com.amplifyframework.AmplifyException;
 import com.amplifyframework.api.aws.AWSApiPlugin;
+import com.amplifyframework.auth.AuthChannelEventName;
 import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin;
 import com.amplifyframework.core.Amplify;
+import com.amplifyframework.core.InitializationStatus;
 import com.amplifyframework.datastore.AWSDataStorePlugin;
 import com.amplifyframework.datastore.DataStoreChannelEventName;
 import com.amplifyframework.hub.HubChannel;
@@ -44,6 +44,33 @@ public class Cupker extends Application {
                     hubEvent -> {
                         Log.i(TAG, hubEvent.getName());
                         setDataStoreReady(true);
+                    }
+            );
+            Amplify.Hub.subscribe(HubChannel.AUTH,
+                    hubEvent -> {
+                        if (hubEvent.getName().equals(InitializationStatus.SUCCEEDED.toString())) {
+                            Log.i(TAG, "Auth successfully initialized");
+                        } else if (hubEvent.getName().equals(InitializationStatus.FAILED.toString())){
+                            Log.i(TAG, "Auth failed to succeed");
+                        } else {
+                            switch (AuthChannelEventName.valueOf(hubEvent.getName())) {
+                                case SIGNED_IN:
+                                    Log.i(TAG, "Auth just became signed in.");
+                                    break;
+                                case SIGNED_OUT:
+                                    Log.i(TAG, "Auth just became signed out.");
+                                    break;
+                                case SESSION_EXPIRED:
+                                    Log.i(TAG, "Auth session just expired.");
+                                    break;
+                                case USER_DELETED:
+                                    Log.i(TAG, "User has been deleted.");
+                                    break;
+                                default:
+                                    Log.w("AuthQuickstart", "Unhandled Auth Event: " + AuthChannelEventName.valueOf(hubEvent.getName()));
+                                    break;
+                            }
+                        }
                     }
             );
         } catch (AmplifyException error) {

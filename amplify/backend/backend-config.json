@@ -38,7 +38,15 @@
               "userPoolId": "authcupker5d695e7a"
             }
           },
-          "additionalAuthenticationProviders": []
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "API_KEY",
+              "apiKeyConfig": {
+                "apiKeyExpirationDays": 7,
+                "description": "guest key"
+              }
+            }
+          ]
         }
       }
     }

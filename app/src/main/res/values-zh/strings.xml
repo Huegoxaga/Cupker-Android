@@ -39,7 +39,7 @@
     <string name="new_roaster_frag_email">邮箱</string>
     <string name="new_roaster_frag_name">姓名</string>
     <string name="cupping_frag_roaster_input_label">烘培时间</string>
-    <string name="cupping_frag_title">新的杯测</string>
+    <string name="cupping_frag_title">新建杯测表</string>
     <string name="cupping_frag_session_name">组名</string>
     <string name="cupping_frag_roaster_input">烘培师</string>
     <string name="cupping_frag_sample_count">样品数</string>
@@ -60,7 +60,12 @@
     <string name="my_dealers">我的供应商</string>
     <string name="my_roasters">我的烘培师</string>
     <string name="my_flavors">我的风味表</string>
+    <string name="history_info">杯测日期%1$s\n由%2$s于%3$s烘焙</string>
     <string name="logout">退出登录</string>
+    <string name="confirm_share">分享</string>
+    <string name="share_session">分享我的杯测记录</string>
+    <string name="share">分享</string>
+    <string name="share_prompt">截图已成功保存至本地，是否将该截图分享至其他应用？</string>
     <string name="cupping_roast_date_input">年/月/日</string>
     <string name="select">请选择...</string>
     <string name="complete_cupping_form_hint">请完整填写杯测信息</string>
@@ -83,4 +88,6 @@
     <string name="reset">重置</string>
     <string name="timer_prompt">您确定要重置计时器吗？</string>
     <string name="data_store_initializing">请稍候...</string>
+    <string name="timer_reset">重置</string>
+    <string name="timer_start">开始</string>
 </resources>

@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="@color/grey_background"
     android:orientation="vertical"
     tools:context=".bean.BeanActivity">
 
@@ -35,7 +34,7 @@
             android:id="@+id/bean_image"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:background="#FFD8D8D8"
+            android:background="@color/black_overlay"
             android:scaleType="centerCrop"
             app:layout_constraintTop_toTopOf="parent" />
 

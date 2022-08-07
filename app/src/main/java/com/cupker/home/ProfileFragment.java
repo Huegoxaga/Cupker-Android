@@ -132,13 +132,13 @@ public class ProfileFragment extends Fragment {
         @Override
         public void run() {
             if (profileView != null) {
-                int lastIdx = settingsTitles.indexOf("Logout");
+                int lastIdx = settingsTitles.indexOf(getResources().getString(R.string.logout));
                 if (guestMode) {
                     if (lastIdx != -1) settingsTitles.remove(lastIdx);
                     loginBtn.setVisibility(View.VISIBLE);
                     usernameLabel.setText(usernameStr);
                 } else {
-                    if (lastIdx == -1) settingsTitles.add("Logout");
+                    if (lastIdx == -1) settingsTitles.add(getResources().getString(R.string.logout));
                     usernameLabel.setText(usernameStr);
                     loginBtn.setVisibility(View.INVISIBLE);
                 }

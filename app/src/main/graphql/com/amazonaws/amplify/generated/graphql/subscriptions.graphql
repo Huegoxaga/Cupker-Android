@@ -1,0 +1,421 @@
+# this is an auto generated file. This will be overwritten
+subscription OnCreateRoaster($owner: String!) {
+  onCreateRoaster(owner: $owner) {
+    id
+    name
+    email
+    status
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+subscription OnUpdateRoaster($owner: String!) {
+  onUpdateRoaster(owner: $owner) {
+    id
+    name
+    email
+    status
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+subscription OnDeleteRoaster($owner: String!) {
+  onDeleteRoaster(owner: $owner) {
+    id
+    name
+    email
+    status
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+subscription OnCreateSession($owner: String!) {
+  onCreateSession(owner: $owner) {
+    id
+    name
+    roasterID
+    roast_time
+    status
+    sample {
+      items {
+        id
+        sessionID
+        sampleOrder
+        beanID
+        roast_level
+        aroma
+        flavor
+        acidity
+        overall
+        body
+        balance
+        uniformity
+        clean_cup
+        after_taste
+        sweetness
+        defect_type
+        defect_count
+        notes
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+subscription OnUpdateSession($owner: String!) {
+  onUpdateSession(owner: $owner) {
+    id
+    name
+    roasterID
+    roast_time
+    status
+    sample {
+      items {
+        id
+        sessionID
+        sampleOrder
+        beanID
+        roast_level
+        aroma
+        flavor
+        acidity
+        overall
+        body
+        balance
+        uniformity
+        clean_cup
+        after_taste
+        sweetness
+        defect_type
+        defect_count
+        notes
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+subscription OnDeleteSession($owner: String!) {
+  onDeleteSession(owner: $owner) {
+    id
+    name
+    roasterID
+    roast_time
+    status
+    sample {
+      items {
+        id
+        sessionID
+        sampleOrder
+        beanID
+        roast_level
+        aroma
+        flavor
+        acidity
+        overall
+        body
+        balance
+        uniformity
+        clean_cup
+        after_taste
+        sweetness
+        defect_type
+        defect_count
+        notes
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+subscription OnCreateSample($owner: String!) {
+  onCreateSample(owner: $owner) {
+    id
+    sessionID
+    sampleOrder
+    beanID
+    roast_level
+    aroma
+    flavor
+    acidity
+    overall
+    body
+    balance
+    uniformity
+    clean_cup
+    after_taste
+    sweetness
+    defect_type
+    defect_count
+    notes
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+subscription OnUpdateSample($owner: String!) {
+  onUpdateSample(owner: $owner) {
+    id
+    sessionID
+    sampleOrder
+    beanID
+    roast_level
+    aroma
+    flavor
+    acidity
+    overall
+    body
+    balance
+    uniformity
+    clean_cup
+    after_taste
+    sweetness
+    defect_type
+    defect_count
+    notes
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+subscription OnDeleteSample($owner: String!) {
+  onDeleteSample(owner: $owner) {
+    id
+    sessionID
+    sampleOrder
+    beanID
+    roast_level
+    aroma
+    flavor
+    acidity
+    overall
+    body
+    balance
+    uniformity
+    clean_cup
+    after_taste
+    sweetness
+    defect_type
+    defect_count
+    notes
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+subscription OnCreateBean($owner: String!) {
+  onCreateBean(owner: $owner) {
+    id
+    flavors
+    status
+    name
+    process
+    origin
+    region
+    altitude_low
+    altitude_high
+    moisture
+    variety
+    density
+    grade
+    image
+    dealer
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+subscription OnUpdateBean($owner: String!) {
+  onUpdateBean(owner: $owner) {
+    id
+    flavors
+    status
+    name
+    process
+    origin
+    region
+    altitude_low
+    altitude_high
+    moisture
+    variety
+    density
+    grade
+    image
+    dealer
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+subscription OnDeleteBean($owner: String!) {
+  onDeleteBean(owner: $owner) {
+    id
+    flavors
+    status
+    name
+    process
+    origin
+    region
+    altitude_low
+    altitude_high
+    moisture
+    variety
+    density
+    grade
+    image
+    dealer
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+subscription OnCreateFlavor($owner: String!) {
+  onCreateFlavor(owner: $owner) {
+    id
+    name
+    category
+    status
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+subscription OnUpdateFlavor($owner: String!) {
+  onUpdateFlavor(owner: $owner) {
+    id
+    name
+    category
+    status
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+subscription OnDeleteFlavor($owner: String!) {
+  onDeleteFlavor(owner: $owner) {
+    id
+    name
+    category
+    status
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+subscription OnCreateDealer($owner: String!) {
+  onCreateDealer(owner: $owner) {
+    id
+    name
+    email
+    status
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+subscription OnUpdateDealer($owner: String!) {
+  onUpdateDealer(owner: $owner) {
+    id
+    name
+    email
+    status
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+subscription OnDeleteDealer($owner: String!) {
+  onDeleteDealer(owner: $owner) {
+    id
+    name
+    email
+    status
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}

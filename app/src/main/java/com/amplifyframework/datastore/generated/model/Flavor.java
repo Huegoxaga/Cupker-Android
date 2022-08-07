@@ -27,11 +27,11 @@ import static com.amplifyframework.core.model.query.predicate.QueryField.field;
 public final class Flavor implements Model {
   public static final QueryField ID = field("Flavor", "id");
   public static final QueryField NAME = field("Flavor", "name");
-  public static final QueryField TYPE = field("Flavor", "type");
+  public static final QueryField CATEGORY = field("Flavor", "category");
   public static final QueryField STATUS = field("Flavor", "status");
   private final @ModelField(targetType="ID", isRequired = true) String id;
   private final @ModelField(targetType="String") String name;
-  private final @ModelField(targetType="String") String type;
+  private final @ModelField(targetType="String") String category;
   private final @ModelField(targetType="Status", isRequired = true) Status status;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime createdAt;
   private @ModelField(targetType="AWSDateTime", isReadOnly = true) Temporal.DateTime updatedAt;
@@ -43,8 +43,8 @@ public final class Flavor implements Model {
       return name;
   }
   
-  public String getType() {
-      return type;
+  public String getCategory() {
+      return category;
   }
   
   public Status getStatus() {
@@ -59,10 +59,10 @@ public final class Flavor implements Model {
       return updatedAt;
   }
   
-  private Flavor(String id, String name, String type, Status status) {
+  private Flavor(String id, String name, String category, Status status) {
     this.id = id;
     this.name = name;
-    this.type = type;
+    this.category = category;
     this.status = status;
   }
   
@@ -76,7 +76,7 @@ public final class Flavor implements Model {
       Flavor flavor = (Flavor) obj;
       return ObjectsCompat.equals(getId(), flavor.getId()) &&
               ObjectsCompat.equals(getName(), flavor.getName()) &&
-              ObjectsCompat.equals(getType(), flavor.getType()) &&
+              ObjectsCompat.equals(getCategory(), flavor.getCategory()) &&
               ObjectsCompat.equals(getStatus(), flavor.getStatus()) &&
               ObjectsCompat.equals(getCreatedAt(), flavor.getCreatedAt()) &&
               ObjectsCompat.equals(getUpdatedAt(), flavor.getUpdatedAt());
@@ -88,7 +88,7 @@ public final class Flavor implements Model {
     return new StringBuilder()
       .append(getId())
       .append(getName())
-      .append(getType())
+      .append(getCategory())
       .append(getStatus())
       .append(getCreatedAt())
       .append(getUpdatedAt())
@@ -102,7 +102,7 @@ public final class Flavor implements Model {
       .append("Flavor {")
       .append("id=" + String.valueOf(getId()) + ", ")
       .append("name=" + String.valueOf(getName()) + ", ")
-      .append("type=" + String.valueOf(getType()) + ", ")
+      .append("category=" + String.valueOf(getCategory()) + ", ")
       .append("status=" + String.valueOf(getStatus()) + ", ")
       .append("createdAt=" + String.valueOf(getCreatedAt()) + ", ")
       .append("updatedAt=" + String.valueOf(getUpdatedAt()))
@@ -134,7 +134,7 @@ public final class Flavor implements Model {
   public CopyOfBuilder copyOfBuilder() {
     return new CopyOfBuilder(id,
       name,
-      type,
+      category,
       status);
   }
   public interface StatusStep {
@@ -146,7 +146,7 @@ public final class Flavor implements Model {
     Flavor build();
     BuildStep id(String id);
     BuildStep name(String name);
-    BuildStep type(String type);
+    BuildStep category(String category);
   }
   
 
@@ -154,7 +154,7 @@ public final class Flavor implements Model {
     private String id;
     private Status status;
     private String name;
-    private String type;
+    private String category;
     @Override
      public Flavor build() {
         String id = this.id != null ? this.id : UUID.randomUUID().toString();
@@ -162,7 +162,7 @@ public final class Flavor implements Model {
         return new Flavor(
           id,
           name,
-          type,
+          category,
           status);
     }
     
@@ -180,8 +180,8 @@ public final class Flavor implements Model {
     }
     
     @Override
-     public BuildStep type(String type) {
-        this.type = type;
+     public BuildStep category(String category) {
+        this.category = category;
         return this;
     }
     
@@ -197,11 +197,11 @@ public final class Flavor implements Model {
   
 
   public final class CopyOfBuilder extends Builder {
-    private CopyOfBuilder(String id, String name, String type, Status status) {
+    private CopyOfBuilder(String id, String name, String category, Status status) {
       super.id(id);
       super.status(status)
         .name(name)
-        .type(type);
+        .category(category);
     }
     
     @Override
@@ -215,8 +215,8 @@ public final class Flavor implements Model {
     }
     
     @Override
-     public CopyOfBuilder type(String type) {
-      return (CopyOfBuilder) super.type(type);
+     public CopyOfBuilder category(String category) {
+      return (CopyOfBuilder) super.category(category);
     }
   }
   

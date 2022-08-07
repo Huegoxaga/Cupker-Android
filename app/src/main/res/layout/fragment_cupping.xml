@@ -9,8 +9,6 @@
     android:focusable="true"
     tools:context=".home.CuppingFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <TextView
         android:id="@+id/cupping_frag_title"
         android:layout_width="wrap_content"
@@ -27,13 +25,13 @@
         android:id="@+id/cupping_start_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="30dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="80dp"
+        android:layout_marginEnd="0dp"
         android:text="@string/cupping_start_button"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cupping_roast_date_button" />
 
     <TextView
         android:id="@+id/cupping_frag_session_name"

@@ -60,7 +60,7 @@ type Bean @model @auth(rules: [{ allow: owner }]) {
 type Flavor @model @auth(rules: [{ allow: owner }]) {
   id: ID!
   name: String
-  type: String
+  category: String
   status: Status!
 }
 

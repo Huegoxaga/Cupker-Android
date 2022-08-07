@@ -1,0 +1,501 @@
+# this is an auto generated file. This will be overwritten
+query SyncRoasters(
+  $filter: ModelRoasterFilterInput
+  $limit: Int
+  $nextToken: String
+  $lastSync: AWSTimestamp
+) {
+  syncRoasters(
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+    lastSync: $lastSync
+  ) {
+    items {
+      id
+      name
+      email
+      status
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+    }
+    nextToken
+    startedAt
+  }
+}
+query GetRoaster($id: ID!) {
+  getRoaster(id: $id) {
+    id
+    name
+    email
+    status
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+query ListRoasters(
+  $filter: ModelRoasterFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listRoasters(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      name
+      email
+      status
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+    }
+    nextToken
+    startedAt
+  }
+}
+query SyncSessions(
+  $filter: ModelSessionFilterInput
+  $limit: Int
+  $nextToken: String
+  $lastSync: AWSTimestamp
+) {
+  syncSessions(
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+    lastSync: $lastSync
+  ) {
+    items {
+      id
+      name
+      roasterID
+      roast_time
+      status
+      sample {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+    }
+    nextToken
+    startedAt
+  }
+}
+query GetSession($id: ID!) {
+  getSession(id: $id) {
+    id
+    name
+    roasterID
+    roast_time
+    status
+    sample {
+      items {
+        id
+        sessionID
+        sampleOrder
+        beanID
+        roast_level
+        aroma
+        flavor
+        acidity
+        overall
+        body
+        balance
+        uniformity
+        clean_cup
+        after_taste
+        sweetness
+        defect_type
+        defect_count
+        notes
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+query ListSessions(
+  $filter: ModelSessionFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listSessions(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      name
+      roasterID
+      roast_time
+      status
+      sample {
+        nextToken
+        startedAt
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+    }
+    nextToken
+    startedAt
+  }
+}
+query SyncSamples(
+  $filter: ModelSampleFilterInput
+  $limit: Int
+  $nextToken: String
+  $lastSync: AWSTimestamp
+) {
+  syncSamples(
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+    lastSync: $lastSync
+  ) {
+    items {
+      id
+      sessionID
+      sampleOrder
+      beanID
+      roast_level
+      aroma
+      flavor
+      acidity
+      overall
+      body
+      balance
+      uniformity
+      clean_cup
+      after_taste
+      sweetness
+      defect_type
+      defect_count
+      notes
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+    }
+    nextToken
+    startedAt
+  }
+}
+query GetSample($id: ID!) {
+  getSample(id: $id) {
+    id
+    sessionID
+    sampleOrder
+    beanID
+    roast_level
+    aroma
+    flavor
+    acidity
+    overall
+    body
+    balance
+    uniformity
+    clean_cup
+    after_taste
+    sweetness
+    defect_type
+    defect_count
+    notes
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+query ListSamples(
+  $filter: ModelSampleFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listSamples(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      sessionID
+      sampleOrder
+      beanID
+      roast_level
+      aroma
+      flavor
+      acidity
+      overall
+      body
+      balance
+      uniformity
+      clean_cup
+      after_taste
+      sweetness
+      defect_type
+      defect_count
+      notes
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+    }
+    nextToken
+    startedAt
+  }
+}
+query SyncBeans(
+  $filter: ModelBeanFilterInput
+  $limit: Int
+  $nextToken: String
+  $lastSync: AWSTimestamp
+) {
+  syncBeans(
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+    lastSync: $lastSync
+  ) {
+    items {
+      id
+      flavors
+      status
+      name
+      process
+      origin
+      region
+      altitude_low
+      altitude_high
+      moisture
+      variety
+      density
+      grade
+      image
+      dealer
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+    }
+    nextToken
+    startedAt
+  }
+}
+query GetBean($id: ID!) {
+  getBean(id: $id) {
+    id
+    flavors
+    status
+    name
+    process
+    origin
+    region
+    altitude_low
+    altitude_high
+    moisture
+    variety
+    density
+    grade
+    image
+    dealer
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+query ListBeans(
+  $filter: ModelBeanFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listBeans(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      flavors
+      status
+      name
+      process
+      origin
+      region
+      altitude_low
+      altitude_high
+      moisture
+      variety
+      density
+      grade
+      image
+      dealer
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+    }
+    nextToken
+    startedAt
+  }
+}
+query SyncFlavors(
+  $filter: ModelFlavorFilterInput
+  $limit: Int
+  $nextToken: String
+  $lastSync: AWSTimestamp
+) {
+  syncFlavors(
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+    lastSync: $lastSync
+  ) {
+    items {
+      id
+      name
+      category
+      status
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+    }
+    nextToken
+    startedAt
+  }
+}
+query GetFlavor($id: ID!) {
+  getFlavor(id: $id) {
+    id
+    name
+    category
+    status
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+query ListFlavors(
+  $filter: ModelFlavorFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listFlavors(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      name
+      category
+      status
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+    }
+    nextToken
+    startedAt
+  }
+}
+query SyncDealers(
+  $filter: ModelDealerFilterInput
+  $limit: Int
+  $nextToken: String
+  $lastSync: AWSTimestamp
+) {
+  syncDealers(
+    filter: $filter
+    limit: $limit
+    nextToken: $nextToken
+    lastSync: $lastSync
+  ) {
+    items {
+      id
+      name
+      email
+      status
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+    }
+    nextToken
+    startedAt
+  }
+}
+query GetDealer($id: ID!) {
+  getDealer(id: $id) {
+    id
+    name
+    email
+    status
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+query ListDealers(
+  $filter: ModelDealerFilterInput
+  $limit: Int
+  $nextToken: String
+) {
+  listDealers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      name
+      email
+      status
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      owner
+    }
+    nextToken
+    startedAt
+  }
+}

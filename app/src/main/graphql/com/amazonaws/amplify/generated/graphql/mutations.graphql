@@ -1,0 +1,475 @@
+# this is an auto generated file. This will be overwritten
+mutation CreateRoaster(
+  $input: CreateRoasterInput!
+  $condition: ModelRoasterConditionInput
+) {
+  createRoaster(input: $input, condition: $condition) {
+    id
+    name
+    email
+    status
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+mutation UpdateRoaster(
+  $input: UpdateRoasterInput!
+  $condition: ModelRoasterConditionInput
+) {
+  updateRoaster(input: $input, condition: $condition) {
+    id
+    name
+    email
+    status
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+mutation DeleteRoaster(
+  $input: DeleteRoasterInput!
+  $condition: ModelRoasterConditionInput
+) {
+  deleteRoaster(input: $input, condition: $condition) {
+    id
+    name
+    email
+    status
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+mutation CreateSession(
+  $input: CreateSessionInput!
+  $condition: ModelSessionConditionInput
+) {
+  createSession(input: $input, condition: $condition) {
+    id
+    name
+    roasterID
+    roast_time
+    status
+    sample {
+      items {
+        id
+        sessionID
+        sampleOrder
+        beanID
+        roast_level
+        aroma
+        flavor
+        acidity
+        overall
+        body
+        balance
+        uniformity
+        clean_cup
+        after_taste
+        sweetness
+        defect_type
+        defect_count
+        notes
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+mutation UpdateSession(
+  $input: UpdateSessionInput!
+  $condition: ModelSessionConditionInput
+) {
+  updateSession(input: $input, condition: $condition) {
+    id
+    name
+    roasterID
+    roast_time
+    status
+    sample {
+      items {
+        id
+        sessionID
+        sampleOrder
+        beanID
+        roast_level
+        aroma
+        flavor
+        acidity
+        overall
+        body
+        balance
+        uniformity
+        clean_cup
+        after_taste
+        sweetness
+        defect_type
+        defect_count
+        notes
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+mutation DeleteSession(
+  $input: DeleteSessionInput!
+  $condition: ModelSessionConditionInput
+) {
+  deleteSession(input: $input, condition: $condition) {
+    id
+    name
+    roasterID
+    roast_time
+    status
+    sample {
+      items {
+        id
+        sessionID
+        sampleOrder
+        beanID
+        roast_level
+        aroma
+        flavor
+        acidity
+        overall
+        body
+        balance
+        uniformity
+        clean_cup
+        after_taste
+        sweetness
+        defect_type
+        defect_count
+        notes
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+      startedAt
+    }
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+mutation CreateSample(
+  $input: CreateSampleInput!
+  $condition: ModelSampleConditionInput
+) {
+  createSample(input: $input, condition: $condition) {
+    id
+    sessionID
+    sampleOrder
+    beanID
+    roast_level
+    aroma
+    flavor
+    acidity
+    overall
+    body
+    balance
+    uniformity
+    clean_cup
+    after_taste
+    sweetness
+    defect_type
+    defect_count
+    notes
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+mutation UpdateSample(
+  $input: UpdateSampleInput!
+  $condition: ModelSampleConditionInput
+) {
+  updateSample(input: $input, condition: $condition) {
+    id
+    sessionID
+    sampleOrder
+    beanID
+    roast_level
+    aroma
+    flavor
+    acidity
+    overall
+    body
+    balance
+    uniformity
+    clean_cup
+    after_taste
+    sweetness
+    defect_type
+    defect_count
+    notes
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+mutation DeleteSample(
+  $input: DeleteSampleInput!
+  $condition: ModelSampleConditionInput
+) {
+  deleteSample(input: $input, condition: $condition) {
+    id
+    sessionID
+    sampleOrder
+    beanID
+    roast_level
+    aroma
+    flavor
+    acidity
+    overall
+    body
+    balance
+    uniformity
+    clean_cup
+    after_taste
+    sweetness
+    defect_type
+    defect_count
+    notes
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+mutation CreateBean(
+  $input: CreateBeanInput!
+  $condition: ModelBeanConditionInput
+) {
+  createBean(input: $input, condition: $condition) {
+    id
+    flavors
+    status
+    name
+    process
+    origin
+    region
+    altitude_low
+    altitude_high
+    moisture
+    variety
+    density
+    grade
+    image
+    dealer
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+mutation UpdateBean(
+  $input: UpdateBeanInput!
+  $condition: ModelBeanConditionInput
+) {
+  updateBean(input: $input, condition: $condition) {
+    id
+    flavors
+    status
+    name
+    process
+    origin
+    region
+    altitude_low
+    altitude_high
+    moisture
+    variety
+    density
+    grade
+    image
+    dealer
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+mutation DeleteBean(
+  $input: DeleteBeanInput!
+  $condition: ModelBeanConditionInput
+) {
+  deleteBean(input: $input, condition: $condition) {
+    id
+    flavors
+    status
+    name
+    process
+    origin
+    region
+    altitude_low
+    altitude_high
+    moisture
+    variety
+    density
+    grade
+    image
+    dealer
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+mutation CreateFlavor(
+  $input: CreateFlavorInput!
+  $condition: ModelFlavorConditionInput
+) {
+  createFlavor(input: $input, condition: $condition) {
+    id
+    name
+    category
+    status
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+mutation UpdateFlavor(
+  $input: UpdateFlavorInput!
+  $condition: ModelFlavorConditionInput
+) {
+  updateFlavor(input: $input, condition: $condition) {
+    id
+    name
+    category
+    status
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+mutation DeleteFlavor(
+  $input: DeleteFlavorInput!
+  $condition: ModelFlavorConditionInput
+) {
+  deleteFlavor(input: $input, condition: $condition) {
+    id
+    name
+    category
+    status
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+mutation CreateDealer(
+  $input: CreateDealerInput!
+  $condition: ModelDealerConditionInput
+) {
+  createDealer(input: $input, condition: $condition) {
+    id
+    name
+    email
+    status
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+mutation UpdateDealer(
+  $input: UpdateDealerInput!
+  $condition: ModelDealerConditionInput
+) {
+  updateDealer(input: $input, condition: $condition) {
+    id
+    name
+    email
+    status
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}
+mutation DeleteDealer(
+  $input: DeleteDealerInput!
+  $condition: ModelDealerConditionInput
+) {
+  deleteDealer(input: $input, condition: $condition) {
+    id
+    name
+    email
+    status
+    _version
+    _deleted
+    _lastChangedAt
+    createdAt
+    updatedAt
+    owner
+  }
+}

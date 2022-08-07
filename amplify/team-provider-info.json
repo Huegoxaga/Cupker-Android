@@ -31,7 +31,11 @@
     },
     "categories": {
       "auth": {
-        "cupker5d695e7a": {}
+        "cupker5d695e7a": {
+          "facebookAppId": "255099100008888",
+          "googleClientId": "128207095924-r8qe0s107lj9ojpulal4dj49pgf58q48.apps.googleusercontent.com",
+          "googleAndroid": "128207095924-r12l9glt7vq37gb7h2ecgbp9rb936muf.apps.googleusercontent.com"
+        }
       }
     }
   }

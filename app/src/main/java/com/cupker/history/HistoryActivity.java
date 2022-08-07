@@ -1,7 +1,4 @@
 package com.cupker.history;
-/**
- * Ye Qi, 000792058
- */
 
 import android.Manifest;
 import android.app.Activity;
@@ -220,13 +217,13 @@ public class HistoryActivity extends AppCompatActivity {
     };
 
     private String getSessionInfoStr(Session session, Roaster roaster) {
-        String info = "My History Cupping Session";
+        String info = "";
         String cuppingDateStr = "";
         String roasterDateStr = "";
         if (session != null && roaster != null) {
             if (session.getRoastTime() != null) roasterDateStr = new SimpleDateFormat("yyyy-MM-dd").format(session.getRoastTime().toDate());
             if (session.getCreatedAt() != null) cuppingDateStr = new SimpleDateFormat("yyyy-MM-dd").format(session.getCreatedAt().toDate());
-            info = String.format("Created on %s\nRoasted by %s on %s", cuppingDateStr, roaster.getName(), roasterDateStr);
+            info = getResources().getString(R.string.history_info, cuppingDateStr, roaster.getName(), roasterDateStr);
         }
 
         return info;

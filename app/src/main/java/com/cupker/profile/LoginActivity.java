@@ -25,7 +25,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "===LOGIN ACTIVITY===";
 
-    private boolean loggedIn = false;
     private int attempt;
 
 //    private Button loginBtn;
@@ -39,7 +38,6 @@ public class LoginActivity extends AppCompatActivity {
                 this,
                 result -> {
                     Log.i(TAG, result.toString());
-                    this.loggedIn = true;
                     Amplify.DataStore.start(
                             () -> Log.i(TAG, "DataStore started"),
                             error -> Log.e(TAG, "Error starting DataStore", error)

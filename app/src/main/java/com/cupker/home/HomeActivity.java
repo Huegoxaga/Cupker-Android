@@ -1,7 +1,4 @@
 package com.cupker.home;
-/**
- * Ye Qi, 000792058
- */
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -10,18 +7,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.amplifyframework.api.aws.AWSApiPlugin;
 import com.amplifyframework.auth.AuthUserAttribute;
-import com.amplifyframework.auth.AuthUserAttributeKey;
 import com.amplifyframework.core.Amplify;
 import com.cupker.R;
-import com.cupker.home.BeansFragment;
-import com.cupker.home.CuppingFragment;
-import com.cupker.home.HistoryFragment;
-import com.cupker.home.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
@@ -63,6 +53,23 @@ public class HomeActivity extends AppCompatActivity {
                                     );
                                 },
                                 error -> Log.e(TAG, "Failed to fetch user attributes.", error)
+                        );
+                    }
+                    else{
+                        Amplify.Auth.signInWithWebUI(
+                                this,
+                                signRes -> {
+                                    Log.i(TAG, signRes.toString());
+                                    Amplify.DataStore.start(
+                                            () -> Log.i(TAG, "DataStore started"),
+                                            error -> Log.e(TAG, "Error starting DataStore", error)
+                                    );
+                                    updateProfile();
+                                },
+                                error -> {
+                                    Log.e(TAG, error.toString());
+                                    finish();
+                                }
                         );
                     }
                 },
