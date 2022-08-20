@@ -1,7 +1,4 @@
 package com.cupker.home;
-/**
- * Ye Qi, 000792058
- */
 
 import android.app.Dialog;
 import android.os.Bundle;
@@ -52,7 +49,6 @@ public class ProfileFragment extends Fragment {
     private String usernameStr;
     private boolean guestMode;
     private List<AuthUserAttribute> profile;
-    private boolean newLogin = false;
 
     private Timer checkDataStoreTimer;
     private TimerTask checkDataStoreTimerTask;
@@ -67,7 +63,10 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        if (profile != null && !newLogin) {
+        HomeActivity homeActivity = (HomeActivity) getActivity();
+        this.profile = homeActivity.getProfile();
+
+        if (profile != null) {
             Log.i(TAG, "User attributes = " + profile.toString());
             String email = "";
             for (AuthUserAttribute attribute : profile) {
@@ -75,11 +74,10 @@ public class ProfileFragment extends Fragment {
                     email = attribute.getValue();
             }
             setGuestMode(false, self.getResources().getString(R.string.account_id, email));
-        } else if (newLogin) {
-            updateProfile();
-            newLogin = false;
         } else {
+            Log.i(TAG, "User attributes Null");
             setGuestMode(true, "Guest User");
+//            homeActivity.forceLogin();
         }
     }
 
@@ -104,7 +102,6 @@ public class ProfileFragment extends Fragment {
                 }
             }
         };
-
     }
 
     private final Handler handler = new Handler();
@@ -151,24 +148,9 @@ public class ProfileFragment extends Fragment {
 
 
         loginBtn.setOnClickListener(view -> {
-
-            String browserPackageName = AWSUtils.getBrowserPackageName(getContext());
-
-            Amplify.Auth.signInWithWebUI(requireActivity(),
-                    //https://github.com/aws-amplify/amplify-android/issues/678
-                    AWSCognitoAuthWebUISignInOptions.builder().browserPackage(browserPackageName).build(),
-//                    AWSCognitoAuthWebUISignInOptions.builder().browserPackage("org.mozilla.firefox").build(),
-                    result -> {
-                        Log.i(TAG, "SIGN IN COMPLETE " + result.toString());
-                        newLogin = true;
-                        onStart();
-                    },
-                    error -> {
-                        Log.e(TAG, error.toString());
-                    }
-            );
+            HomeActivity homeActivity = (HomeActivity) getActivity();
+            homeActivity.forceLogin();
         });
-
 
         // Auth test
 //        AuthSignUpOptions options = AuthSignUpOptions.builder()
@@ -316,55 +298,10 @@ public class ProfileFragment extends Fragment {
 //        return defaultBrowserPackageName;
 //    }
 
-    public void updateProfile() {
-        Log.d(TAG, "updateProfile");
-        Amplify.Auth.fetchAuthSession(
-                result -> {
-                    HomeActivity homeActivity = (HomeActivity) getActivity();
-                    Log.d(TAG, "SIGN IN STATUS: " + result.toString());
-                    if (result.isSignedIn()) {
-                        Amplify.Auth.fetchUserAttributes(
-                                attributes -> {
-                                    profile = attributes;
-                                    homeActivity.setProfile(attributes);
-                                    Log.i(TAG, "User attributes = " + profile.toString());
-                                    String email = "";
-                                    for (AuthUserAttribute attribute : profile) {
-                                        if (attribute.getKey().equals(AuthUserAttributeKey.email()))
-                                            email = attribute.getValue();
-                                    }
-                                    setGuestMode(false, self.getResources().getString(R.string.account_id, email));
-                                    Amplify.DataStore.start(
-                                            () -> {
-                                                Log.i(TAG, "DataStore started");
-                                                appInstance.setDataStoreReady(false);
-                                                requireActivity().runOnUiThread(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        // as data store takes some time to finish
-                                                        // show dialog before it is ready
-                                                        // there would not be data before it is ready
-                                                        // so UI does not work for user
-                                                        initialDataStoreDialog.show();
-                                                    }
-                                                });
-                                                starTime();
-                                            },
-                                            error -> Log.e(TAG, "Error starting DataStore", error)
-                                    );
-
-
-                                },
-                                error -> Log.e(TAG, "Failed to fetch user attributes.", error)
-                        );
-                    } else {
-                        profile = null;
-                        homeActivity.setProfile(null);
-                    }
-                },
-                error -> Log.e(TAG, error.toString())
-        );
+    public void setProfile(List<AuthUserAttribute> profile) {
+        this.profile = profile;
     }
+
 
     private void starTime() {
         if (checkDataStoreTimer == null) {

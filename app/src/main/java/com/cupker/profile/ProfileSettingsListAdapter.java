@@ -13,9 +13,12 @@ import android.widget.TextView;
 
 import com.amplifyframework.auth.cognito.options.AWSCognitoAuthSignOutOptions;
 import com.amplifyframework.core.Amplify;
+import com.cupker.home.CuppingFragment;
+import com.cupker.home.HomeActivity;
 import com.cupker.home.ProfileFragment;
 import com.cupker.R;
 import com.cupker.utils.AWSUtils;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
@@ -95,11 +98,13 @@ public class ProfileSettingsListAdapter extends BaseAdapter {
                     Amplify.Auth.signOut(AWSCognitoAuthSignOutOptions.builder().browserPackage(browserPackageName).build(),
                             () -> {
                                 profileFragment.setGuestMode(true, "Guest User");
+                                profileFragment.setProfile(null);
                                 Amplify.DataStore.clear(
                                         () -> Log.i(TAG, "DataStore cleared"),
                                         error -> Log.e(TAG, "Error clearing DataStore", error)
                                 );
-                                profileFragment.updateProfile();
+                                HomeActivity homeActivity = (HomeActivity)profileFragment.getActivity();
+                                homeActivity.forceLogin();
                                 Log.i(TAG, "Signed out successfully");
                             },
                             error -> {

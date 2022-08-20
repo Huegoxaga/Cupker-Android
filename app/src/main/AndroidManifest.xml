@@ -36,9 +36,6 @@
         <activity android:name=".profile.FlavorActivity" />
         <activity android:name=".profile.RoasterActivity" />
         <activity android:name=".profile.DealerActivity" />
-        <activity
-            android:name=".profile.LoginActivity"
-            android:label="@string/title_activity_login" />
         <activity android:name=".bean.BeanActivity" />
         <activity
             android:name=".history.HistoryActivity"
